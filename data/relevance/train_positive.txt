@@ -1,0 +1,151 @@
+whats taking up all the space in here
+show me the biggest files in this folder
+how much disk space do i have left
+find that pdf i downloaded yesterday
+which process is eating my cpu
+kill whatever is running on port 3000
+show me my ip address
+what's my username
+how long has this computer been on
+make a folder called backups
+rename all the jpeg files to lowercase
+zip up the reports folder
+unzip the archive in downloads
+count how many python files are here
+search all my notes for the word invoice
+delete the empty folders in here
+copy everything from photos to my usb drive
+show hidden files too
+list files sorted by date, newest first
+what changed in this git repo
+how big is the node_modules folder
+make this script executable
+show the last 50 lines of the log
+follow the log file as it grows
+find duplicate files in this folder
+how many lines are in each csv file
+check if google is reachable
+show me running docker containers
+what version of python do i have
+list everything installed with pacman
+show free memory
+which files did i change today
+replace foo with bar in config.txt
+download this url and save it as page.html
+show the first line of every file in here
+sort names.txt and remove duplicates
+make a tar backup of my documents
+find files bigger than 1 gig
+list all the users on this machine
+what's the time in utc
+print the path of the current folder
+turn the png images into a list with their sizes
+show open network connections
+compare these two files
+watch the cpu usage live
+find every todo comment in the src folder
+how many files are in each subfolder
+move all mp3s into the music folder
+show the environment variables
+show my shell history containing ssh
+how much memory is free right now
+how much memory is being used
+is my ram full
+what's using all my memory
+how full is my hard drive
+is my disk almost full
+how much storage is left on this laptop
+which directory takes the most space
+what are the heaviest folders in my home
+what's eating my disk space
+show disk usage per folder
+what's listening on port 8080
+is anything running on port 5432
+which app is using port 22
+what ports are open on this machine
+who is connected to this computer
+what programs are running right now
+is firefox still running
+which process uses the most ram
+stop the program called spotify
+restart the network manager
+what's my local ip
+what's my public ip
+am i connected to the internet
+what wifi network am i on
+how fast is my internet
+what's my kernel version
+which linux distro is this
+how many cores does my cpu have
+what cpu do i have
+what's the cpu temperature
+how long since the last reboot
+when did i last log in
+who else is logged in
+what time is it
+what's today's date
+show this month's calendar
+what's in this folder
+what's inside the config folder
+open the readme
+read me the first few lines of todo.txt
+what's at the end of error.log
+are there any errors in the system log
+find files i edited this week
+where did i save report.docx
+look for a file called invoice
+find all videos in downloads
+get rid of the build folder
+clear out the temp files here
+empty the trash folder
+tidy up the downloads folder by moving pdfs into a docs folder
+make a copy of settings.json called settings.bak
+rename draft.txt to final.txt
+put all the screenshots into one folder
+back up my documents to an archive
+extract backup.tar.gz here
+zip every log file
+make the deploy script runnable
+who owns this file
+change the owner of data to me
+let everyone read report.txt
+which files are executable here
+how many lines of code are in this project
+how many files are in here
+how big is this folder
+count the jpgs in pictures
+what's the newest file here
+what's the oldest file in this folder
+show me files bigger than 100 megabytes
+list everything modified in the last hour
+search my code for api_key
+grep for error in all the logs
+which files mention the word deadline
+show the differences between old.txt and new.txt
+merge these two text files into one
+sort this list alphabetically
+remove duplicate lines from emails.txt
+how many unique ips are in access.log
+what's my home directory
+where is python installed
+is git installed
+which version of node is installed
+update all my packages
+install htop
+uninstall vlc
+list my docker images
+stop all docker containers
+show the git log for the last week
+undo my last commit
+what branch am i on
+schedule a backup every night at 2am
+show my scheduled cron jobs
+mount the usb stick
+eject the external drive
+show connected usb devices
+list the disks and partitions
+check the battery level
+what's my screen resolution
+show my aliases
+print my path variable
+set the variable mode to debug

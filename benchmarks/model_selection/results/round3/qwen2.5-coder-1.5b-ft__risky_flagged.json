@@ -1,0 +1,52 @@
+[
+ [
+  "free up disk space",
+  "sudo rm -rf /var/cache/apt/archives/*",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "delete everything in this folder",
+  "rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "remove all files",
+  "rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "wipe the usb drive",
+  "sudo wipefs -a /dev/sdX",
+  "wipe a disk device"
+ ],
+ [
+  "erase the second disk",
+  "sudo wipefs -f /dev/sdb2",
+  "wipe a disk device"
+ ],
+ [
+  "remove all docker containers and images",
+  "docker system prune -a",
+  "remove all docker data"
+ ],
+ [
+  "clean the git repository",
+  "git clean -fd",
+  "discard git work"
+ ],
+ [
+  "disable the firewall",
+  "sudo ufw disable",
+  "disable firewall"
+ ],
+ [
+  "reboot the machine now",
+  "sudo reboot",
+  "reboot or shutdown"
+ ],
+ [
+  "move everything to /tmp",
+  "mv * /tmp",
+  "move everything to /tmp"
+ ]
+]

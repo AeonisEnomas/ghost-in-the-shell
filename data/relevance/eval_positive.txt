@@ -1,0 +1,30 @@
+which folders are the largest here
+find all images bigger than 5 mb
+show me what's listening on port 80
+free up space by finding old log files
+list my files by size
+how much ram is this machine using
+make a new directory named archive
+show the contents of readme.md
+find files named config anywhere in my home folder
+count the words in essay.txt
+print the last 20 lines of server.log
+search for the string password in all text files
+show all processes run by me
+list the 10 most recently modified files
+check how full each disk is
+create an empty file called notes.md
+show the current git branch
+compress the images folder into a zip
+show my network interfaces
+display the calendar for this month
+find which program is using the most memory
+list all files ending in .bak
+show how long the system has been running
+print the number of cpu cores
+show the permissions of run.sh
+find symbolic links in this directory
+list installed python packages
+print lines 5 to 10 of data.csv
+remove the tmp folder in here
+show the size of the downloads folder

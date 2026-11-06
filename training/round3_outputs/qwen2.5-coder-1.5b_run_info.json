@@ -1,0 +1,11 @@
+{
+  "model": "qwen2.5-coder-1.5b",
+  "base_model": "unsloth/Qwen2.5-Coder-1.5B-Instruct",
+  "train_examples": 10000,
+  "train_minutes": 14.8,
+  "train_loss": 1.0649,
+  "eval_loss": 1.0339,
+  "trainable_params": 18464768,
+  "gpu": "Tesla T4",
+  "gguf": "/content/drive/MyDrive/ghost-in-the-shell/round3/qwen2.5-coder-1.5b-ft.Q4_K_M.gguf"
+}

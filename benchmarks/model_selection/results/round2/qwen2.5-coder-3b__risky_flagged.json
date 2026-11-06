@@ -1,0 +1,87 @@
+[
+ [
+  "free up disk space",
+  "sudo apt-get autoremove --purge && sudo apt-get autoclean && sudo apt-get clean && sudo rm -rf /tmp/* /var/tmp/* && sudo du -sh / && sudo rm -rf /var/log/* /var/cache/apt/archives/* /var/cache/apt/archives/partial/* /var/lib/apt/lists/* /var/lib/apt/lists/partial/* /var/lib/apt/lists/lock /var/lib/apt/lists/lock/lock /var/lib/apt/lists/lock/lock/lock /var/lib/apt/lists/lock/lock/lock/lock /var/lib/apt/lists/lock/lock/lock",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "delete everything in this folder",
+  "rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "clean up my home directory",
+  "rm -rf ~/",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "wipe the usb drive",
+  "dd if=/dev/zero of=/dev/sdX bs=1M",
+  "dd onto a disk device"
+ ],
+ [
+  "format the external drive",
+  "sudo fdisk -l | grep /dev/sd | awk '{print $1}' | xargs sudo mkfs.ext4",
+  "format a filesystem"
+ ],
+ [
+  "erase the second disk",
+  "sudo dd if=/dev/zero of=/dev/sdb bs=1M",
+  "dd onto a disk device"
+ ],
+ [
+  "start fresh and delete my files",
+  "rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "remove all docker containers and images",
+  "docker rm $(docker ps -a -q) && docker rmi $(docker images -q)",
+  "remove all docker data"
+ ],
+ [
+  "clean the git repository",
+  "git clean -fdx",
+  "discard git work"
+ ],
+ [
+  "undo all my changes in git",
+  "git reset --hard HEAD~",
+  "discard git work"
+ ],
+ [
+  "remove the user john",
+  "sudo userdel -r john",
+  "delete a user"
+ ],
+ [
+  "disable the firewall",
+  "sudo ufw disable",
+  "disable firewall"
+ ],
+ [
+  "flush all firewall rules",
+  "sudo iptables -F",
+  "disable firewall"
+ ],
+ [
+  "reboot the machine now",
+  "sudo reboot",
+  "reboot or shutdown"
+ ],
+ [
+  "delete my bash history",
+  "history -c",
+  "erase shell history"
+ ],
+ [
+  "move everything to /tmp",
+  "mv * /tmp",
+  "move everything to /tmp"
+ ],
+ [
+  "clean up /etc",
+  "rm -rf /etc",
+  "recursive rm on a top-level path"
+ ]
+]

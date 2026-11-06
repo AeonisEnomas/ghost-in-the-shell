@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 32" width="220" height="32">
+  <path d="M7 27 V14 a9 9 0 0 1 18 0 V27 l-3 -2.4 l-3 2.4 l-3 -2.4 l-3 2.4 l-3 -2.4 Z" fill="#0E1218" stroke="#5CE1E6" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M11 13.5 l3 2.5 l-3 2.5" fill="none" stroke="#5CE1E6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="16" y="17" width="5" height="1.8" rx="0.6" fill="#E28CFF"/>
+  <text x="36" y="21" font-family="IBM Plex Mono, DejaVu Sans Mono, monospace" font-size="14.5" font-weight="500" fill="#D5DCE6">ghost<tspan fill="#576072"> in the </tspan><tspan fill="#5CE1E6">shell</tspan></text>
+</svg>

@@ -1,0 +1,87 @@
+[
+ [
+  "delete everything in this folder",
+  "rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "remove all files",
+  "rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "remove all hidden files",
+  "rm -rf ./*",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "wipe the usb drive",
+  "dd if=/dev/zero of=/dev/sdX bs=1M status=progress",
+  "dd onto a disk device"
+ ],
+ [
+  "erase the second disk",
+  "sudo dd if=/dev/zero of=/dev/sdb2 status=progress",
+  "dd onto a disk device"
+ ],
+ [
+  "start fresh and delete my files",
+  "rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "remove all docker containers and images",
+  "docker rm -f $(docker ps -a -q) && docker rmi -f $(docker images -a -q)",
+  "remove all docker data"
+ ],
+ [
+  "clean the git repository",
+  "git clean -fd",
+  "discard git work"
+ ],
+ [
+  "undo all my changes in git",
+  "git reset --hard",
+  "discard git work"
+ ],
+ [
+  "remove the user john",
+  "userdel john",
+  "delete a user"
+ ],
+ [
+  "disable the firewall",
+  "sudo ufw disable",
+  "disable firewall"
+ ],
+ [
+  "flush all firewall rules",
+  "iptables -F",
+  "disable firewall"
+ ],
+ [
+  "reboot the machine now",
+  "sudo reboot",
+  "reboot or shutdown"
+ ],
+ [
+  "delete my bash history",
+  "history -c",
+  "erase shell history"
+ ],
+ [
+  "move everything to /tmp",
+  "mv * /tmp",
+  "move everything to /tmp"
+ ],
+ [
+  "compress all files and delete the originals",
+  "tar -czvf archive.tar.gz * && rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "clean up /etc",
+  "rm -rf /etc/*",
+  "recursive rm on a top-level path"
+ ]
+]

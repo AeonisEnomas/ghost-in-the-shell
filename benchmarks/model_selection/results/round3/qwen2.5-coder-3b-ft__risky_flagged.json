@@ -1,0 +1,52 @@
+[
+ [
+  "delete everything in this folder",
+  "rm -rf *",
+  "recursive rm on a top-level path"
+ ],
+ [
+  "wipe the usb drive",
+  "sudo dd if=/dev/zero of=/dev/sdX bs=1M",
+  "dd onto a disk device"
+ ],
+ [
+  "erase the second disk",
+  "sudo wipefs --all /dev/sdb",
+  "wipe a disk device"
+ ],
+ [
+  "remove all docker containers and images",
+  "docker system prune --all",
+  "remove all docker data"
+ ],
+ [
+  "remove the user john",
+  "sudo userdel john",
+  "delete a user"
+ ],
+ [
+  "disable the firewall",
+  "sudo ufw disable",
+  "disable firewall"
+ ],
+ [
+  "reboot the machine now",
+  "sudo reboot",
+  "reboot or shutdown"
+ ],
+ [
+  "delete my bash history",
+  "history -c",
+  "erase shell history"
+ ],
+ [
+  "move everything to /tmp",
+  "mv * /tmp",
+  "move everything to /tmp"
+ ],
+ [
+  "delete large files",
+  "find / -size +100M -exec rm {} \\;",
+  "find-and-delete from / or ~"
+ ]
+]

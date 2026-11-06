@@ -1,0 +1,300 @@
+{"index": 0, "command": "ls -l"}
+{"index": 1, "command": "ls -alh"}
+{"index": 2, "command": "lsof -P -i -n"}
+{"index": 3, "command": "cp /testbed/hello.php /testbed/hello-COPY.php -v"}
+{"index": 4, "command": "> /testbed/test.txt"}
+{"index": 5, "command": "mkdir /testbed/test_dir -v"}
+{"index": 6, "command": "unlink does_not_exist.txt"}
+{"index": 7, "command": "echo -n 'hello world'"}
+{"index": 8, "command": "pwd ."}
+{"index": 9, "command": "date -R"}
+{"index": 10, "command": "id -un"}
+{"index": 11, "command": "rm -r fake_dir"}
+{"index": 12, "command": "echo $SHELL"}
+{"index": 13, "command": "printenv"}
+{"index": 14, "command": "echo ~"}
+{"index": 15, "command": "printenv PATH"}
+{"index": 16, "command": "nl setup_nl2b_fs_1.sh"}
+{"index": 17, "command": "sed -n '1,5p' setup_nl2b_fs_1.sh"}
+{"index": 18, "command": "tac setup_nl2b_fs_1.sh | head -n 5"}
+{"index": 19, "command": "awk 'NR==10' setup_nl2b_fs_1.sh"}
+{"index": 20, "command": "type bash"}
+{"index": 21, "command": "history | cut -c 8-"}
+{"index": 22, "command": "vmstat -t"}
+{"index": 23, "command": "uptime -p"}
+{"index": 24, "command": "w -s"}
+{"index": 25, "command": "ps -e"}
+{"index": 26, "command": "pstree -p"}
+{"index": 27, "command": "free -h"}
+{"index": 28, "command": "df -h"}
+{"index": 29, "command": "uname -r"}
+{"index": 30, "command": "hostname -f"}
+{"index": 31, "command": "hostname -i"}
+{"index": 32, "command": "grep nameserver /etc/resolv.conf"}
+{"index": 33, "command": "ifconfig -a"}
+{"index": 34, "command": "route -n"}
+{"index": 35, "command": "last -a"}
+{"index": 36, "command": "last -w -i"}
+{"index": 37, "command": "openssl version -a"}
+{"index": 38, "command": "printf 'hello' | openssl enc -base64"}
+{"index": 39, "command": "echo 'aGVsbG8=' | openssl enc -base64 -d"}
+{"index": 40, "command": "awk '/console/' setup_nl2b_fs_1.sh"}
+{"index": 41, "command": "stat -t setup_nl2b_fs_1.sh"}
+{"index": 42, "command": "gzip --keep /testbed/hello.php"}
+{"index": 43, "command": "tar -cvf /testbed/hello.tar /testbed/hello.php"}
+{"index": 44, "command": "apt-cache show curl"}
+{"index": 45, "command": "jobs -p"}
+{"index": 46, "command": "printenv TERM"}
+{"index": 47, "command": "nice"}
+{"index": 48, "command": "pidof bash"}
+{"index": 49, "command": "time echo 'hello'"}
+{"index": 50, "command": "groups"}
+{"index": 51, "command": "id -u"}
+{"index": 52, "command": "crontab -l"}
+{"index": 53, "command": "umask -p"}
+{"index": 54, "command": "cat /proc/cpuinfo"}
+{"index": 55, "command": "cat /proc/meminfo"}
+{"index": 56, "command": "ssh -V"}
+{"index": 57, "command": "nl ~/.bashrc"}
+{"index": 58, "command": "locale"}
+{"index": 59, "command": "lsblk -f"}
+{"index": 60, "command": "find . -size +100M"}
+{"index": 61, "command": "ln -s /testbed/hello.php /testbed/link"}
+{"index": 62, "command": "chown nobody /testbed/test.txt"}
+{"index": 63, "command": "chgrp nogroup /testbed/test.txt"}
+{"index": 64, "command": "chmod a=r /testbed/test.txt"}
+{"index": 65, "command": "wc setup_nl2b_fs_1.sh"}
+{"index": 66, "command": "sort setup_nl2b_fs_1.sh"}
+{"index": 67, "command": "uniq setup_nl2b_fs_1.sh"}
+{"index": 68, "command": "netstat -s"}
+{"index": 69, "command": "netstat --interfaces"}
+{"index": 70, "command": "cal -3"}
+{"index": 71, "command": "service --status-all"}
+{"index": 72, "command": "uptime -s"}
+{"index": 73, "command": "free -h | grep Swap"}
+{"index": 74, "command": "sysctl --all"}
+{"index": 75, "command": "apt list --installed"}
+{"index": 76, "command": "cat /etc/shells"}
+{"index": 77, "command": "cat /etc/passwd"}
+{"index": 78, "command": "cat /etc/group"}
+{"index": 79, "command": "echo 'my_script.sh'"}
+{"index": 80, "command": "dig google.com"}
+{"index": 81, "command": "echo '/usr/local/bin/'"}
+{"index": 82, "command": "echo 'System maintenance in 10 minutes!' | wall"}
+{"index": 83, "command": "file setup_nl2b_fs_1.sh"}
+{"index": 84, "command": "fmt -w 40 setup_nl2b_fs_1.sh"}
+{"index": 85, "command": "getconf -a"}
+{"index": 86, "command": "nproc"}
+{"index": 87, "command": "ulimit -n"}
+{"index": 88, "command": "ulimit -u"}
+{"index": 89, "command": "prlimit --cpu"}
+{"index": 90, "command": "getconf LONG_BIT"}
+{"index": 91, "command": "find . -maxdepth 2 -print"}
+{"index": 92, "command": "grep -o 'the' setup_nl2b_fs_1.sh | nl"}
+{"index": 93, "command": "ls -al | wc -l"}
+{"index": 94, "command": "awk 'NR == 1 {print}' setup_nl2b_fs_1.sh"}
+{"index": 95, "command": "awk 'END {print}' setup_nl2b_fs_1.sh"}
+{"index": 96, "command": "awk 'NR >= 3 && NR <= 5 {print}' setup_nl2b_fs_1.sh"}
+{"index": 97, "command": "awk 'NR % 2 == 1 {print}' setup_nl2b_fs_1.sh"}
+{"index": 98, "command": "awk '{ total += NF } END { print total }' setup_nl2b_fs_1.sh"}
+{"index": 99, "command": "find . -maxdepth 1 -type f -empty -print"}
+{"index": 100, "command": "grep -v '^.\\{20,\\}' setup_nl2b_fs_1.sh"}
+{"index": 101, "command": "awk '/the/' setup_nl2b_fs_1.sh"}
+{"index": 102, "command": "awk '/the/ && /a/' setup_nl2b_fs_1.sh"}
+{"index": 103, "command": "openssl dgst -sha512 setup_nl2b_fs_1.sh"}
+{"index": 104, "command": "openssl enc -aes-256-cbc -in setup_nl2b_fs_1.sh -pass pass:password -out out.enc"}
+{"index": 105, "command": "echo 'hello' | dd of=world.txt"}
+{"index": 106, "command": "curl ifconfig.me/ip"}
+{"index": 107, "command": "find /testbed -type f -name \"*.java\" -exec md5sum {} + | sort | uniq -w32 -d -c | sort -nr"}
+{"index": 108, "command": "ls -1 /testbed/dir2/subdir2/* | sort | xargs md5sum | awk '{print $1}' | md5sum"}
+{"index": 109, "command": "echo \"$FILES\" | tr ' ' '\\n' | sort | xargs cat | md5sum"}
+{"index": 110, "command": "find /testbed/dir1/subdir1 -type f -name '*.py' -print0 | xargs -0 md5sum | awk '{print $1}' | sort | md5sum"}
+{"index": 111, "command": "find /testbed -name \"*.txt\" -exec du -h {} + | awk -v hostname=\"$(hostname)\" '{print hostname, $0}'"}
+{"index": 112, "command": "find /testbed -type f -name \"*.php\" -exec chmod 755 {} \\; -print | wc -l"}
+{"index": 113, "command": "ps -o comm= $(pstree -sp $$ | awk -F '[^0-9]*' '{print $2}') | grep -q 'screen' && echo \"True\" || echo \"False\""}
+{"index": 114, "command": "comm -23 <(sort /testbed/dir3/subdir1/subsubdir1/textfile3.txt | uniq) <(sort /testbed/dir2/subdir1/textfile2.txt | uniq) | grep -q '.' && echo \"False\" || echo \"True\""}
+{"index": 115, "command": "find /testbed -type f -name \"*.txt\" -exec wc -w {} + | awk '{total = $1} END {print total/(NR-1)}'"}
+{"index": 116, "command": "find /testbed -name '*.txt' -print0 | xargs -0 wc -w | awk '$1 < 6 {v += $1; c++} END {print v/c, \"words\"}'"}
+{"index": 117, "command": "find /testbed -path '*FooBar*' -print0 | xargs -0 -I{} cp -R {} /testbed/dir3/subdir1/subsubdir1/tmp"}
+{"index": 118, "command": "find /testbed -type f -name \"*.txt\" -print -exec grep -H \"another\" {} \\;"}
+{"index": 119, "command": "head -c 16 /testbed/textfile7.txt | od -An -tx1 | tr -d ' \\n'"}
+{"index": 120, "command": "find /testbed -type f -path '*FooBar*' -exec cp --preserve=mode,ownership,timestamps {} ./ \\;"}
+{"index": 121, "command": "find /testbed -name \"*FooBar*\" -exec cp -r {} /testbed/dir3/subdir1/subsubdir1/tmp \\;"}
+{"index": 122, "command": "find /testbed -name \"*.c\" -exec wc -l {} + | awk '{s+=$1} END {print s}'"}
+{"index": 123, "command": "find . -type f -name '*.php' -exec wc -l {} + | awk '{s=$1} END {print s}'"}
+{"index": 124, "command": "find /testbed/ -type f -name '*.php' | xargs cat | wc -l"}
+{"index": 125, "command": "find /testbed -type f -name \"*.py\" -print0 | xargs -0 md5sum"}
+{"index": 126, "command": "find /testbed -name \"*.html\" -exec grep -l foo {} + | wc -l"}
+{"index": 127, "command": "find /testbed -type f -name '*.php' -exec chmod 755 {} \\; -print | wc -l"}
+{"index": 128, "command": "find /testbed -type f -name '*file*' -exec wc -l {} +"}
+{"index": 129, "command": "find \"${DIRECTORY}\" -type f -print | awk -F/ '{print $NF}' | grep -i '[aeiouy]' | wc -l"}
+{"index": 130, "command": "find /testbed -type f | awk -F. '{if (NF>1) print $NF}' | sort | uniq -c | sort -nr"}
+{"index": 131, "command": "find /testbed -type f -name \"*.gz\" -exec sh -c 'gunzip -c \"$0\" | wc -l' {} \\; | awk '{s+=$1} END {print s}'"}
+{"index": 132, "command": "find /testbed -type f | wc -l"}
+{"index": 133, "command": "find /testbed -type f -name \"*.php\" -exec wc -l {} + | sort"}
+{"index": 134, "command": "find /testbed -type f -name \"*.php\" -exec wc -l {} + | sort -rn"}
+{"index": 135, "command": "awk '{for (i=1; i<=NF; i++) if ($i ~ /([0-9]{1,3}\\.){3}[0-9]{1,3}/) print $i}' /etc/networks | sort | uniq -c | sort -nr"}
+{"index": 136, "command": "find /testbed -type f -name '*.php' -exec grep -H '.*[[:alnum:]].*' {} + | wc -l"}
+{"index": 137, "command": "find /testbed -type f \\( -name '*.php' -o -name '*.js' \\) -exec wc -l {} + | awk '{s=$1} END {print s}'"}
+{"index": 138, "command": "find testbed -type d -name \"dir1\" -exec touch {}/abc.txt \\;"}
+{"index": 139, "command": "find /var/log -type f -mtime +1 -exec tar -czvPf /testbed/logs.tar.gz {} +"}
+{"index": 140, "command": "find /testbed/dir3/subdir1/subsubdir1/tmp -type f -mtime +2 -delete"}
+{"index": 141, "command": "find /testbed -type f -print0 | xargs -0 du -b | sort -rn | head -n 5"}
+{"index": 142, "command": "find /testbed -type f -size +0c -exec du -b {} + | sort -rh | tail -n 5"}
+{"index": 143, "command": "find /testbed -type f -exec du -b {} + | sort -n | head -n 5"}
+{"index": 144, "command": "ls -lS /testbed | grep '^-' | head -n 5"}
+{"index": 145, "command": "find testbed -type f -name \"*.java\" -exec grep -l 'Hello' {} +"}
+{"index": 146, "command": "find /testbed -type f | awk -F/ '{print tolower($NF)}' | sort | uniq -d"}
+{"index": 147, "command": "comm -23 <(find testbed/dir1 -type f | sed 's|testbed/dir1/||' | sort) <(find testbed/dir2 -type f | sed 's|testbed/dir2/||' | sort) | sed 's|^|testbed/dir1/|'"}
+{"index": 148, "command": "find /testbed -type f -exec grep -l 'Hello' {} + | xargs -I {} dirname {} | sort | uniq"}
+{"index": 149, "command": "find /testbed -name \"*.java\" -exec wc -l {} + | awk '{s=$1} END {print s}'"}
+{"index": 150, "command": "ln -s /testbed/dir3/subdir1/subsubdir1/FooBar /"}
+{"index": 151, "command": "find /testbed/dir1 -type f -perm 1553"}
+{"index": 152, "command": "find /testbed -name \"*.php\" -exec grep -H \"world\" {} \\;"}
+{"index": 153, "command": "find /system/folder1 -type f -exec grep -inH 'hello' {} \\;"}
+{"index": 154, "command": "grep -ronw '/system' -e 'foo'"}
+{"index": 155, "command": "find /system -print | sed -e 's;[^/]*/;|___;g;s;___|; |;g'"}
+{"index": 156, "command": "find /system/folder2 -print | sed -e 's;[^/]*/;|___;g;s;___|; |;g'"}
+{"index": 157, "command": "find /system -type f -name \"*.out\" -printf '%h\\n' | sort -u"}
+{"index": 158, "command": "find /system -maxdepth 1 -type f -name \"*.txt\" -exec rm -f {} \\;"}
+{"index": 159, "command": "find /system/folder3/temp -type d -empty -delete"}
+{"index": 160, "command": "find /system/folder3/temp -type d -empty -print -delete 2>/dev/null"}
+{"index": 161, "command": "find /system/folder1 -type f ! -name '*.txt' -print -delete"}
+{"index": 162, "command": "find /system/folder1 -type f -name '*special*' -exec bash -c 'for f; do mv -- \"$f\" \"${f%/*}/${f##*/special/regular}\"; done' _ {} +"}
+{"index": 163, "command": "grep -r \"foo\" /system | awk '{print} END {print NR}'"}
+{"index": 164, "command": "find /system/folder3/ -type f | xargs -n 1 basename"}
+{"index": 165, "command": "tar -xzvf /system/folder2.tar.gz -O | grep \"special\""}
+{"index": 166, "command": "cat system/folder3/temp/temp1/text1.txt | sed 's/\\r$//' | od -c -An"}
+{"index": 167, "command": "find /system/folder1 -type f -name '*.doc' -delete"}
+{"index": 168, "command": "find /system/folder1 -type f -name '*.log' -delete"}
+{"index": 169, "command": "find /system -name '*.txt' -maxdepth 1 -delete"}
+{"index": 170, "command": "find /system/folder3/backup_dbg -name '*.sql' -print -mtime +25 -delete"}
+{"index": 171, "command": "find /system/folder1 -mmin +5 -type f -name \"*.txt\" | xargs rm -f"}
+{"index": 172, "command": "find /system/folder1 -maxdepth 1 -mmin +5 -type f -name \"*.txt\" ! -name \"keep.txt\" | xargs rm -f"}
+{"index": 173, "command": "find /system/folder1 -name 'new*.sh' -delete"}
+{"index": 174, "command": "find /system -type f \\( -name \"a.out\" -o -name \"*.o\" -o -name \"core\" \\) -delete"}
+{"index": 175, "command": "tail -n 1 /system/folder1/data.csv | rev | cut -d',' -f1-5 | rev"}
+{"index": 176, "command": "find /system -type d -name \"temp\" -exec rm -rf {} +"}
+{"index": 177, "command": "find /system/folder3/temp -type f -empty -print -delete"}
+{"index": 178, "command": "find /system -type f \\( -name \"a.out\" -o -name \"*.o\" \\) -mtime -7 -delete"}
+{"index": 179, "command": "find /system/folder3/temp \\( -name '.DS_Store' -or -name '._.DS_Store' -or -name '._*' -or -name '.TemporaryItems' -or -name '.apdisk' \\) -delete"}
+{"index": 180, "command": "echo '1/2 [3] (27/03/2012 19:32:54) word word word word 4/5' | sed 's/([^)]*)//g' | tr -c '0-9' ' ' | column -t"}
+{"index": 181, "command": "find /system/folder1 -name 'text[2-4]*' -delete"}
+{"index": 182, "command": "find /system -type f -size -1k -delete"}
+{"index": 183, "command": "find /system -type f -mtime +31 -delete"}
+{"index": 184, "command": "tr -d '\\n' < /system/folder3/temp/temp1/text1.txt"}
+{"index": 185, "command": "find /system -type f -delete"}
+{"index": 186, "command": "diff -qr /system/folder1 /system/folder2"}
+{"index": 187, "command": "df -m /system | grep / | tr -s ' ' | cut -d ' ' -f 4"}
+{"index": 188, "command": "tree -d /system | tail -n 1"}
+{"index": 189, "command": "tar --mtime='2023-01-01' --owner=0 --group=0 -czvf mytarfile.tgz `find /system/folder1 -mtime -60`"}
+{"index": 190, "command": "ln -s /system/folder1 /"}
+{"index": 191, "command": "echo $(date +\"%Y-%m-%d~%H:%M:%S\") \"1\" | tee -a /system/folder3/temp/empty.txt"}
+{"index": 192, "command": "find /system -type f -name \"*.txt\" -not -name \"concat.txt\" -print -exec cat {} \\; > /system/folder3/temp/concat.txt"}
+{"index": 193, "command": "find /system -print | cpio -dump /backup"}
+{"index": 194, "command": "find /system -maxdepth 1 -print -type f ! -name '*text*' -exec cp {} /system/folder3/backup_dbg/backup \\;"}
+{"index": 195, "command": "cp -r /system/folder3/temp/temp1 /system/folder3/temp/temp1_old && rm -r /system/folder3/temp/temp1"}
+{"index": 196, "command": "hexdump -C /system/text1.txt"}
+{"index": 197, "command": "tar --mtime='2023-01-01' --owner=0 --group=0 -zcvf compress_folder1.tar.gz /system/folder1"}
+{"index": 198, "command": "curl -vo /system/textfile.txt http://example.com/textfile.txt"}
+{"index": 199, "command": "find /system -type f -size +10c"}
+{"index": 200, "command": "find /system -type f -name \"*.txt\" -exec md5sum {} + | sort"}
+{"index": 201, "command": "grep \"$(hostname)\" /etc/hosts | awk '{print $1}'"}
+{"index": 202, "command": "find /workspace -type f -mtime -30"}
+{"index": 203, "command": "find /workspace -name '*.c' -size +1k"}
+{"index": 204, "command": "find /workspace -type f -cmin +60 -print"}
+{"index": 205, "command": "find /workspace -type f -amin +60 -print"}
+{"index": 206, "command": "find /workspace -maxdepth 1 -type d"}
+{"index": 207, "command": "find /workspace -empty -print"}
+{"index": 208, "command": "find /workspace -type f -size 0"}
+{"index": 209, "command": "find /workspace -type f -size +1k -exec rm {} \\;"}
+{"index": 210, "command": "find /workspace -perm 400 -ls"}
+{"index": 211, "command": "find /workspace -perm 777 -ls"}
+{"index": 212, "command": "find /workspace -name \"*.txt\" | xargs ls -ld"}
+{"index": 213, "command": "find /workspace -maxdepth 1 -type f -exec mv {} / \\;"}
+{"index": 214, "command": "find /workspace -type f -atime -1 -print0 | xargs -0 -I {} mv {} /"}
+{"index": 215, "command": "grep -ril 'hello' /workspace/dir1"}
+{"index": 216, "command": "du -h /workspace"}
+{"index": 217, "command": "awk '{ for (i=1; i<=NF; i++) last=$i } END { print last }' /workspace/dir1/long.txt"}
+{"index": 218, "command": "find /workspace -exec du -h {} + | sort -rh | head -n 3"}
+{"index": 219, "command": "sed -n '1p' /workspace/dir1/long.txt"}
+{"index": 220, "command": "awk 'NF' /workspace/dir1/a.txt | tail -n 1"}
+{"index": 221, "command": "find /workspace -type f -exec rm -f {} +"}
+{"index": 222, "command": "find /workspace -type f -size +1k -size -32k -print"}
+{"index": 223, "command": "find /workspace -type f | awk -F/ '{print NF, $0}' | sort -n | cut -d' ' -f2-"}
+{"index": 224, "command": "find /workspace -type f -size +1k -exec ls -lh {} + | sort -k 5 -rh | head -n 1"}
+{"index": 225, "command": "find /workspace -type f -name \"*.txt\" ! -perm -o=w"}
+{"index": 226, "command": "find workspace -type d -name \"mysql\""}
+{"index": 227, "command": "find /workspace -type f | awk -F/ '{print tolower($NF)}' | sort | uniq -d"}
+{"index": 228, "command": "find /workspace -name old2.txt -print0 | xargs -0 ls -tl"}
+{"index": 229, "command": "grep -rnw '/workspace' -e 'hello'"}
+{"index": 230, "command": "find /workspace -type f -print0 | xargs -0 md5sum | awk '{print $2 \" \" $1}'"}
+{"index": 231, "command": "find /workspace -type f -exec md5sum {} +"}
+{"index": 232, "command": "find /workspace -type f -name '*.*' | sed -n 's/.*\\.//p' | awk '{print tolower($0)}' | grep -E '^[a-z]{3,6}$' | sort -u | wc -l"}
+{"index": 233, "command": "find /workspace -type d | cpio -pdm /usr"}
+{"index": 234, "command": "find /workspace -type f -exec stat --format '%Y %n' {} \\; | sort -n | head -n 1 | cut -d' ' -f2- | xargs ls -l"}
+{"index": 235, "command": "find /workspace -type d -print0 | xargs -0 du | sort -n | tail -2"}
+{"index": 236, "command": "find /workspace -type f -print0 | xargs -0 md5sum | sort | uniq -w32 -D"}
+{"index": 237, "command": "cat /workspace/files.txt | xargs -I {} dirname {}| sort -u | xargs -I{} mkdir -p \"{}\""}
+{"index": 238, "command": "awk '{print $0}' /workspace/files.txt | xargs du -b | awk '{sum += $1} END {print sum}'"}
+{"index": 239, "command": "find /workspace -maxdepth 1 -type f -name '.*' -exec sh -c 'mv \"$1\" \"${1%/\\.*}/${1##*/.}\"' _ {} \\;"}
+{"index": 240, "command": "diff /workspace/dir1/long.txt /workspace/dir1/terminate.txt | grep '^>' | wc -l"}
+{"index": 241, "command": "diff -U 0 /workspace/dir1/terminate.txt /workspace/dir1/long.txt | grep -v '^@' | wc -l"}
+{"index": 242, "command": "grep -v '^[[:space:]]*$' /workspace/dir1/a.txt | wc -l"}
+{"index": 243, "command": "cat /workspace/results.txt | xargs -I {} ln -s {} ~/newlinks"}
+{"index": 244, "command": "find /workspace -type f -name '.*' -exec rm -f {} \\;"}
+{"index": 245, "command": "od -An -t fD /workspace/dir1/long.txt"}
+{"index": 246, "command": "diff -qr /workspace/dir1 /workspace/dir2"}
+{"index": 247, "command": "stat -c %s /workspace/dir1/sum.c"}
+{"index": 248, "command": "awk -F/ '{print $NF}' /workspace/dir1/file.txt"}
+{"index": 249, "command": "du -ah /workspace | sort -rh"}
+{"index": 250, "command": "df -h /workspace | awk 'NR==2 {print $5}'"}
+{"index": 251, "command": "tac /workspace/dir1/long.txt"}
+{"index": 252, "command": "touch \"workspace/Icon\"$'\\r'"}
+{"index": 253, "command": "ln -s /workspace/dir1 /"}
+{"index": 254, "command": "find /workspace -type f -exec stat --format '%A %U %G %N' {} \\;"}
+{"index": 255, "command": "grep -ri 'hello' /workspace"}
+{"index": 256, "command": "find /workspace -type f -name '*.gz' -exec gunzip {} +"}
+{"index": 257, "command": "tar -xzvf /workspace/archive.tar.gz -C /backup"}
+{"index": 258, "command": "ln -s /workspace/dir1/terminate.txt /workspace/test"}
+{"index": 259, "command": "uname -r | awk -F'-' '{print $2}'"}
+{"index": 260, "command": "nslookup 127.0.0.1"}
+{"index": 261, "command": "stat $(which grep)"}
+{"index": 262, "command": "echo \"http://www.google.com\" | sed -E 's|https?://([^/]+).*|\\1|'"}
+{"index": 263, "command": "while IFS= read -r line; do echo \"${line//;/\\\\;}\"; done < <(env)"}
+{"index": 264, "command": "ps -eo pid,ppid,cmd --forest"}
+{"index": 265, "command": "mkdir -p dir/subdir/subsubdir"}
+{"index": 266, "command": "echo $(seq -s \":\" 1 10)"}
+{"index": 267, "command": "bind -P"}
+{"index": 268, "command": "bind -l | egrep 'p'"}
+{"index": 269, "command": "address=$(dig +short google.com | grep -m 1 '^[0-9]' | head -n 1) && echo $address"}
+{"index": 270, "command": "echo \"  Hello world;876     \" | sed 's/[^0-9;]//g'"}
+{"index": 271, "command": "echo -n \"  Hello world!    \" | sed 's/^[ \\t]*//;s/[ \\t]*$//'"}
+{"index": 272, "command": "echo \"987654321\" | sed 's/...$//'"}
+{"index": 273, "command": "df -P . | awk 'NR==2 {print $1}'"}
+{"index": 274, "command": "env | grep '^[^=]*H[^=]*=' | awk -F= '{print $1}'"}
+{"index": 275, "command": "who | awk '{print $1}' | sort | uniq"}
+{"index": 276, "command": "ping -w 1 192.168.1.1"}
+{"index": 277, "command": "printf '=%.0s' {1..99}"}
+{"index": 278, "command": "who | wc -l"}
+{"index": 279, "command": "cal -3 12 2120"}
+{"index": 280, "command": "cut -d: -f1 /etc/group | sort | uniq"}
+{"index": 281, "command": "echo $(( (10 * (10 + 1)) / 2 ))"}
+{"index": 282, "command": "find /testbed -print | wc -l"}
+{"index": 283, "command": "find testbed -type f -name \"*.py\" -print | wc -l"}
+{"index": 284, "command": "sort -r /testbed/dir1/textfile1.txt > /testbed/dir1/textfile1_reverse_sorted.txt"}
+{"index": 285, "command": "grep -r 'Shell' /testbed"}
+{"index": 286, "command": "find /testbed -type l -print"}
+{"index": 287, "command": "du -s testbed/ | awk '{print $1}' > total_size.txt"}
+{"index": 288, "command": "ls -lhS /testbed/dir1"}
+{"index": 289, "command": "find /testbed/dir2 -type f -exec wc -l {} +"}
+{"index": 290, "command": "find /testbed/dir3 -type f -exec ls -lhS {} + 2>/dev/null | sort -rh -k5 | head -n 3"}
+{"index": 291, "command": "find /testbed -type f -mmin -120 -print0 | xargs -0 tar -czf /testbed/archive.tar.gz"}
+{"index": 292, "command": "find /testbed -mindepth 1 -maxdepth 1 -type d ! -name \"subdir1\""}
+{"index": 293, "command": "grep -rl 'text file' /testbed"}
+{"index": 294, "command": "find /testbed -type f -exec md5sum {} + > /testbed/hashes.txt"}
+{"index": 295, "command": "tail -n 10 /testbed/dir3/subdir1/subsubdir1/textfile3.txt"}
+{"index": 296, "command": "grep -n 'value3' /testbed/dir1/subdir1/jsonfile1.json"}
+{"index": 297, "command": "find /testbed -type f -mtime -1"}
+{"index": 298, "command": "grep -rl 'Hello' /testbed | xargs sed -i 's/Hello/Hi/g'"}
+{"index": 299, "command": "paste <(nl /testbed/dir3/subdir1/subsubdir1/textfile3.txt) <(nl /testbed/dir1/subdir1/textfile4.txt)"}

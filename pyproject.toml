@@ -1,0 +1,33 @@
+[project]
+name = "ghost-in-the-shell"
+version = "0.1.0"
+description = "Talk to Linux in plain English: an offline app that turns requests into checked, sandbox-tested shell commands."
+requires-python = ">=3.12"
+dependencies = [
+    "bashlex>=0.18",
+    "bm25s>=0.3.16",
+    "huggingface-hub>=2.4.0",
+    "joblib>=1.6.0",
+    "pandas>=3.1.1",
+    "pyarrow>=26.0.1",
+    "requests>=2.34.2",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.18.1",
+    "streamlit>=1.67.0",
+    "tabulate>=0.10.0",
+]
+
+[project.scripts]
+ghost-in-the-shell = "ghost_in_the_shell:main"
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

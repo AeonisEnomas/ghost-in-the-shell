@@ -1,0 +1,10 @@
+what does chmod do
+what is the difference between a process and a thread
+explain what a symbolic link is
+why is linux better than windows
+what is the bash shell
+how does the linux file system work
+what is sudo
+is it safe to delete the cache folder
+what is a cron job
+what does grep stand for

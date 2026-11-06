@@ -1,0 +1,84 @@
+# Streamlit settings for Ghost in the Shell. Read when the app is started with
+# the `ghost-in-the-shell` command, which runs Streamlit from this folder.
+
+[server]
+# Only this computer can open the app.
+address = "127.0.0.1"
+headless = true
+enableStaticServing = true
+enableXsrfProtection = true
+fileWatcherType = "none"
+runOnSave = false
+
+[browser]
+gatherUsageStats = false
+serverAddress = "localhost"
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = "none"
+showSidebarNavigation = true
+
+[runner]
+magicEnabled = false
+
+[theme]
+base = "dark"
+# A terminal palette. The ANSI colours carry meaning: cyan is the prompt and
+# the brand, magenta marks model-written text, and green, blue, yellow and red
+# are the four risk levels.
+backgroundColor = "#0B0E13"
+secondaryBackgroundColor = "#131820"
+textColor = "#D5DCE6"
+primaryColor = "#5CE1E6"
+borderColor = "#222936"
+linkColor = "#5CE1E6"
+codeBackgroundColor = "#0E1218"
+codeTextColor = "#D5DCE6"
+showWidgetBorder = true
+baseRadius = "6px"
+buttonRadius = "6px"
+baseFontSize = 15
+font = "IBM Plex Sans, system-ui, sans-serif"
+headingFont = "IBM Plex Mono, ui-monospace, monospace"
+codeFont = "IBM Plex Mono, ui-monospace, monospace"
+codeFontSize = "0.9rem"
+headingFontWeights = [500, 500, 500, 500, 500, 500]
+headingFontSizes = ["1.5rem", "1.15rem", "1rem", "0.95rem", "0.9rem", "0.85rem"]
+greenColor = "#7EE2A8"
+blueColor = "#6CB6FF"
+yellowColor = "#F5C451"
+orangeColor = "#F5C451"
+redColor = "#FF6B7A"
+violetColor = "#E28CFF"
+grayColor = "#7D8799"
+
+[[theme.fontFaces]]
+family = "IBM Plex Sans"
+url = "/app/static/fonts/ibm-plex-sans-400.woff2"
+weight = 400
+
+[[theme.fontFaces]]
+family = "IBM Plex Sans"
+url = "/app/static/fonts/ibm-plex-sans-500.woff2"
+weight = 500
+
+[[theme.fontFaces]]
+family = "IBM Plex Sans"
+url = "/app/static/fonts/ibm-plex-sans-600.woff2"
+weight = 600
+
+[[theme.fontFaces]]
+family = "IBM Plex Mono"
+url = "/app/static/fonts/ibm-plex-mono-400.woff2"
+weight = 400
+
+[[theme.fontFaces]]
+family = "IBM Plex Mono"
+url = "/app/static/fonts/ibm-plex-mono-500.woff2"
+weight = 500
+
+[theme.sidebar]
+backgroundColor = "#0E1218"
+secondaryBackgroundColor = "#151A23"
+borderColor = "#1C222D"
