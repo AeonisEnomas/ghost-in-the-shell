@@ -27,12 +27,15 @@ def render() -> None:
         ("Keys", ui.man_options([
             ("enter", "send the request"), ("tab", "switch between ask and explain"),
             ("↑ ↓", "recall earlier requests"), ("ctrl k", "command palette"), ("/", "jump to the prompt"),
+            ("ctrl enter", "run the selected command (asks first when it is risky)"),
+            ("e", "edit the selected command"), ("c", "copy the selected command"),
         ])),
         ("Models", ui.man_options([
-            ("writer", "Qwen2.5-Coder-1.5B, fine-tuned with QLoRA on 10,000 NL2SH-ALFA pairs."),
+            ("writer", "Qwen2.5-Coder-1.5B, fine-tuned with QLoRA on 49,489 cleaned request and command pairs."),
             ("explainer", "Qwen2.5-Coder-1.5B base model; fine-tuning weakened explanations, so the base writes them."),
-            ("accuracy", "46.2% of 275 benchmark tasks give exactly the right result when run (43.6% before "
-                         "fine-tuning). Many other answers are valid alternatives."),
+            ("accuracy", "72.8% of 169 everyday requests and 50.0% of 274 benchmark tasks give exactly the right "
+                         "result when run (68.6% and 46.4% before fine-tuning). Many other answers are valid "
+                         "alternatives."),
             ("gate", "TF-IDF and logistic regression: accepts all 300 benchmark tasks, stops 30 of 30 "
                      "off-topic requests."),
         ])),

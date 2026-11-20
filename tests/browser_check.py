@@ -94,7 +94,7 @@ with sync_playwright() as p:
     shot(page, "03_explained")
 
     # Read-only run: runs straight from the block
-    block_action(page, "▶ run")
+    block_action(page, "run")
     expect("✓ ran" in focused_block(page).inner_text(), "read-only command did not run from the block")
     expect(page.get_by_text("output", exact=True).count() >= 1, "no output pane after running")
     shot(page, "04_ran")
@@ -105,7 +105,7 @@ with sync_playwright() as p:
     page.locator("input.in").fill("")
 
     # Edit dialog shows the current command and checks a new version
-    block_action(page, "✎ edit")
+    block_action(page, "edit")
     dialog = page.get_by_role("dialog")
     current = focused_block(page).locator("code.cmd").inner_text()
     expect(dialog.locator("input").input_value().strip() == current.strip(), "edit dialog shows the wrong command")
@@ -115,10 +115,18 @@ with sync_playwright() as p:
     expect("edited" in focused_block(page).inner_text(), "edited marker missing")
     shot(page, "05_edited")
 
+    # Keys for the focused block: with the prompt not focused, e opens the edit dialog
+    page.locator("input.in").evaluate("el => el.blur()")
+    page.keyboard.press("e")
+    settle(page)
+    expect(page.get_by_role("dialog").count() == 1, "pressing e did not open the edit dialog")
+    page.get_by_role("dialog").get_by_role("button", name="Cancel").click()
+    settle(page)
+
     # Explain mode with a dangerous command: dialog, typed confirmation
     send(page, "rm -rf *", mode="explain")
     expect("DANGEROUS" in focused_block(page).inner_text().upper(), "rm -rf * not rated dangerous")
-    block_action(page, "▶ run")
+    block_action(page, "run")
     dialog = page.get_by_role("dialog")
     expect(dialog.count() == 1, "no confirmation dialog for a dangerous command")
     go = dialog.get_by_role("button", name="Run anyway")
@@ -135,7 +143,7 @@ with sync_playwright() as p:
     # clicked while the explanation is still streaming: the rerun that follows
     # its completion must not close the dialog.
     send(page, "rm -rf *.log", mode="explain")
-    focused_block(page).get_by_role("button", name="▶ run").click()
+    focused_block(page).get_by_role("button", name="run").click()
     time.sleep(1.5)
     dialog = page.get_by_role("dialog")
     expect(dialog.get_by_role("button", name="Run anyway").is_disabled(), "CONFIRMATION CARRIED OVER to a new command")

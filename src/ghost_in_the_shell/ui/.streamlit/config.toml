@@ -24,34 +24,34 @@ magicEnabled = false
 
 [theme]
 base = "dark"
-# A terminal palette. The ANSI colours carry meaning: cyan is the prompt and
-# the brand, magenta marks model-written text, and green, blue, yellow and red
-# are the four risk levels.
-backgroundColor = "#0B0E13"
-secondaryBackgroundColor = "#131820"
-textColor = "#D5DCE6"
-primaryColor = "#5CE1E6"
-borderColor = "#222936"
-linkColor = "#5CE1E6"
-codeBackgroundColor = "#0E1218"
-codeTextColor = "#D5DCE6"
+# Amber on black, like an amber monitor. Amber is the only interface colour;
+# green, blue, yellow and red are the four risk levels, and violet marks text
+# the model wrote. Everything is set in one monospaced typeface.
+backgroundColor = "#0B0906"
+secondaryBackgroundColor = "#100C07"
+textColor = "#E3A93C"
+primaryColor = "#FFB000"
+borderColor = "#57400F"
+linkColor = "#FFB000"
+codeBackgroundColor = "#100C07"
+codeTextColor = "#FFD68A"
 showWidgetBorder = true
-baseRadius = "6px"
-buttonRadius = "6px"
-baseFontSize = 15
-font = "IBM Plex Sans, system-ui, sans-serif"
+baseRadius = "0px"
+buttonRadius = "0px"
+baseFontSize = 14
+font = "IBM Plex Mono, ui-monospace, monospace"
 headingFont = "IBM Plex Mono, ui-monospace, monospace"
 codeFont = "IBM Plex Mono, ui-monospace, monospace"
 codeFontSize = "0.9rem"
 headingFontWeights = [500, 500, 500, 500, 500, 500]
 headingFontSizes = ["1.5rem", "1.15rem", "1rem", "0.95rem", "0.9rem", "0.85rem"]
-greenColor = "#7EE2A8"
+greenColor = "#7FD98A"
 blueColor = "#6CB6FF"
-yellowColor = "#F5C451"
-orangeColor = "#F5C451"
-redColor = "#FF6B7A"
-violetColor = "#E28CFF"
-grayColor = "#7D8799"
+yellowColor = "#FFE14D"
+orangeColor = "#FFE14D"
+redColor = "#FF5C5C"
+violetColor = "#C9A0FF"
+grayColor = "#A87B26"
 
 [[theme.fontFaces]]
 family = "IBM Plex Sans"
@@ -79,6 +79,6 @@ url = "/app/static/fonts/ibm-plex-mono-500.woff2"
 weight = 500
 
 [theme.sidebar]
-backgroundColor = "#0E1218"
-secondaryBackgroundColor = "#151A23"
-borderColor = "#1C222D"
+backgroundColor = "#0B0906"
+secondaryBackgroundColor = "#100C07"
+borderColor = "#57400F"

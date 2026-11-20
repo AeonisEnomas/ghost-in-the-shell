@@ -10,7 +10,8 @@ reproduced with the commands in the last section.
 |---|---|---|
 | 1 | Which small open models are good at English → bash, out of the box? | 8 models tested. Qwen2.5-Coder-3B, Gemma-4-E2B and Qwen2.5-Coder-1.5B go forward. |
 | 2 | How do the finalists behave under app conditions (prompting, retrieval, safety, explanations, quantisation)? | Gemma dropped (poor explanations, no accuracy advantage). Retrieval over tldr pages dropped. Q4 quantisation confirmed. |
-| 3 | After fine-tuning, is the 3B model worth its extra latency over the 1.5B model? | No. Fine-tuned 3B leads by 4.7 points, p = 0.060, short of the rule fixed in advance. The app ships the fine-tuned 1.5B model. |
+| 3 | After fine-tuning, is the 3B model worth its extra latency over the 1.5B model? | No. Fine-tuned 3B leads by 4.7 points, p = 0.060, short of the rule fixed in advance. The 1.5B model is chosen. |
+| 4 | Does fine-tuning on cleaner, mixed data for longer improve the 1.5B model? | It is the best model on both NL2SH-ALFA (50.0%) and a new test of app-style requests (72.8%), about 4 points ahead of the base on each; neither gap is statistically significant. The app ships it. |
 
 ## 1. Task and test data
 
@@ -208,7 +209,7 @@ For reference, the base models already meet this rule (+8.0 points,
 p = 0.001), so the 1.5B model is chosen alone only if fine-tuning narrows the
 gap.
 
-**Setup** (`training/round3_finetune.ipynb`)
+**Setup** (`training/round3/finetune.ipynb`)
 - Training data: NL2SH-ALFA training split (40,639 pairs). 91 pairs that match
   a test item exactly and 1 near duplicate (word overlap ≥ 80%) are removed,
   then duplicates, multi-line commands, commands over 200 characters and
@@ -222,7 +223,7 @@ gap.
 - Evaluation: `benchmarks/model_selection/round3_eval.py` runs the same tests
   as round 2 on the laptop and applies the rule.
 
-**Training** (`training/round3_outputs/`, Tesla T4, float16 mixed precision)
+**Training** (`training/round3/outputs/`, Tesla T4, float16 mixed precision)
 
 | Model | Trainable parameters | Minutes | Validation loss, step 100 → end |
 |---|---|---|---|
@@ -291,11 +292,120 @@ system (paths, tools, permissions) accounts for at most about a fifth of the
 errors.
 
 **Decision.** The fine-tuned 3B model leads by 4.7 points with p = 0.060, which
-does not meet the rule (≥ 5 points and p < 0.05). **The app ships the
-fine-tuned Qwen2.5-Coder-1.5B model.** Because fine-tuning weakened
-explanations, explain mode uses the base 1.5B model.
+does not meet the rule (≥ 5 points and p < 0.05). **The 1.5B model is
+chosen.** Because fine-tuning weakened explanations, explain mode uses the base
+1.5B model.
 
-## 6. Limitations
+## 6. Round 4: cleaner data, more training, and a second test
+
+Round 3 did not move accuracy. An audit of its notebook pointed at three
+causes: noisy training data, too little training (a quarter of the data for one
+epoch, with loss still falling), and a comparison between files built by
+different converters. Round 4 addresses each. Only the 1.5B model is trained,
+since round 3 already chose it.
+
+**Training data** (`training/round4/finetune.ipynb`, records in
+`training/round4/outputs/`). Four sources are pooled, each pinned to a commit:
+[Bash Instruct III](https://huggingface.co/datasets/Frost2o24/bash-instruct-III-55k)
+(single commands and pipelines, one answer per request),
+[mecha-org/linux-command-dataset](https://huggingface.co/datasets/mecha-org/linux-command-dataset),
+[aelhalili/bash-commands-dataset](https://huggingface.co/datasets/aelhalili/bash-commands-dataset)
+and NL2SH-ALFA. The pool is then filtered:
+
+| Filter | Removed | Left |
+|---|---|---|
+| Format: one line, at most 200 characters, no unfilled placeholders | 904 | 80,659 |
+| Machine-made "pick a random file" tasks | 4,447 | 76,212 |
+| Request says "current directory", command searches `/` or `~` | 751 | 75,461 |
+| Catastrophic commands (recursive delete of `/` or `~`, writes to disks, download piped to a shell) | 374 | 75,087 |
+| Matches or nearly matches a test request or command (NL2SH-ALFA test, dale-bash-test-v2) | 536 | 74,551 |
+| Duplicate requests | 4,654 | 69,897 |
+| Invalid syntax (`bash -n`) | 37 | 69,860 |
+| Tools with fewer than 20 examples that appear in one source only | 13,439 | 56,421 |
+| Cap on any single tool (mostly `find`) | 5,795 | 50,626 |
+
+That leaves 49,489 training pairs and 1,137 validation pairs. Validation
+holds out whole commands, so paraphrases of one command never sit on both
+sides. By source, the training set is 57% Bash Instruct III, 27% NL2SH-ALFA,
+15% mecha-org and 1% aelhalili.
+
+**Training.** Same LoRA settings and system prompt as round 3, so the
+difference comes from the data and the amount of training. Two epochs (6,188
+steps, 139 minutes on a Tesla T4), evaluated and checkpointed every 250 steps,
+keeping the checkpoint with the lowest validation loss. Validation loss fell
+from 0.451 to 0.276 and was still improving slightly at the last step, which
+is the checkpoint that was exported.
+
+**A like-for-like base.** The untouched base model was exported through the
+same merge, conversion and quantisation as the fine-tuned one
+(`base-r4`). Rounds 1 to 3 compared against Qwen's own GGUF file, which was
+built with a different converter.
+
+**A second test set.** NL2SH-ALFA prompts are long specifications with
+explicit paths; requests to the app are short and refer to "this folder". The
+app test (`benchmarks/app_test/`) has 169 such requests, run in a fixed sample
+folder and scored by execution. It was frozen before any round 4 output was
+seen, and none of its requests matches a training request. Its README
+describes the method and its limits.
+
+**Changes to the NL2SH-ALFA harness** (`round4_eval.py`). The stored reference
+results from round 1 had gone stale: a week later, 19 of the 275 scoreable
+prompts had a reference command that no longer matched its own stored result,
+because of file ages (`find -mtime`) and machine state (`df`, `/proc`). Round
+4 rebuilds the test filesystems and the references in the same session and
+scores every model against them straight away. It also reports a stricter
+"clean" set, which drops prompts whose second reference is unstable and
+prompts where both references fail in the sandbox (missing tools, no network)
+and the scorer would compare error messages.
+
+**Results** (`results/round4/report.md`, `../app_test/results/report.md`)
+
+| Model | NL2SH-ALFA (274 prompts) | Clean set (241) | App test (169) |
+|---|---|---|---|
+| Round 4 fine-tuned | 50.0% | 49.4% | 72.8% |
+| Round 3 fine-tuned | 46.7% | 46.5% | 65.7% |
+| Base, exported with round 4 | 46.4% | 45.2% | 68.6% |
+| Base, original Qwen file | 43.1% | 41.9% | 72.2% |
+
+| Round 4 compared with | Test | Only round 4 right | Only the other right | McNemar p |
+|---|---|---|---|---|
+| Base, exported with round 4 | NL2SH-ALFA | 42 | 32 | 0.295 |
+| Base, exported with round 4 | App test | 23 | 16 | 0.337 |
+| Base, original Qwen file | NL2SH-ALFA | 41 | 22 | 0.023 |
+| Round 3 fine-tuned | NL2SH-ALFA | 30 | 21 | 0.262 |
+
+1. **Round 4 is the best model on both tests, but its gain over the
+   like-for-like base is not significant.** It leads by 3.6 points on
+   NL2SH-ALFA and 4.1 on the app test.
+2. **The export route moves scores by as much as the fine-tuning.** The two
+   base files differ by 3.3 points on NL2SH-ALFA in one direction and 3.6 on
+   the app test in the other; neither gap is significant. The significant gain
+   over the original Qwen file therefore mixes both effects.
+3. **The gain is on medium prompts** (39% to 54% on the clean set). Easy
+   prompts slipped (73% to 69%) and hard ones did not move (33% to 32%).
+4. **On the app test, round 3 was below the base** (65.7% against 72.2% for
+   the file it was compared with), the opposite of its NL2SH-ALFA result.
+   Round 4 recovers this.
+5. **The fine-tuned model always replies with a bare command.** The base
+   wrapped 24% of its app-test replies in fences or extra text, which the
+   scorer strips.
+6. **Typical new mistakes** are in searching inside files: a missing field
+   separator on CSV files, searching from `/` instead of the current folder,
+   and using `locate`.
+
+With references rebuilt, the original base scores 43.1% (43.6% in round 1)
+and the round 3 model 46.7% (46.2% in round 3), on 274 scoreable prompts
+instead of 275.
+
+**Decision.** The app ships the round 4 model: it is ahead on both tests at
+no cost in speed (0.8 s per answer on the app test, the same as the base).
+Explanations still come from the base model.
+
+**Not repeated for round 4.** The risky-prompt review, the explain-mode
+round trip and the end-to-end app evaluation (`evaluation/`) were last run
+with the round 3 model.
+
+## 7. Limitations
 
 - **Sandbox tools differ slightly from the official evaluator.** The official
   evaluator uses Ubuntu 24.04 containers; this sandbox uses the host's tools
@@ -316,11 +426,23 @@ explanations, explain mode uses the base 1.5B model.
   where an earlier cell had already loaded Unsloth; the 3B model in a fresh
   session with Unsloth imported first. Data, hyperparameters and precision were
   the same. The 3B model's full training log was lost, and only the evaluation
-  table printed every 100 steps survives (in `training/round3_finetune_executed.ipynb`).
+  table printed every 100 steps survives (in `training/round3/finetune_executed.ipynb`).
 - **The decision was close.** p = 0.060 is near the threshold; the rule was
   applied as written.
+- **Stored reference results go stale.** Rounds 1 to 3 scored against
+  references cached on the first day. Some prompts depend on file ages or on
+  the machine's state, so scores taken on different days are not strictly
+  comparable. Round 4 rebuilds the references in the scoring session.
+- **Some prompts cannot be passed for the right reason.** In 26 of the 275
+  scoreable prompts both reference commands fail in this sandbox, so the
+  scorer compares error messages. Round 4 reports a clean set without them.
+- **One test set for every decision.** The same NL2SH-ALFA prompts were used
+  to choose the model, the prompt setup and the quantisation, so the reported
+  numbers are somewhat optimistic for the chosen configuration. The app test
+  was added in round 4 and has been used once.
+- **The app test was written by this project,** not collected from users.
 
-## 7. Reproducing
+## 8. Reproducing
 
 From `benchmarks/model_selection/`, with llama.cpp and bubblewrap installed:
 
@@ -330,6 +452,15 @@ uv run python score.py results/preds/*.jsonl
 uv run python round2.py            # round 2 (~4 h)
 uv run python round2_report.py
 uv run python round3_eval.py       # round 3, after the notebook has produced the GGUF files
+uv run python round4_eval.py       # round 4, after its notebook has produced the two GGUF files
+```
+
+The app test, from `benchmarks/app_test/`:
+
+```
+uv run python app_test.py check
+uv run python app_test.py generate ft-r4-1.5b ../../models/qwen2.5-coder-1.5b-ft-r4.Q4_K_M.gguf
+uv run python app_test.py score results/preds/*.jsonl
 ```
 
 All scripts skip work that is already saved, so they can be stopped and

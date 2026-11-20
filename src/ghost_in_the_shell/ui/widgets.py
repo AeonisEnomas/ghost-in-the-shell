@@ -2,8 +2,8 @@
 
 Four pieces of the interface need real client-side behaviour: the terminal
 prompt (Tab switches mode, arrow keys recall earlier requests), the command
-blocks in the session feed (Run, Edit, Copy, Focus), the Ctrl+K command
-palette, and the history table (click a row to reopen it).
+blocks in the session feed (run, edit, copy and focus, by click or by key), the
+Ctrl+K command palette, and the history table (click a row to reopen it).
 
 The HTML, CSS and JavaScript here are fixed strings written for the app. All
 dynamic values (requests, commands, file names, model output) arrive through
@@ -16,13 +16,13 @@ import streamlit as st
 _FONT = "'IBM Plex Mono', ui-monospace, monospace"
 
 _BASE_CSS = f"""
-:host {{ --bg: #0B0E13; --panel: #10141B; --panel2: #151A23; --line: #222936; --line2: #2E3746;
-  --text: #D5DCE6; --muted: #8590A3; --faint: #576072; --cyan: #5CE1E6; --magenta: #E28CFF;
-  --green: #7EE2A8; --blue: #6CB6FF; --yellow: #F5C451; --red: #FF6B7A; --sand: #D9CBA3;
+:host {{ --bg: #0B0906; --bg2: #100C07; --line: #2E220C; --line2: #57400F; --amber: #FFB000; --bright: #FFD68A;
+  --text: #E3A93C; --muted: #A87B26; --faint: #80601F; --ai: #C9A0FF; --cream: #F3E3B5;
+  --green: #7FD98A; --blue: #6CB6FF; --yellow: #FFE14D; --red: #FF5C5C;
   font-family: {_FONT}; color: var(--text); }}
 * {{ box-sizing: border-box; }}
 button {{ font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }}
-button:focus-visible, input:focus-visible {{ outline: 2px solid var(--cyan); outline-offset: 2px; }}
+button:focus-visible, input:focus-visible {{ outline: 2px solid var(--bright); outline-offset: 2px; }}
 .lvl-read {{ --lvl: var(--green); }} .lvl-change {{ --lvl: var(--blue); }}
 .lvl-caution {{ --lvl: var(--yellow); }} .lvl-danger {{ --lvl: var(--red); }}
 """
@@ -56,28 +56,30 @@ function colourCommand(target, command) {
 # ---------------------------------------------------------------- prompt
 
 _PROMPT_CSS = _BASE_CSS + """
-.prompt { background: linear-gradient(180deg, #121821, #0E131A); border: 1px solid var(--line2); border-radius: 10px;
-  padding: 10px 12px 8px; box-shadow: 0 -12px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(92,225,230,0.04) inset; }
-.prompt:focus-within { border-color: rgba(92,225,230,0.55); box-shadow: 0 -12px 40px rgba(0,0,0,0.45), 0 0 0 3px rgba(92,225,230,0.10); }
+/* A pane with the mode and the key hints set into its top border. */
+.prompt { border: 1px solid var(--line2); background: var(--bg); padding: 0 12px 7px; margin-top: 9px; }
+.prompt:focus-within { border-color: var(--amber); }
+.prompt.explain:focus-within { border-color: var(--ai); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; transform: translateY(-50%);
+  margin: 0 -2px -3px; font-size: 11px; }
+.mode { font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 0 8px; line-height: 1.65;
+  color: var(--bg); flex: none; }
+.mode.ask { background: var(--amber); } .mode.explain { background: var(--ai); }
+.hints { display: flex; gap: 14px; color: var(--muted); background: var(--bg); padding: 0 8px; white-space: nowrap; overflow: hidden; }
+.hints b { color: var(--text); font-weight: 500; }
 .line { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.mode { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
-  border: 1px solid; flex: none; }
-.mode.ask { color: var(--cyan); border-color: rgba(92,225,230,.45); background: rgba(92,225,230,.08); }
-.mode.explain { color: var(--magenta); border-color: rgba(226,140,255,.45); background: rgba(226,140,255,.08); }
-.ps1 { flex: none; font-size: 13.5px; white-space: nowrap; max-width: 34%; overflow: hidden; text-overflow: ellipsis; }
-.ps1 .u { color: var(--green); } .ps1 .cwd { color: var(--blue); } .ps1 .colon { color: var(--faint); }
-.sym { color: var(--cyan); font-weight: 500; flex: none; }
-.in { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; color: var(--text); font: inherit;
-  font-size: 15px; caret-color: var(--cyan); padding: 6px 0; }
+.ps1 { flex: none; font-size: 13.5px; white-space: nowrap; max-width: 36%; overflow: hidden; text-overflow: ellipsis; }
+.ps1 .u { color: var(--bright); } .ps1 .cwd { color: var(--amber); } .ps1 .colon { color: var(--faint); }
+.sym { color: var(--amber); font-weight: 600; flex: none; }
+.in { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; color: var(--bright); font: inherit;
+  font-size: 15px; caret-color: var(--amber); padding: 5px 0; }
 .in::placeholder { color: var(--faint); }
 .in:focus-visible { outline: none; }
-.send { flex: none; color: var(--bg); background: var(--cyan); border-radius: 6px; padding: 6px 12px; font-size: 13px; font-weight: 500; }
-.send:hover { filter: brightness(1.1); }
-.prompt.explain .send { background: var(--magenta); }
-.hints { display: flex; gap: 16px; margin-top: 7px; font-size: 11px; color: var(--faint); flex-wrap: wrap; }
-.hints b { color: var(--muted); font-weight: 500; }
+.send { flex: none; color: var(--bg); background: var(--amber); padding: 2px 10px; font-size: 12.5px; font-weight: 600; }
+.send:hover { background: var(--bright); }
+.prompt.explain .send { background: var(--ai); }
 .working .send { opacity: .5; pointer-events: none; }
-.working .hints::before { content: "working"; color: var(--cyan); animation: blink 1s steps(2) infinite; }
+.working .hints::before { content: "working"; color: var(--amber); animation: blink 1s steps(2) infinite; }
 @keyframes blink { 50% { opacity: .3; } }
 @media (max-width: 700px) { .ps1 { display: none; } .hints { display: none; } }
 """
@@ -92,19 +94,21 @@ export default function (component) {
   let root = parentElement.querySelector('.prompt');
   if (!root) {
     root = el('div', 'prompt');
+    const top = el('div', 'top');
     const line = el('div', 'line');
     const mode = el('button', 'mode'); mode.type = 'button'; mode.title = 'Switch mode (Tab)';
     const ps1 = el('span', 'ps1');
     const sym = el('span', 'sym', '❯');
     const input = el('input', 'in'); input.spellcheck = false; input.autocomplete = 'off';
     input.setAttribute('aria-label', 'Request');
-    const send = el('button', 'send', 'run ⏎'); send.type = 'button';
-    line.append(mode, ps1, sym, input, send);
+    const send = el('button', 'send', '⏎ send'); send.type = 'button';
+    line.append(ps1, sym, input, send);
     const hints = el('div', 'hints');
-    for (const [k, t] of [['tab', 'switch mode'], ['↑ ↓', 'earlier requests'], ['enter', 'send'], ['ctrl k', 'commands']]) {
+    for (const [k, t] of [['enter', 'send'], ['tab', 'mode'], ['↑↓', 'recall'], ['^k', 'commands']]) {
       const span = el('span'); span.append(el('b', '', k), document.createTextNode(' ' + t)); hints.append(span);
     }
-    root.append(line, hints);
+    top.append(mode, hints);
+    root.append(top, line);
     parentElement.appendChild(root);
 
     let recall = -1;
@@ -157,43 +161,47 @@ def prompt(*, mode: str, user: str, host: str, folder: str, folder_full: str, hi
 # ---------------------------------------------------------------- command block
 
 _BLOCK_CSS = _BASE_CSS + """
-.block { position: relative; border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
-  overflow: hidden; transition: border-color .15s; }
-.block::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--lvl); opacity: .85; }
-.block.focused { border-color: var(--line2); background: #121821; box-shadow: 0 0 0 1px rgba(92,225,230,.08); }
-.block.danger-focus { border-color: rgba(255,107,122,.5); }
-.head { display: flex; align-items: baseline; gap: 10px; padding: 9px 14px 0 16px; font-size: 12.5px; min-width: 0; }
-.head .cwd { color: var(--blue); flex: none; max-width: 30%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.head .sym { color: var(--cyan); flex: none; }
-.head .req { color: var(--text); font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 13.5px; flex: 1;
-  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A pane: the time, folder and risk tag sit in the top border. */
+.block { border: 1px solid var(--line2); background: var(--bg); margin-top: 9px; }
+.block.focused { border-color: var(--amber); }
+.block.danger-focus { border-color: var(--red); }
+.top { display: flex; align-items: center; gap: 4px; transform: translateY(-50%); margin: 0 8px -6px; font-size: 11.5px; }
+.top .time, .top .cwd { background: var(--bg); padding: 0 6px; white-space: nowrap; }
+.top .time { color: var(--muted); }
+.top .cwd { color: var(--text); overflow: hidden; text-overflow: ellipsis; max-width: 50%; }
+.top .fill { flex: 1; }
+.badge { flex: none; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--bg);
+  background: var(--lvl); padding: 0 8px; line-height: 1.65; white-space: nowrap; }
+.head { display: flex; align-items: baseline; gap: 10px; padding: 0 14px; font-size: 13.5px; min-width: 0; }
+.head .sym { color: var(--amber); flex: none; font-weight: 600; }
+.head .req { color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .head .req.pasted { color: var(--muted); font-style: italic; }
-.head .time { color: var(--faint); flex: none; }
-.cmdline { display: flex; align-items: flex-start; gap: 10px; padding: 8px 14px 8px 16px; }
-.dollar { color: var(--faint); user-select: none; padding-top: 1px; }
+.cmdline { display: flex; align-items: flex-start; gap: 10px; padding: 5px 14px 9px; }
+.dollar { color: var(--muted); user-select: none; padding-top: 1px; }
 .cmd { flex: 1; min-width: 0; font-size: 15px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; color: var(--text); }
-.cmd .prog { color: #F2F5F9; font-weight: 500; } .cmd .flag { color: #9FB1CC; } .cmd .str { color: var(--sand); }
-.cmd .op { color: var(--cyan); } .cmd .var { color: var(--magenta); }
-.badge { flex: none; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--lvl);
-  border: 1px solid color-mix(in srgb, var(--lvl) 45%, transparent); background: color-mix(in srgb, var(--lvl) 9%, transparent);
-  border-radius: 4px; padding: 2px 7px; margin-top: 2px; white-space: nowrap; }
-.foot { display: flex; align-items: center; gap: 12px; padding: 7px 10px 7px 16px; border-top: 1px dashed var(--line);
+.cmd .prog { color: var(--bright); font-weight: 600; } .cmd .flag { color: var(--muted); } .cmd .str { color: var(--cream); }
+.cmd .op { color: var(--amber); font-weight: 600; } .cmd .var { color: var(--ai); }
+.foot { display: flex; align-items: center; gap: 12px; padding: 6px 10px 6px 14px; border-top: 1px dashed var(--line2);
   font-size: 12px; color: var(--muted); flex-wrap: wrap; }
-.sum { display: flex; gap: 10px; }
+.sum { display: flex; gap: 12px; }
 .sum .d { color: var(--red); } .sum .m { color: var(--yellow); } .sum .c { color: var(--green); } .sum .z { color: var(--faint); }
-.meta { color: var(--faint); }
+.meta { color: var(--muted); }
 .spacer { flex: 1; }
-.act { padding: 4px 9px; border-radius: 5px; color: var(--muted); border: 1px solid transparent; font-size: 12px; }
-.act:hover { color: var(--text); background: var(--panel2); border-color: var(--line2); }
-.act.run { color: var(--bg); background: var(--cyan); font-weight: 500; }
-.act.run:hover { filter: brightness(1.1); color: var(--bg); }
+.act { padding: 1px 8px; color: var(--text); font-size: 12px; }
+.act b { color: var(--muted); font-weight: 500; margin-right: 6px; }
+.act:hover { background: var(--amber); color: var(--bg); }
+.act:hover b { color: var(--bg); }
+.act.run { color: var(--bg); background: var(--amber); font-weight: 600; }
+.act.run b { color: var(--bg); }
+.act.run:hover { background: var(--bright); }
 .act.run.danger { background: var(--red); }
 .act[disabled] { opacity: .45; pointer-events: none; }
-.blocked { color: var(--faint); font-size: 11.5px; }
-.ran { padding: 6px 16px 8px; font-size: 12px; border-top: 1px solid var(--line); }
+.blocked { color: var(--muted); font-size: 11.5px; }
+.ran { padding: 5px 14px 7px; font-size: 12px; border-top: 1px dashed var(--line2); }
 .ran.ok { color: var(--green); } .ran.err { color: var(--yellow); }
-.compact .cmdline { padding-bottom: 9px; } .compact .cmd { font-size: 13.5px; color: var(--muted); }
-.compact .foot { display: none; }
+.compact { border-color: var(--line); }
+.compact .cmd { font-size: 13.5px; color: var(--muted); } .compact .cmd .prog { color: var(--text); }
+.compact .head .req { color: var(--muted); }
 .compact:hover { border-color: var(--line2); cursor: pointer; }
 """
 
@@ -206,14 +214,16 @@ export default function (component) {
                    (data.focused && data.level === 'danger' ? ' danger-focus' : '');
   root.replaceChildren();
 
+  const top = el('div', 'top');
+  top.append(el('span', 'time', data.time), el('span', 'cwd', data.folder), el('span', 'fill'),
+             el('span', 'badge', data.glyph + ' ' + data.level_label));
   const head = el('div', 'head');
-  head.append(el('span', 'cwd', data.folder), el('span', 'sym', '❯'),
-              el('span', 'req' + (data.source === 'ask' ? '' : ' pasted'), data.source === 'ask' ? data.request : 'pasted command'),
-              el('span', 'time', data.time));
+  head.append(el('span', 'sym', '❯'),
+              el('span', 'req' + (data.source === 'ask' ? '' : ' pasted'), data.source === 'ask' ? data.request : 'pasted command'));
   const line = el('div', 'cmdline');
   const cmd = el('code', 'cmd'); colourCommand(cmd, data.command);
-  line.append(el('span', 'dollar', '$'), cmd, el('span', 'badge', data.glyph + ' ' + data.level_label));
-  root.append(head, line);
+  line.append(el('span', 'dollar', '$'), cmd);
+  root.append(top, head, line);
 
   if (data.focused) {
     const foot = el('div', 'foot');
@@ -224,26 +234,54 @@ export default function (component) {
       }
     } else { sum.append(el('span', 'z', data.preview_label)); }
     foot.append(sum, el('span', 'meta', data.meta), el('span', 'spacer'));
-    const button = (label, cls, action, title) => {
-      const b = el('button', 'act ' + cls, label); b.type = 'button'; if (title) b.title = title;
-      b.addEventListener('click', (e) => { e.stopPropagation(); setTriggerValue('action', { type: action, id: data.id, at: Date.now() }); });
+    // Each action shows its key, as in a terminal program's key bar.
+    const label = (b, key, text) => { b.replaceChildren(el('b', '', key), document.createTextNode(text)); };
+    const send = (action) => setTriggerValue('action', { type: action, id: data.id, at: Date.now() });
+    const button = (key, text, cls, action, title) => {
+      const b = el('button', 'act ' + cls); b.type = 'button'; if (title) b.title = title; label(b, key, text);
+      b.addEventListener('click', (e) => { e.stopPropagation(); send(action); });
       return b;
     };
-    const copy = el('button', 'act', '⧉ copy'); copy.type = 'button';
-    copy.addEventListener('click', async () => {
+    const copy = el('button', 'act'); copy.type = 'button'; label(copy, 'c', 'copy');
+    const doCopy = async () => {
       try { await navigator.clipboard.writeText(data.command); copy.textContent = '✓ copied'; }
       catch { copy.textContent = 'copy failed'; }
-      setTimeout(() => { copy.textContent = '⧉ copy'; }, 1400);
-    });
-    foot.append(copy, button('✎ edit', '', 'edit', 'Edit and check again'));
+      setTimeout(() => label(copy, 'c', 'copy'), 1400);
+    };
+    copy.addEventListener('click', doCopy);
+    foot.append(copy, button('e', 'edit', '', 'edit', 'Edit and check again'));
+    let runAction = null;
     if (data.runnable) {
-      foot.append(button(data.ran ? '↻ check again' : '▶ run', data.ran ? '' : 'run' + (data.level === 'danger' ? ' danger' : ''),
-                         data.ran ? 'recheck' : 'run', data.ran ? '' : 'Run in ' + data.folder));
+      runAction = data.ran ? 'recheck' : 'run';
+      foot.append(data.ran ? button('^⏎', 'check again', '', 'recheck', '')
+                           : button('^⏎', 'run', 'run' + (data.level === 'danger' ? ' danger' : ''), 'run', 'Run in ' + data.folder));
     } else {
       foot.append(el('span', 'blocked', data.blocked_reason));
     }
     root.append(foot);
     if (data.ran) root.append(el('div', 'ran ' + (data.ran.ok ? 'ok' : 'err'), data.ran.label));
+
+    // Keys for the focused block: c copies, e edits, Ctrl+Enter runs. Running
+    // from the keyboard still goes through the same confirmation as a click.
+    window.__ghostBlock = { root, copy: doCopy, edit: () => send('edit'), run: runAction ? () => send(runAction) : null };
+    if (!window.__ghostBlockKeys) {
+      window.__ghostBlockKeys = (e) => {
+        const b = window.__ghostBlock;
+        if (!b || !b.root.isConnected || !b.root.classList.contains('focused')) return;
+        if (e.altKey || e.metaKey || document.querySelector('[role="dialog"]')) return;
+        const target = e.composedPath()[0] || {};
+        const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName || '') || target.isContentEditable;
+        if (e.ctrlKey && e.key === 'Enter') {
+          if (typing && target.value) return;          // text waiting in the prompt: Enter belongs to it
+          if (b.run) { e.preventDefault(); b.run(); }
+          return;
+        }
+        if (typing || e.ctrlKey) return;
+        if (e.key === 'e') { e.preventDefault(); b.edit(); }
+        else if (e.key === 'c') { e.preventDefault(); b.copy(); }
+      };
+      window.addEventListener('keydown', window.__ghostBlockKeys);
+    }
   } else {
     root.title = 'Show this command';
     root.onclick = () => setTriggerValue('action', { type: 'focus', id: data.id, at: Date.now() });
@@ -261,21 +299,22 @@ def block(data: dict, key: str, on_action=None):
 # ---------------------------------------------------------------- command palette
 
 _PALETTE_CSS = _BASE_CSS + """
-.backdrop { position: fixed; inset: 0; background: rgba(5,7,10,.62); backdrop-filter: blur(3px); z-index: 1000000;
+.backdrop { position: fixed; inset: 0; background: rgba(5,4,2,.72); z-index: 1000000;
   display: none; align-items: flex-start; justify-content: center; padding-top: 14vh; }
 .backdrop.open { display: flex; }
-.box { width: min(560px, 92vw); background: #10151C; border: 1px solid var(--line2); border-radius: 12px;
-  box-shadow: 0 30px 80px rgba(0,0,0,.6); overflow: hidden; }
-.q { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line); color: var(--text);
-  font: inherit; font-size: 15px; padding: 14px 16px; outline: none; caret-color: var(--cyan); }
+.box { width: min(560px, 92vw); background: var(--bg); border: 1px solid var(--amber);
+  box-shadow: 0 0 0 1px var(--bg), 0 30px 80px rgba(0,0,0,.8); overflow: hidden; }
+.q { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line2); color: var(--bright);
+  font: inherit; font-size: 15px; padding: 12px 16px; outline: none; caret-color: var(--amber); }
 .q::placeholder { color: var(--faint); }
-ul { list-style: none; margin: 0; padding: 6px; max-height: 50vh; overflow-y: auto; }
-li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 7px; font-size: 13.5px; cursor: pointer; }
-li .g { color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
-li.sel { background: rgba(92,225,230,.1); color: #fff; }
-li.sel .g { color: var(--cyan); }
-.empty { padding: 12px 16px; color: var(--faint); font-size: 13px; }
-.foot { display: flex; gap: 14px; padding: 8px 14px; border-top: 1px solid var(--line); font-size: 11px; color: var(--faint); }
+ul { list-style: none; margin: 0; padding: 4px 0; max-height: 50vh; overflow-y: auto; }
+li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 16px; font-size: 13.5px; cursor: pointer; }
+li .g { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+/* The selected row is reverse video. */
+li.sel { background: var(--amber); color: var(--bg); font-weight: 500; }
+li.sel .g { color: var(--bg); }
+.empty { padding: 12px 16px; color: var(--muted); font-size: 13px; }
+.foot { display: flex; gap: 14px; padding: 6px 16px; border-top: 1px solid var(--line2); font-size: 11px; color: var(--muted); }
 """
 
 _PALETTE_JS = _HELPERS + """
@@ -345,19 +384,21 @@ def palette(items: list[dict], on_action=None, key: str = "palette"):
 # ---------------------------------------------------------------- history table
 
 _TABLE_CSS = _BASE_CSS + """
-.wrap { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
+.wrap { border: 1px solid var(--line2); overflow: hidden; background: var(--bg); }
 table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
-th { text-align: left; font-weight: 500; color: var(--faint); font-size: 11px; letter-spacing: .09em; text-transform: uppercase;
-  padding: 10px 12px; border-bottom: 1px solid var(--line); background: #0E1218; }
-td { padding: 9px 12px; border-bottom: 1px solid #1A202A; vertical-align: top; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+th { text-align: left; font-weight: 500; color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 12px; border-bottom: 1px solid var(--line2); }
+td { padding: 6px 12px; border-bottom: 1px dashed var(--line); vertical-align: top; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 tr.row { cursor: pointer; }
-tr.row:hover td, tr.row:focus td { background: rgba(92,225,230,.05); }
-tr.row:focus { outline: none; } tr.row:focus td:first-child { box-shadow: inset 3px 0 0 var(--cyan); }
-.n { color: var(--faint); width: 52px; } .t { color: var(--muted); width: 128px; }
+tr.row:hover td { background: var(--line); }
+/* The row with keyboard focus is reverse video. */
+tr.row:focus { outline: none; }
+tr.row:focus td, tr.row:focus td span { background: var(--amber); color: var(--bg); }
+.n { color: var(--muted); width: 52px; } .t { color: var(--muted); width: 128px; }
 .r { width: 130px; } .r span { color: var(--lvl); }
-.q { font-family: 'IBM Plex Sans', system-ui, sans-serif; } .q.pasted { color: var(--muted); font-style: italic; }
-.c { color: #C7D0DD; } .s { width: 92px; color: var(--muted); } .s.ok { color: var(--green); } .s.err { color: var(--yellow); }
-.empty { padding: 26px; text-align: center; color: var(--faint); font-size: 13px; }
+.q { color: var(--text); } .q.pasted { color: var(--muted); font-style: italic; }
+.c { color: var(--bright); } .s { width: 92px; color: var(--muted); } .s.ok { color: var(--green); } .s.err { color: var(--yellow); }
+.empty { padding: 26px; text-align: center; color: var(--muted); font-size: 13px; }
 @media (max-width: 800px) { .t, .s, .n { display: none; } }
 """
 

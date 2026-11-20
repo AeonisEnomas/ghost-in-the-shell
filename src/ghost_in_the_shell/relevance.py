@@ -3,7 +3,7 @@
 The fine-tuned model turns any input into a command: asked for the capital of
 France, it wrote a curl command. A small text classifier therefore screens
 requests first. It is a TF-IDF model over word and character n-grams with
-logistic regression, trained by training/train_relevance.py on NL2SH-ALFA
+logistic regression, trained by training/relevance/train_relevance.py on NL2SH-ALFA
 requests (shell tasks) and Dolly-15k instructions plus handwritten chit-chat
 (not shell tasks).
 
@@ -81,7 +81,7 @@ class RelevanceChecker:
 
     @classmethod
     def load(cls, path: Path) -> "RelevanceChecker | None":
-        # The file is produced by training/train_relevance.py and ships with
+        # The file is produced by training/relevance/train_relevance.py and ships with
         # the app. joblib files can run code when loaded, so only this fixed
         # path inside the app's model folder is ever read.
         if not path.is_file():

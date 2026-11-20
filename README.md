@@ -10,10 +10,10 @@
 </p>
 
 <p align="center">
-  <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-5CE1E6?style=flat-square&labelColor=0B0E13">
-  <img alt="Streamlit" src="https://img.shields.io/badge/ui-streamlit-5CE1E6?style=flat-square&labelColor=0B0E13">
-  <img alt="llama.cpp" src="https://img.shields.io/badge/inference-llama.cpp-E28CFF?style=flat-square&labelColor=0B0E13">
-  <img alt="Offline" src="https://img.shields.io/badge/network-none-7EE2A8?style=flat-square&labelColor=0B0E13">
+  <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-FFB000?style=flat-square&labelColor=0B0906">
+  <img alt="Streamlit" src="https://img.shields.io/badge/ui-streamlit-FFB000?style=flat-square&labelColor=0B0906">
+  <img alt="llama.cpp" src="https://img.shields.io/badge/inference-llama.cpp-C9A0FF?style=flat-square&labelColor=0B0906">
+  <img alt="Offline" src="https://img.shields.io/badge/network-none-7FD98A?style=flat-square&labelColor=0B0906">
 </p>
 
 <p align="center">
@@ -38,8 +38,8 @@ confirmation, and commands that need administrator rights are never run from
 the app.
 
 The project began as an NLP course project ("Fine-tuning small language
-models"). The model was chosen through three rounds of execution-based
-evaluation on a held-out test set; the full study is in
+models"). The model was chosen through four rounds of execution-based
+evaluation on held-out test sets; the full study is in
 [`docs/model_selection.md`](docs/model_selection.md).
 
 ## Features
@@ -51,7 +51,7 @@ evaluation on a held-out test set; the full study is in
 | **Dry run** | The command runs with [bubblewrap](https://github.com/containers/bubblewrap) over a throwaway layer of your folder: no network, home folder hidden, the rest of the system read-only, five-second limit. Works on folders of any size. |
 | **Run proportional to risk** | Read-only commands run on click; Caution opens a dialog listing the files it touches; Dangerous also needs the word `run` typed. The backend enforces this independently of the interface. |
 | **Prompt-injection defences** | Model control tokens and invisible characters are stripped from requests; wording aimed at the assistant ("ignore previous instructions") is flagged; a classifier stops requests that are not shell tasks. |
-| **Terminal-native interface** | Session feed of command blocks, explanation streamed as it is written, Ctrl+K command palette, history, a `man`-style manual, keyboard first. |
+| **Terminal-native interface** | Laid out like a full-screen terminal program, in amber on black: square panes with titles in their borders, reverse video for the selection, one typeface. Explanation streamed as it is written, Ctrl+K command palette, history, a `man`-style manual, keyboard first. |
 | **Private by design** | Two local models served by llama.cpp on 127.0.0.1; history in a local SQLite file; no network use at all. |
 
 <table>
@@ -111,11 +111,28 @@ p < 0.05.
 | Qwen2.5-Coder-3B | 51.6% | 50.9% | 0.89 |
 | 3B vs 1.5B, both fine-tuned | | +4.7 points | 0.06 |
 
-The 3B model missed the rule on both counts, so the app ships the fine-tuned
-1.5B model, which is also twice as fast (1.35 s per answer). Fine-tuning
-weakened the model's explanations, so explanations come from the base model.
+The 3B model missed the rule on both counts, so the 1.5B model was chosen; it
+is also twice as fast. Fine-tuning weakened the model's explanations, so
+explanations come from the base model.
 
-**The app** ([`evaluation/results/report.md`](evaluation/results/report.md)):
+**Round 4.** That first fine-tune did not improve the model, so it was
+repeated on cleaner data: 49,489 pairs from four sources, filtered for wrong
+answers, synthetic tasks and rarely used tools, trained for two epochs. It is
+scored on NL2SH-ALFA and on a new test of 169 short, app-style requests
+([`benchmarks/app_test`](benchmarks/app_test)), against the base model exported
+the same way.
+
+| | NL2SH-ALFA | App test |
+|---|---|---|
+| Base Qwen2.5-Coder-1.5B | 46.4% | 68.6% |
+| Fine-tuned, round 4 | 50.0% | 72.8% |
+| McNemar p | 0.30 | 0.34 |
+
+The round 4 model is ahead on both tests by about 4 points. With test sets of
+this size that gain is not statistically significant. The app ships it.
+
+**The app** ([`evaluation/results/report.md`](evaluation/results/report.md),
+measured with the earlier fine-tuned model):
 
 - The request gate accepts all 300 test prompts and stops all 30 handwritten
   off-topic requests.
@@ -161,16 +178,17 @@ mv models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf models/qwen2.5-coder-1.5b.Q4_K
 ```
 
 **The command writer** (fine-tuned Qwen2.5-Coder-1.5B, about 1 GB). Open
-[`training/round3_finetune.ipynb`](training/round3_finetune.ipynb) in Google
-Colab with a T4 GPU and run sections 1 to 4a (section 4b trains the 3B model,
-which the app does not use). Training takes about 15 minutes. The notebook
-saves `qwen2.5-coder-1.5b-ft.Q4_K_M.gguf` to Google Drive; download it into
+[`training/round4/finetune.ipynb`](training/round4/finetune.ipynb) in Google
+Colab with a T4 GPU and run all cells. Preparing the data takes about 5
+minutes and training about 2.5 hours; if the session disconnects, run all
+cells again and training resumes. The notebook saves
+`qwen2.5-coder-1.5b-ft-r4.Q4_K_M.gguf` to Google Drive; download it into
 `models/`.
 
 **The request classifier** (about 10 seconds; downloads Dolly-15k on first run):
 
 ```bash
-uv run python training/train_relevance.py
+uv run python training/relevance/train_relevance.py
 ```
 
 ### 3. Start the app
@@ -191,6 +209,8 @@ two models load. The app is reachable from this computer only.
 | `Tab` | switch between Ask and Explain |
 | `↑` `↓` | recall earlier requests |
 | `Ctrl` `K` | command palette |
+| `Ctrl` `Enter` | run the selected command (still asks first when it is risky) |
+| `e`, `c` | edit or copy the selected command |
 | `/` | jump to the prompt |
 
 ### Configuration
@@ -222,7 +242,10 @@ uv run python score.py results/preds/*.jsonl
 uv run python round2.py          # round 2: prompting, retrieval, risky prompts, explanations
 uv run python round2_report.py
 uv run python round3_eval.py     # round 3: needs both fine-tuned GGUF files in models/
+uv run python round4_eval.py     # round 4: needs the two files from the round 4 notebook
 ```
+
+The app test runs from `benchmarks/app_test/`; see its README.
 
 ## Project layout
 
@@ -237,8 +260,13 @@ src/ghost_in_the_shell/
   pipeline.py      the steps above, and the rules for running
   history.py       local SQLite history
   ui/              Streamlit interface, custom components, theme
-benchmarks/        model selection (three rounds) and the execution scorer
-training/          fine-tuning notebook, relevance classifier, training records
+benchmarks/
+  model_selection/ four rounds on NL2SH-ALFA and the execution scorer
+  app_test/        169 app-style requests, their sample folder and scorer
+training/
+  round3/          first fine-tune: notebook, executed copy, records
+  round4/          the shipped fine-tune: notebook, data and training records
+  relevance/       request classifier: training script and report
 evaluation/        end-to-end evaluation of the app
 tests/             pytest suite and the browser check
 docs/              model_selection.md, app.md
@@ -262,6 +290,10 @@ docs/              model_selection.md, app.md
 - [NL2SH-ALFA](https://huggingface.co/datasets/westenfelder/NL2SH-ALFA)
   (Westenfelder et al., NAACL 2025, MIT): training and test data, included in
   `data/raw/`
+- [Bash Instruct III](https://huggingface.co/datasets/Frost2o24/bash-instruct-III-55k)
+  (MIT), [mecha-org/linux-command-dataset](https://huggingface.co/datasets/mecha-org/linux-command-dataset)
+  (Apache 2.0) and [aelhalili/bash-commands-dataset](https://huggingface.co/datasets/aelhalili/bash-commands-dataset)
+  (MIT): additional training data for round 4
 - [InterCode-ALFA](https://github.com/westenfelder/InterCode-ALFA) (MIT): the
   test filesystems used by the scorer
 - [databricks-dolly-15k](https://huggingface.co/datasets/databricks/databricks-dolly-15k)

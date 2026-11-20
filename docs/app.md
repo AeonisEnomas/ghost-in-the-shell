@@ -87,25 +87,30 @@ The interface is built around one question the user has to answer: *should
 this command run?* It is a Streamlit app, but laid out and styled as a
 terminal-native application rather than a document.
 
-**Identity.** The palette is a terminal's ANSI set, and every colour carries
-meaning: cyan is the prompt and the brand, magenta marks text the model wrote
-(the explanation pane, the cursor in the logo), and green, blue, yellow and red
-are the four risk levels. Each risk level also has its own shape and label
-(○ Read-only, ● Makes changes, ▲ Caution, ■ Dangerous), so meaning never
-depends on colour vision. Type is IBM Plex Mono for the interface and Plex
-Sans for prose, bundled so the app works offline. The mark is a pixel ghost
-whose face is a shell prompt, `>_`.
+**Identity.** The app is drawn the way a full-screen terminal program is
+(lazygit, btop), in amber on black like an amber monitor. Panes are square
+boxes with their title set into the top border; the selected item, the current
+page and the button that acts are shown in reverse video; faint raster lines
+give the screen its texture. Amber is the only interface colour, so the few
+others carry meaning: green, blue, yellow and red are the four risk levels,
+and violet marks text the model wrote (the explanation pane, the explain mode,
+the cursor in the logo). Risk tags are always filled blocks with a shape and a
+label (○ Read-only, ● Makes changes, ▲ Caution, ■ Dangerous), so they stand
+apart from amber text and never depend on colour vision. All type is IBM Plex
+Mono, bundled so the app works offline. The mark is a pixel ghost whose face is
+a shell prompt, `>_`.
 
 **App shell.** A sidebar holds the navigation (Session, History, Manual) and
 the list of commands in the current session. A status bar along the bottom
 shows both model servers, the system and package manager, the working folder,
 the number of blocks and the last response time, with keyboard hints.
 
-**Session page.** A terminal-style title bar (`user@host:~/folder`, item
-count, `cd` and `clear`) sits above a feed of command blocks, newest last, as
-in a terminal. Each block shows the prompt line (folder and request), the
-command with light syntax colouring, its risk badge, the dry-run counts and its
-actions (copy, edit, run). The focused block expands into an inspector:
+**Session page.** A title line (`user@host:~/folder`, item count, `cd` and
+`clear`) sits above a feed of command blocks, newest last, as in a terminal.
+Each block is a pane: the time, folder and risk tag sit in its top border, and
+inside are the request, the command with light syntax colouring, the dry-run
+counts and its actions, each labelled with its key (`c` copy, `e` edit,
+Ctrl+Enter run). The focused block expands into an inspector:
 
 - *explanation*: written by the base model, streamed in as it is generated;
 - *risk*: the level, each finding with its reason, and validation problems;
@@ -146,7 +151,7 @@ files, security, known limits and environment variables.
 | Consistency and standards | The same four levels, shapes and colours everywhere (blocks, sidebar, dialogs, history, manual); terminal conventions (prompt, `cd`, `man`, `history`, Ctrl+K) |
 | Error prevention | Dry run before every run; Run disabled for syntax errors and admin commands; Dangerous commands need the word `run` typed; off-topic and injection requests stop before reaching the model |
 | Recognition rather than recall | Example requests on the empty screen; session list in the sidebar; arrow-key recall; command palette; folder browser |
-| Flexibility and efficiency | Keyboard first: Enter, Tab, arrow keys, Ctrl+K, `/`; one-click run for low-risk commands; copy on every block |
+| Flexibility and efficiency | Keyboard first: Enter, Tab, arrow keys, Ctrl+K, `/`, and `c`, `e`, Ctrl+Enter on the selected command; one-click run for low-risk commands; copy on every block |
 | Aesthetic and minimalist design | One question per card; details appear only when there is something to say; examples disappear once used; no decorative colour |
 | Help users recover from errors | Validation problems explained before running ("pacman belongs to another distribution; this system uses …"); clear messages for bad folders, hidden characters and refused runs |
 | Help and documentation | The manual page; key hints under the prompt and in the status bar; the explanation is labelled as model-written; the dry run notes what it cannot show |
@@ -155,11 +160,11 @@ files, security, known limits and environment variables.
 
 ```
 uv sync
-uv run python training/train_relevance.py     # once, builds models/relevance.joblib
+uv run python training/relevance/train_relevance.py   # once, builds models/relevance.joblib
 uv run ghost-in-the-shell                      # from the folder you want to work in
 ```
 
-The two GGUF files go in `models/` (see `model_selection.md`, round 3).
+The two GGUF files go in `models/` (see the README, "Get the models").
 llama.cpp (`llama-server`) and bubblewrap (`bwrap`) must be installed.
 
 ## Tests
@@ -201,7 +206,9 @@ AppTest cannot see. All are fixed and covered by tests:
 ## Evaluation
 
 Full tables in `evaluation/results/report.md`, produced by
-`evaluation/app_eval.py`.
+`evaluation/app_eval.py`. These figures were measured with the round 3
+fine-tuned model; the app now ships the round 4 model (see
+`model_selection.md`, section 6).
 
 **Accuracy.** The full pipeline (one-line grammar, validation, extra samples
 for invalid answers) scores 45.1% on the 275 scoreable NL2SH-ALFA prompts,

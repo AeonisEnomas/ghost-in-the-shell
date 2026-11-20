@@ -15,7 +15,7 @@ request through, which the safety check and the "continue anyway" button
 cover. Final numbers are reported on the test split and on handwritten sets
 never used in training.
 
-Usage: uv run python training/train_relevance.py
+Usage: uv run python training/relevance/train_relevance.py
 """
 
 import json
@@ -30,10 +30,10 @@ from sklearn.model_selection import train_test_split
 
 from ghost_in_the_shell.relevance import build_pipeline
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 OUT_MODEL = ROOT / "models" / "relevance.joblib"
-OUT_REPORT = ROOT / "training" / "relevance_report.json"
+OUT_REPORT = ROOT / "training" / "relevance" / "relevance_report.json"
 SEED = 42
 POSITIVES = 12_000
 MIN_RECALL = 0.99

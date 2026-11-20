@@ -1,6 +1,6 @@
 """Round 3: evaluate the fine-tuned models and apply the pre-registered decision rule.
 
-Expects the GGUF files exported by training/round3_finetune.ipynb in models/.
+Expects the GGUF files exported by training/round3/finetune.ipynb in models/.
 Each fine-tuned model is run through the same tests as round 2 (300 test
 prompts zero-shot, 50 risky prompts, 60 explain-mode commands with the base
 Qwen2.5-Coder-3B translating explanations back into commands), on the same

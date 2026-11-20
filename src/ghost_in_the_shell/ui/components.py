@@ -32,7 +32,7 @@ LEVEL_MEANING = {
 }
 
 # The ghost's face is a shell prompt, ">_", like the app's mark. Drawn as
-# pixel art: "#" body, "c" prompt (cyan), "m" cursor (magenta), "." empty.
+# pixel art: "#" body (amber), "c" prompt (dark), "m" cursor (violet), "." empty.
 GHOST = [
     "....########....",
     "..############..",
@@ -56,7 +56,7 @@ def ghost_svg(pixel: int = 9) -> str:
     rects = []
     for y, row in enumerate(GHOST):
         for x, cell in enumerate(row):
-            colour = {"#": "#5CE1E6", "c": "#0B0E13", "m": "#E28CFF"}.get(cell)
+            colour = {"#": "#FFB000", "c": "#0B0906", "m": "#C9A0FF"}.get(cell)
             if colour:
                 rects.append(f'<rect x="{x * pixel}" y="{y * pixel}" width="{pixel}" height="{pixel}" fill="{colour}"/>')
     width, height = len(GHOST[0]) * pixel, len(GHOST) * pixel
@@ -128,6 +128,7 @@ def status_bar(system_name: str, package_manager: str | None, folder: Path, read
                feed_size: int, last: str) -> str:
     dot = "ok" if ready else "wait"
     cells = [
+        '<span class="sb-cell sb-mode">ghost</span>',
         f'<span class="sb-cell"><span class="sb-dot {dot}"></span>generator</span>',
         f'<span class="sb-cell"><span class="sb-dot {dot}"></span>explainer</span>',
         f'<span class="sb-cell sb-dim">{e(system_name)}{" · " + e(package_manager) if package_manager else ""}</span>',
@@ -153,7 +154,7 @@ def sidebar_heading(text: str) -> str:
 
 def title_bar(user: str, host: str, folder: Path, total: int, hidden: int) -> str:
     extra = f" · {hidden} hidden" if hidden else ""
-    return (f'<div class="tbar" title="{e(folder)}"><span class="tbar-dots"><i></i><i></i><i></i></span>'
+    return (f'<div class="tbar" title="{e(folder)}">'
             f'<span class="tbar-title"><span class="u">{e(user)}@{e(host)}</span><span class="c">:</span>'
             f'<span class="p">{e(display_path(folder, 60))}</span></span>'
             f'<span class="tbar-meta">{e(plural(total - hidden, "item"))}{e(extra)}</span></div>')
