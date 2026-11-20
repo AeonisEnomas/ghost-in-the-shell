@@ -54,21 +54,6 @@ violetColor = "#C9A0FF"
 grayColor = "#A87B26"
 
 [[theme.fontFaces]]
-family = "IBM Plex Sans"
-url = "/app/static/fonts/ibm-plex-sans-400.woff2"
-weight = 400
-
-[[theme.fontFaces]]
-family = "IBM Plex Sans"
-url = "/app/static/fonts/ibm-plex-sans-500.woff2"
-weight = 500
-
-[[theme.fontFaces]]
-family = "IBM Plex Sans"
-url = "/app/static/fonts/ibm-plex-sans-600.woff2"
-weight = 600
-
-[[theme.fontFaces]]
 family = "IBM Plex Mono"
 url = "/app/static/fonts/ibm-plex-mono-400.woff2"
 weight = 400

@@ -1,0 +1,300 @@
+{"index":0,"nl":"list files in the current directory","command":"ls","correct":true}
+{"index":1,"nl":"list all files in the current directory including hidden files","command":"ls -a","correct":true}
+{"index":2,"nl":"list open files","command":"ls -l \/proc\/self\/fd","correct":false}
+{"index":3,"nl":"create a copy of \/testbed\/hello.php named \/testbed\/hello-COPY.php","command":"cp \/testbed\/hello.php \/testbed\/hello-COPY.php","correct":true}
+{"index":4,"nl":"create a file  \/testbed\/test.txt","command":"touch \/testbed\/test.txt","correct":true}
+{"index":5,"nl":"create a directory \/testbed\/test_dir","command":"mkdir -p \/testbed\/test_dir","correct":true}
+{"index":6,"nl":"remove a file named does_not_exist.txt","command":"rm does_not_exist.txt","correct":true}
+{"index":7,"nl":"print hello world","command":"echo \"hello world\"","correct":true}
+{"index":8,"nl":"print the current working directory","command":"pwd","correct":true}
+{"index":9,"nl":"print the current date and time","command":"date","correct":false}
+{"index":10,"nl":"print the current user","command":"whoami","correct":true}
+{"index":11,"nl":"remove a directory named fake_dir","command":"rm -rf fake_dir","correct":false}
+{"index":12,"nl":"print the current shell","command":"echo $SHELL","correct":true}
+{"index":13,"nl":"print environment variables","command":"env","correct":true}
+{"index":14,"nl":"print the current user's home directory","command":"echo $HOME","correct":true}
+{"index":15,"nl":"print the current user's path","command":"echo $HOME","correct":false}
+{"index":16,"nl":"display the contents of the setup_nl2b_fs_1.sh file","command":"cat setup_nl2b_fs_1.sh","correct":true}
+{"index":17,"nl":"display the first 5 lines of the setup_nl2b_fs_1.sh file","command":"head -n 5 setup_nl2b_fs_1.sh","correct":true}
+{"index":18,"nl":"display the last 5 lines of the setup_nl2b_fs_1.sh file","command":"tail -n 5 setup_nl2b_fs_1.sh","correct":true}
+{"index":19,"nl":"print the tenth line of the setup_nl2b_fs_1.sh","command":"sed -n '10p' setup_nl2b_fs_1.sh","correct":true}
+{"index":20,"nl":"print the path of the bash executable","command":"which bash","correct":true}
+{"index":21,"nl":"display the shell history","command":"history","correct":true}
+{"index":22,"nl":"print the system utilization stats","command":"top","correct":false}
+{"index":23,"nl":"print the system uptime","command":"uptime","correct":false}
+{"index":24,"nl":"print the system load averages","command":"uptime","correct":false}
+{"index":25,"nl":"print running processes","command":"ps aux","correct":false}
+{"index":26,"nl":"print running processes in a tree format","command":"ps -eo pid,ppid,cmd --forest | grep -v grep","correct":false}
+{"index":27,"nl":"print the system memory usage","command":"free -h","correct":false}
+{"index":28,"nl":"print the system disk usage","command":"df -h","correct":true}
+{"index":29,"nl":"print the kernel version","command":"uname -r","correct":true}
+{"index":30,"nl":"print the system hostname","command":"hostname","correct":true}
+{"index":31,"nl":"print the system IP address","command":"ip addr show eth0 | grep inet | awk '{print $2}'","correct":false}
+{"index":32,"nl":"print the ip addresses of the system DNS servers","command":"hostname -I","correct":false}
+{"index":33,"nl":"display the network interfaces","command":"ifconfig","correct":true}
+{"index":34,"nl":"display the routing table","command":"ip route show","correct":false}
+{"index":35,"nl":"show the last logged in users","command":"last","correct":true}
+{"index":36,"nl":"print the last logged in users and show the full user and domain names","command":"last -u | awk '{print $1}'","correct":false}
+{"index":37,"nl":"print the openssl version","command":"openssl version","correct":true}
+{"index":38,"nl":"base64 encode the string 'hello'","command":"echo -n \"hello\" | base64","correct":true}
+{"index":39,"nl":"base64 decode the string 'aGVsbG8='","command":"echo -n \"aGVsbG8=\" | base64 --decode","correct":true}
+{"index":40,"nl":"print lines containing 'console' in the file setup_nl2b_fs_1.sh","command":"grep \"console\" setup_nl2b_fs_1.sh","correct":true}
+{"index":41,"nl":"list the stats and timestamps of the file setup_nl2b_fs_1.sh","command":"ls -l setup_nl2b_fs_1.sh","correct":false}
+{"index":42,"nl":"gzip the file \/testbed\/hello.php keeping the original file","command":"gzip -k \/testbed\/hello.php","correct":true}
+{"index":43,"nl":"tar the file \/testbed\/hello.php to \/testbed\/hello.tar","command":"tar -cvf \/testbed\/hello.tar \/testbed\/hello.php","correct":true}
+{"index":44,"nl":"show apt information about the curl package","command":"apt show curl","correct":true}
+{"index":45,"nl":"list background jobs","command":"jobs","correct":true}
+{"index":46,"nl":"print the current terminal type","command":"echo $TERM","correct":true}
+{"index":47,"nl":"display the current process priority","command":"ps -eo pid,priority | grep $$","correct":false}
+{"index":48,"nl":"display the pid of the current shell","command":"echo $$","correct":true}
+{"index":49,"nl":"time how long it takes to run the command echo 'hello'","command":"time echo 'hello'","correct":true}
+{"index":50,"nl":"print the current user's groups","command":"id -G","correct":false}
+{"index":51,"nl":"print the current user's id","command":"id -u","correct":true}
+{"index":52,"nl":"list the cron tab","command":"crontab -l","correct":true}
+{"index":53,"nl":"print the current user's umask","command":"umask","correct":true}
+{"index":54,"nl":"list cpu information","command":"lscpu","correct":true}
+{"index":55,"nl":"list memory information","command":"free -h","correct":false}
+{"index":56,"nl":"print the installed ssh version","command":"ssh -V","correct":true}
+{"index":57,"nl":"print the bash profile in the home directory","command":"cat ~\/.bash_profile","correct":false}
+{"index":58,"nl":"print the system's locale","command":"locale","correct":true}
+{"index":59,"nl":"list block devices","command":"lsblk","correct":true}
+{"index":60,"nl":"find all files larger than 100MB in the current dir","command":"find . -type f -size +100M","correct":false}
+{"index":61,"nl":"create a symbolic link to \/testbed\/hello.php named \/testbed\/link","command":"ln -s \/testbed\/hello.php \/testbed\/link","correct":true}
+{"index":62,"nl":"change the ownership of \/testbed\/test.txt to user 'nobody'","command":"sudo chown nobody:nobody \/testbed\/test.txt","correct":false}
+{"index":63,"nl":"change the group of \/testbed\/test.txt to group 'nogroup'","command":"chgrp nogroup \/testbed\/test.txt","correct":true}
+{"index":64,"nl":"change permissions of \/testbed\/test.txt to read-only for everyone","command":"chmod 444 \/testbed\/test.txt","correct":true}
+{"index":65,"nl":"count the lines, words, and characters in setup_nl2b_fs_1.sh","command":"wc -l setup_nl2b_fs_1.sh","correct":false}
+{"index":66,"nl":"print the lines in setup_nl2b_fs_1.sh sorted alphabetically","command":"sort setup_nl2b_fs_1.sh","correct":true}
+{"index":67,"nl":"print the unique lines in setup_nl2b_fs_1.sh","command":"sort -u setup_nl2b_fs_1.sh","correct":false}
+{"index":68,"nl":"display network statistics","command":"ifconfig -a","correct":false}
+{"index":69,"nl":"display network interfaces","command":"ifconfig -a","correct":false}
+{"index":70,"nl":"display a calendar for the next 3 months","command":"cal -m 1-3","correct":false}
+{"index":71,"nl":"show running daemons and services","command":"ps aux | grep -E '^[^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+ [^ ]+","correct":false}
+{"index":72,"nl":"print the system boot time","command":"uptime","correct":false}
+{"index":73,"nl":"print current swap usage","command":"free -h","correct":false}
+{"index":74,"nl":"print a list of active kernel parameters","command":"sysctl -a","correct":false}
+{"index":75,"nl":"list the installed software packages","command":"dpkg -l","correct":true}
+{"index":76,"nl":"list available shells","command":"ls -l \/bin\/sh \/bin\/bash","correct":false}
+{"index":77,"nl":"list all users on the system","command":"cat \/etc\/passwd","correct":true}
+{"index":78,"nl":"list all groups on the system","command":"getent group","correct":true}
+{"index":79,"nl":"extract the filename from this path '\/usr\/local\/bin\/my_script.sh'","command":"basename \/usr\/local\/bin\/my_script.sh","correct":true}
+{"index":80,"nl":"perform a dns lookup for google.com","command":"nslookup google.com","correct":true}
+{"index":81,"nl":"extract the directory from this path '\/usr\/local\/bin\/my_script.sh'","command":"dirname \/usr\/local\/bin\/my_script.sh","correct":true}
+{"index":82,"nl":"send the message 'System maintenance in 10 minutes!' to all logged in users","command":"echo \"System maintenance in 10 minutes!\" | mail -s \"Maintenance Notice\" $(whoami)@localhost","correct":false}
+{"index":83,"nl":"print the file type of setup_nl2b_fs_1.sh","command":"file setup_nl2b_fs_1.sh","correct":true}
+{"index":84,"nl":"print the contents of setup_nl2b_fs_1.sh with lines wrapped to 40 characters","command":"cat setup_nl2b_fs_1.sh | fold -w 40","correct":true}
+{"index":85,"nl":"print all system configuration variables","command":"cat \/proc\/sys","correct":false}
+{"index":86,"nl":"print the number of processors","command":"nproc","correct":true}
+{"index":87,"nl":"print the max number of open file descriptors","command":"ulimit -n","correct":true}
+{"index":88,"nl":"print the max number of user processes","command":"ps -eo pid,ppid,user | sort -nrk 2 | head -n 1","correct":false}
+{"index":89,"nl":"print the max cpu time","command":"ps aux | sort -nrk %cpu | head -n 1","correct":false}
+{"index":90,"nl":"display the configured size of long integers","command":"getconf LONG_BIT","correct":true}
+{"index":91,"nl":"print the directory tree two levels deep","command":"tree -L 2","correct":true}
+{"index":92,"nl":"print the number of times the word 'the' appears in setup_nl2b_fs_1.sh","command":"grep -o \"the\" setup_nl2b_fs_1.sh | wc -l","correct":true}
+{"index":93,"nl":"print the number of files in the current directory","command":"ls -1 | wc -l","correct":false}
+{"index":94,"nl":"print first line of setup_nl2b_fs_1.sh","command":"head -n 1 setup_nl2b_fs_1.sh","correct":true}
+{"index":95,"nl":"print the last line of setup_nl2b_fs_1.sh","command":"tail -n 1 setup_nl2b_fs_1.sh","correct":true}
+{"index":96,"nl":"print lines 3 to 5 of setup_nl2b_fs_1.sh","command":"sed -n '3,5p' setup_nl2b_fs_1.sh","correct":true}
+{"index":97,"nl":"print every other line of setup_nl2b_fs_1.sh","command":"sed -n '2~2p' setup_nl2b_fs_1.sh","correct":false}
+{"index":98,"nl":"print the number of words in setup_nl2b_fs_1.sh","command":"wc -w setup_nl2b_fs_1.sh","correct":true}
+{"index":99,"nl":"find all empty files in the current directory, do not search sub directories","command":"find . -type f -empty","correct":false}
+{"index":100,"nl":"print lines in the file setup_nl2b_fs_1.sh that are less than 20 characters","command":"grep -E '^.{1,19}$' setup_nl2b_fs_1.sh","correct":false}
+{"index":101,"nl":"print lines in the file setup_nl2b_fs_1.sh that contain the characters 'the'","command":"grep -i \"the\" setup_nl2b_fs_1.sh","correct":true}
+{"index":102,"nl":"print lines in the file setup_nl2b_fs_1.sh that contain the characters 'the' and 'a'","command":"grep -E \"the|a\" setup_nl2b_fs_1.sh","correct":false}
+{"index":103,"nl":"display the sha512 digest of setup_nl2b_fs_1.sh","command":"sha512sum setup_nl2b_fs_1.sh","correct":true}
+{"index":104,"nl":"encrypt the file setup_nl2b_fs_1.sh using the aes-256-cbc algorithm with password 'password' and save it to out.enc","command":"openssl enc -aes-256-cbc -in setup_nl2b_fs_1.sh -out out.enc -k password","correct":false}
+{"index":105,"nl":"create a file named 'world.txt' with the text 'hello' inside","command":"touch world.txt && echo \"hello\" >> world.txt","correct":true}
+{"index":106,"nl":"print the system's public ip address","command":"curl ifconfig.me","correct":true}
+{"index":107,"nl":"Calculate a list of duplicate md5 sum hashes for all the \".java\" files in the \/testbed directory","command":"find \/testbed -type f -name \"*.java\" | xargs md5sum","correct":false}
+{"index":108,"nl":"Calculate the md5 sum of the md5 sum of all the files under \/testbed\/dir2\/subdir2 sorted by filename","command":"find \/testbed\/dir2\/subdir2 -type f | xargs md5sum | sort","correct":false}
+{"index":109,"nl":"Calculate the md5 sum of the contents of the sorted list of files \"$FILES\"","command":"md5sum $(sort -n $FILES)","correct":false}
+{"index":110,"nl":"Calculate the md5 sum of the sorted list of md5 sums of all \".py\" files under \/testbed\/dir1\/subdir1","command":"find \/testbed\/dir1\/subdir1 -type f -name \"*.py\" | xargs md5sum | sort | md5sum","correct":false}
+{"index":111,"nl":"Calculate the total disk usage for each \".txt\" file on the \/testbed directory and prepend the system host name to the output","command":"hostname; du -sh \/testbed\/*.txt","correct":false}
+{"index":112,"nl":"Change permissions for all PHP files under the \/testbed directory tree to 755 and print the number of files changed","command":"find \/testbed -type f -name \"*.php\" -exec chmod 755 {} \\; && echo $(find \/testbed -type f -name \"*.php\" | wc -l)","correct":true}
+{"index":113,"nl":"Check if the current shell is running within a 'screen' process and print \"True\" or \"False\"","command":"[[ $(ps -p $$ | grep screen) ]] && echo \"True\" || echo \"False\"","correct":true}
+{"index":114,"nl":"Print \"True\" if the contents of file \/testbed\/dir3\/subdir1\/subsubdir1\/textfile3.txt is a subset of file \/testbed\/dir2\/subdir1\/textfile2.txt, otherwise print \"False\"","command":"diff -q \/testbed\/dir2\/subdir1\/textfile2.txt \/testbed\/dir3\/subdir1\/subsubdir1\/textfile3.txt | grep -q \"^$\" && echo \"True\" || echo \"False\"","correct":true}
+{"index":115,"nl":"Compute the mean average of the word count of *.txt files in the \/testbed directory","command":"find \/testbed -type f -name \"*.txt\" | xargs wc -l | awk '{sum+=$1} END {print sum\/NR}'","correct":false}
+{"index":116,"nl":"Compute the mean average of the word count of *.txt files smaller than 6 words in the \/testbed directory","command":"find \/testbed -type f -name \"*.txt\" -exec wc -w {} + | awk '{sum+=$1} END {print sum\/NR}'","correct":false}
+{"index":117,"nl":"Copy all files with \"FooBar\" in the path under the '\/testbed' directory to the '\/testbed\/dir3\/subdir1\/subsubdir1\/tmp' directory.","command":"cp \/testbed\/*FooBar*\/ \/testbed\/dir3\/subdir1\/subsubdir1\/tmp\/","correct":false}
+{"index":118,"nl":"search for all .txt files in the \/testbed directory, prints their paths, and then search within each file for the word \"another\"","command":"find \/testbed -type f -name \"*.txt\" -exec grep -l \"another\" {} +","correct":false}
+{"index":119,"nl":"Convert the first 16 characters in \"\/testbed\/textfile7.txt\" to a single hexadecimal value","command":"xxd -p \/testbed\/textfile7.txt | head -c 32","correct":true}
+{"index":120,"nl":"Copies all files under the \/testbed folder like \"file.txt\" with \"FooBar\" in the path to the root of the current folder, preserving mode, ownership and timestamp attributes.","command":"cp -a \/testbed\/file.txt .\/* | grep FooBar | xargs cp -a --preserve=mode,ownership,timestamps .","correct":false}
+{"index":121,"nl":"Copy all files and folders below the \/testbed directory whose names contain \"FooBar\" to directory '\/testbed\/dir3\/subdir1\/subsubdir1\/tmp'","command":"cp -r \/testbed\/FooBar* \/testbed\/dir3\/subdir1\/subsubdir1\/tmp","correct":false}
+{"index":122,"nl":"Count all the lines of all '*.c' files in \/testbed directory recursively","command":"find \/testbed -type f -name \"*.c\" | wc -l","correct":false}
+{"index":123,"nl":"Count all the lines of all files with names ending with 'php' in current directory and subdirectories recursively","command":"find . -type f -name \"*.php\" | wc -l","correct":false}
+{"index":124,"nl":"Count all the lines of all php files in the \/testbed directory recursively","command":"find \/testbed -type f -name \"*.php\" | wc -l","correct":false}
+{"index":125,"nl":"Calculate the md5sum of all '*.py' files in \/testbed folder and sub folders.","command":"find \/testbed -type f -name \"*.py\" | xargs md5sum","correct":true}
+{"index":126,"nl":"Count the *.html files residing in the \/testbed directory tree and containing string \"foo\"","command":"find \/testbed -type f -name \"*.html\" | grep -c \"foo\"","correct":false}
+{"index":127,"nl":"Count the number of files\/directories with '.php' extension under \/testbed directory tree and change the permissions to 755","command":"find \/testbed -type f -name \"*.php\" | xargs chmod 755","correct":false}
+{"index":128,"nl":"Count the number of lines in all files in the \/testbed directory tree that match pattern '*file*'","command":"find \/testbed -type f -name \"*file*\" | wc -l","correct":false}
+{"index":129,"nl":"Count the number of regular files in directory tree ${DIRECTORY} that contain a vowel in their names","command":"find \"${DIRECTORY}\" -type f | grep '[aeiou]' | wc -l","correct":true}
+{"index":130,"nl":"Count the number of files for each unique file extensions in the \/testbed directory tree.","command":"find \/testbed -type f | xargs file | awk '{print $NF}' | sort | uniq -c","correct":false}
+{"index":131,"nl":"Count the total number of lines in all \"*.gz\" files in the \/testbed directory tree after decompression","command":"find \/testbed -type f -name \"*.gz\" | xargs gunzip | wc -l","correct":false}
+{"index":132,"nl":"Counts all files in the \/testbed folder and subfolders.","command":"find \/testbed -type f | wc -l","correct":true}
+{"index":133,"nl":"Count lines in each *.php file sorted by file in \/testbed directory.","command":"find \/testbed -name \"*.php\" -exec wc -l {} \\; | sort","correct":false}
+{"index":134,"nl":"Counts lines in each *.php file in \/testbed directory, sorted by number of lines, descending.","command":"find \/testbed -name \"*.php\" -exec wc -l {} + | sort -nr","correct":true}
+{"index":135,"nl":"Counts number of occurences of all ip addresses in '\/etc\/networks' file, and prints all addresses with number of occurences in a descending order.","command":"cat \/etc\/networks | grep -oE '\\b([0-9]{1,3}\\.){3}[0-9]{1,3}\\b' | sort | uniq -c | sort -nr","correct":false}
+{"index":136,"nl":"Counts total number of only lines with alphanumeric symbols in all *.php files in the \/testbed folder and subfolders.","command":"grep -o '[a-zA-Z0-9]' \/testbed\/**\/*.php | wc -l","correct":false}
+{"index":137,"nl":"Counts total lines in PHP and JS files in \/testbed.","command":"find \/testbed -type f \\( -name \"*.php\" -o -name \"*.js\" \\) | xargs wc -l","correct":false}
+{"index":138,"nl":"Create an empty file \"abc.txt\" in each directory named \"dir1\" under testbed directory.","command":"find testbed -type d -name \"dir1\" -exec touch \"{}\/abc.txt\" \\;","correct":true}
+{"index":139,"nl":"Create logs.tar.gz of all older than one day logs of Ubuntu","command":"find \/var\/log -type f -mtime +1 -exec gzip {} \\; | tar czvf logs.tar.gz","correct":false}
+{"index":140,"nl":"Delete files in \"\/testbed\/dir3\/subdir1\/subsubdir1\/tmp\" that are older than 2 days","command":"find \/testbed\/dir3\/subdir1\/subsubdir1\/tmp -type f -mtime +2 -exec rm {} \\;","correct":true}
+{"index":141,"nl":"Display the 5 largest files in the \/testbed directory and its sub-directories.","command":"find \/testbed -type f -exec ls -lh {} + | sort -rh | head -n 5","correct":false}
+{"index":142,"nl":"Display the 5 smallest files in the \/testbed directory and its sub-directories ignoring any empty files.","command":"find \/testbed -type f ! -empty | sort +n | head -n 5","correct":false}
+{"index":143,"nl":"Display the 5 smallest files in the \/testbed directory and its sub-directories.","command":"find \/testbed -type f | sort +n | head -n 5","correct":false}
+{"index":144,"nl":"Display the five biggest file sizes only in the \/testbed directory","command":"ls -lh \/testbed | sort -rh | head -n 5","correct":false}
+{"index":145,"nl":"Find .java files in the testbed directory tree that contain 'Hello', and print their names","command":"find testbed -name \"*.java\" -exec grep -l \"Hello\" {} +","correct":true}
+{"index":146,"nl":"Print a list of all duplicate case insensitive filenames in the \/testbed directory tree","command":"find \/testbed -type f | sort | uniq -d","correct":false}
+{"index":147,"nl":"Print all unique file paths under \"testbed\/dir1\" compared to \"testbed\/dir2\"","command":"find testbed\/dir1 -type f | sort | uniq | find testbed\/dir2 -type f | sort | uniq | comm -23 <(sort <(echo $(find testbed\/dir1 -type f))) <(sort <(echo $(find testbed\/dir2 -type f)))","correct":false}
+{"index":148,"nl":"Recursively finds all files containing text 'Hello' in \/testbed and prints folder where they are placed.","command":"find \/testbed -type f -exec grep -l \"Hello\" {} \\; | awk '{print $NF}'","correct":false}
+{"index":149,"nl":"Prints total number of lines of all *.java files in \/testbed folder and subfolders.","command":"find \/testbed -type f -name \"*.java\" | wc -l","correct":true}
+{"index":150,"nl":"Create a symbolic link named FooBar in the \/testbed\/dir3\/subdir1\/subsubdir1 directory to the root directory \/","command":"ln -s \/ \/testbed\/dir3\/subdir1\/subsubdir1\/FooBar","correct":false}
+{"index":151,"nl":"search for all the files in the folder \/testbed\/dir1 which have sticky bit set and have the permissions 553","command":"find \/testbed\/dir1 -type f -perm 553 -ls","correct":false}
+{"index":152,"nl":"search for php files in \/testbed directory and search for \"world\" in all these files","command":"grep -r \"world\" \/testbed\/*.php","correct":true}
+{"index":153,"nl":"Recursively finds all files with any cased text \"Hello\" in the '\/system\/folder1' folder, and precedes found string with its number in file.","command":"find \/system\/folder1 -type f | while read -r file; do grep -oP '(?i)hello' \"$file\" | sed 's\/hello\/\\=0\/g' | awk '{print NR, $0}' >> output.txt; done","correct":false}
+{"index":154,"nl":"Recursively finds all files with whole word \"foo\" in the '\/system', and precedes found string with its number in file.","command":"find \/system -type f | grep -o '\\bfoo\\b' | awk '{print NR, $0}' | sort -n","correct":false}
+{"index":155,"nl":"Recursively list contents of the '\/system' directory in a tree-like format","command":"tree \/system","correct":true}
+{"index":156,"nl":"Recursively print all files and directories in the '\/system\/folder2' directory tree including hidden files","command":"find \/system\/folder2 -type f -o -type d","correct":false}
+{"index":157,"nl":"Recursively prints all folders in the '\/system' folder that contain files like \"*.out\".","command":"find \/system -type d -name \"*out\" -exec ls {} \\;","correct":false}
+{"index":158,"nl":"Remove all \"*.txt\" files in the '\/system' folder and answer \"y\" to any prompt","command":"rm -rf \/system\/*.txt && echo y","correct":false}
+{"index":159,"nl":"Recursively removes all empty folders from the \/system\/folder3\/temp folder.","command":"find \/system\/folder3\/temp -type d -empty -exec rmdir {} \\;","correct":true}
+{"index":160,"nl":"Recursively removes all empty folders under \/system\/folder3\/temp, printing info message on each operation, and suppressing error messages if folder is not empty.","command":"find \/system\/folder3\/temp -type d -empty -exec rm -rf {} \\; 2>\/dev\/null","correct":true}
+{"index":161,"nl":"Recursively removes all files in the \/system\/folder1 folder but '*txt' files.","command":"find \/system\/folder1 -type f ! -name \"*.txt\" -exec rm {} \\;","correct":true}
+{"index":162,"nl":"Recursively rename all files under \/system\/folder2 replacing special with regular.","command":"find \/system\/folder2 -type f -exec rename 's\/[^a-zA-Z0-9]\/_\/g' {} +","correct":true}
+{"index":163,"nl":"Recursively search for \"foo\" in the '\/system' folder and write the output to the console followed by the number of matched lines","command":"grep -r 'foo' \/system | wc -l","correct":false}
+{"index":164,"nl":"Recursively search for all regular files below directory \"\/system\/folder3\/\", and output the name of each, without any containing directories.","command":"find \/system\/folder3\/ -type f -exec basename {} \\;","correct":true}
+{"index":165,"nl":"Recursively unzip files to stdout in \"\/system\/folder2.tar.gz\" and search for \"special\"","command":"tar -xzvf \/system\/folder2.tar.gz | grep special","correct":false}
+{"index":166,"nl":"Remove \"\\r\" at the end of each line in \"system\/folder3\/temp\/temp1\/text1.txt\" and display the result as printable characters or backslash escapes","command":"sed 's\/\\r$\/\/' system\/folder3\/temp\/temp1\/text1.txt","correct":false}
+{"index":167,"nl":"Remove all *.doc files from the \/system\/folder1 tree","command":"find \/system\/folder1 -type f -name \"*.doc\" -exec rm {} \\;","correct":true}
+{"index":168,"nl":"Remove all *.log files from the \/system\/folder1 tree","command":"find \/system\/folder1 -type f -name \"*.log\" -exec rm {} \\;","correct":true}
+{"index":169,"nl":"Remove all *.txt files in '\/system' directory but not in it's subdirectories","command":"find \/system -type f \\( ! -path *\/*\\) -name \"*.txt\" -exec rm {} \\;","correct":false}
+{"index":170,"nl":"Remove all *.sql files in the '\/system\/folder3\/backup_dbg' directory that were last modified more than 25 days ago","command":"find \/system\/folder3\/backup_dbg -type f -name \"*.sql\" -mtime +25 -exec rm {} \\;","correct":true}
+{"index":171,"nl":"Remove all *.txt files under the \/system\/folder1 directory modified more than 5 minutes ago","command":"find \/system\/folder1 -type f -name \"*.txt\" -mtime +5 -exec rm {} \\;","correct":true}
+{"index":172,"nl":"Remove all *.txt files, except \"keep.txt\", under \/system\/folder1 directory modified more than 5 minutes ago. Do not include subdirectories.","command":"find \/system\/folder1 -type f -name \"*.txt\" ! -name \"keep.txt\" -mtime +5 -exec rm {} \\;","correct":true}
+{"index":173,"nl":"Remove all .sh files in the '\/system\/folder1' tree whose names begin with \"new\"","command":"find \/system\/folder1 -type f -name \"new*.sh\" -exec rm {} \\;","correct":true}
+{"index":174,"nl":"Remove all a.out, *.o, and core files under the '\/system' directory","command":"find \/system -type f \\( -name \"*.a.out\" -o -name \"*.o\" -o -name \"core\" \\) -exec rm {} +","correct":false}
+{"index":175,"nl":"Print the last five lines of \/system\/folder1\/data.csv","command":"tail -n 5 \/system\/folder1\/data.csv","correct":false}
+{"index":176,"nl":"Remove all directories called \"temp\" from the \/system directory tree","command":"rm -rf \/system\/temp*","correct":false}
+{"index":177,"nl":"Remove all empty files in \/system\/folder3\/temp and below","command":"find \/system\/folder3\/temp -type f -empty -exec rm {} \\;","correct":true}
+{"index":178,"nl":"Remove all files a.out and *.o in the \/system directory tree that were modified less than 7 days ago","command":"find \/system -type f -name \"*.o\" -mtime +7 -exec rm {} \\;","correct":false}
+{"index":179,"nl":"Remove all files and directories under '\/system\/folder3\/temp' directory tree that match with one of the name patterns '.DS_Store', '._.DS_Store' , '._*', '.TemporaryItems' or '.apdisk'","command":"find \/system\/folder3\/temp -type f \\( -name \".DS_Store\" -o -name \"_.DS_Store\" -o -name \"_*\" -o -name \".TemporaryItems\" -o -name \".apdisk\" \\) -exec rm {} +","correct":true}
+{"index":180,"nl":"Remove everything within parentheses and substitute all non digit characters with a space from \"1\/2 [3] (27\/03\/2012 19:32:54) word word word word 4\/5\" and format the output as a table","command":"echo \"1\/2 [3] (27\/03\/2012 19:32:54) word word word word 4\/5\" | sed 's\/\\([^)]*\\)\/\/g' | tr -cd '[0-9 ]' | awk '{print $1, $2}'","correct":false}
+{"index":181,"nl":"Remove files text2, text3, text4 in directory \/system\/folder1","command":"rm -f \/system\/folder1\/text2 \/system\/folder1\/text3 \/system\/folder1\/text4","correct":false}
+{"index":182,"nl":"Remove files that are less than 1KB in size under \/system directory","command":"find \/system -type f -size -1k -exec rm {} \\;","correct":true}
+{"index":183,"nl":"Remove files modified more than 31 days ago recursively from \"\/system\"","command":"find \/system -type f -mtime +31 -exec rm {} \\;","correct":true}
+{"index":184,"nl":"Print \"\/system\/folder3\/temp\/temp1\/text1.txt\" without newline characters.","command":"echo -n \"\/system\/folder3\/temp\/temp1\/text1.txt\"","correct":false}
+{"index":185,"nl":"Remove regular files in the \/system directory tree","command":"find \/system -type f -exec rm {} \\;","correct":true}
+{"index":186,"nl":"Print which files differ between \/system\/folder1 and \/system\/folder2.","command":"diff -r \/system\/folder1 \/system\/folder2","correct":true}
+{"index":187,"nl":"Print amount of space available on the file system containing path to the \/system directory in megabytes.","command":"df -h \/system | awk '{print $4}'","correct":false}
+{"index":188,"nl":"Display the number of sub-directories under \/system","command":"find \/system -type d | wc -l","correct":true}
+{"index":189,"nl":"Archive all files in \/system\/folder1 directory modified in the last 60 days to \"\/mytarfile.tgz\" with a time of 2023-01-01, owner of 0, and group of 0.","command":"find \/system\/folder1 -type f -mtime -60 -exec tar -czvf \/mytarfile.tgz {} \\;","correct":false}
+{"index":190,"nl":"Create a symbolic link named folder1 in the \/system directory to the root folder \/","command":"ln -s \/ \/system\/folder1","correct":false}
+{"index":191,"nl":"Write the current date and time followed by \" 1\" to the console and append to \"\/system\/folder3\/temp\/empty.txt\"","command":"date +\"%Y-%m-%d %H:%M:%S 1\" >> \/system\/folder3\/temp\/empty.txt","correct":false}
+{"index":192,"nl":"Concatenate all .txt files residing in the \/system tree into a single file \"\/system\/folder3\/temp\/concat.txt\"","command":"cat \/system\/*.txt > \/system\/folder3\/temp\/concat.txt","correct":false}
+{"index":193,"nl":"Compresses all the files in the \/system folder with default depth to \/backup using cpio.","command":"cpio -avzf \/backup\/system.tar.gz \/system","correct":false}
+{"index":194,"nl":"Copy all files in the \/system directory except those containing 'text' to '\/system\/folder3\/backup_dbg\/backup'. Do not include subdirectories.","command":"cp -r \/system\/* \/system\/folder3\/backup_dbg\/backup --exclude='*text*' && rm -rf \/system\/text*","correct":false}
+{"index":195,"nl":"Rename \"\/system\/folder3\/temp\/temp1\" to \"\/system\/folder3\/temp\/temp1_old\"","command":"mv \/system\/folder3\/temp\/temp1 \/system\/folder3\/temp\/temp1_old","correct":true}
+{"index":196,"nl":"Dump \"\/system\/text1.txt\" as ASCII characters","command":"cat \/system\/text1.txt | od -t x1","correct":false}
+{"index":197,"nl":"Create a compressed archive of \/system\/folder1 \"compress_folder1.tar.gz\" with a time of 2023-01-01, owner of 0, and group of 0.","command":"tar -czvf compress_folder1.tar.gz \/system\/folder1 --mtime=2023-01-01 --owner=0 --group=0","correct":true}
+{"index":198,"nl":"download content from \"http:\/\/example.com\/textfile.txt\" and output to 'textfile.txt' in \/system","command":"wget -O \/system\/textfile.txt http:\/\/example.com\/textfile.txt","correct":false}
+{"index":199,"nl":"Search in \/system downwards all files whose size is greater than 10 bytes.","command":"find \/system -type f -size +10c","correct":true}
+{"index":200,"nl":"Calculate the md5sum of each \".txt\" file under \"\/system\" and sort the output.","command":"find \/system -type f -name \"*.txt\" | xargs md5sum | sort","correct":false}
+{"index":201,"nl":"Search for the system host name in \"\/etc\/hosts\" and print the IP address in the first awk field","command":"awk -F' ' '\/^127\\.0\\.0\\.\/ {print $1}' \/etc\/hosts","correct":false}
+{"index":202,"nl":"Find files in \/workspace directory modified within 30 days.","command":"find \/workspace -type f -mtime -30","correct":true}
+{"index":203,"nl":"find files in the \/workspace directory with pattern` *.c  that larger than 1 Kilobytes","command":"find \/workspace -type f -name \"*.c\" -size +1k","correct":true}
+{"index":204,"nl":"Find files in the \/workspace directory and sub-directories, that changed over an hour ago.","command":"find \/workspace -type f -mtime +1h","correct":false}
+{"index":205,"nl":"Find files in the \/workspace directory and sub-directories, that were accessed over an hour ago.","command":"find \/workspace -type f -atime +1","correct":true}
+{"index":206,"nl":"list all the drectories present in the \/workspace directory and do not search in the sub directories.","command":"ls -d \/workspace\/*","correct":false}
+{"index":207,"nl":"list all the files in the \/workspace directory which are of size 0 bytes.","command":"ls -l \/workspace | grep \"0 bytes\"","correct":false}
+{"index":208,"nl":"list all zero-length files under the \/workspace directory","command":"find \/workspace -type f -empty","correct":true}
+{"index":209,"nl":"locate and remove large files (> 1 KB) in \/workspace","command":"find \/workspace -type f -size +1k -exec rm {} \\;","correct":true}
+{"index":210,"nl":"List all the files in the \/workspace directory which have only read permission to the group.","command":"ls -l \/workspace | grep '^-r'","correct":false}
+{"index":211,"nl":"List all the files in the \/workspace directory which have permissions 777.","command":"ls -l \/workspace | grep '777'","correct":false}
+{"index":212,"nl":"List the details of all the text files in \/workspace directory.","command":"ls -l \/workspace","correct":false}
+{"index":213,"nl":"move all files in the \/workspace folder to \/ and do not move the files in the sub folder","command":"mv \/workspace\/* \/ && rm -rf \/workspace\/sub_folder","correct":false}
+{"index":214,"nl":"Move files in \/workspace accessed less than one day ago to directory \/.","command":"find \/workspace -type f -mtime +1 -exec mv {} ~\/. \\;","correct":false}
+{"index":215,"nl":"print all filenames of files under \/workspace\/dir1 dir containing 'hello', case-insensitive","command":"find \/workspace\/dir1 -type f -iname \"*hello*\" | xargs echo","correct":false}
+{"index":216,"nl":"print disk usage of files or folders in \/workspace","command":"du -sh \/workspace","correct":true}
+{"index":217,"nl":"print the last word in \/workspace\/dir1\/long.txt","command":"tail -n 1 \/workspace\/dir1\/long.txt | awk '{print $NF}'","correct":true}
+{"index":218,"nl":"Print the 3 largest directories in \/workspace.","command":"ls -ld \/workspace | sort -nr | head -n 3","correct":false}
+{"index":219,"nl":"prints first line of \"\/workspace\/dir1\/long.txt\"","command":"head -n 1 \/workspace\/dir1\/long.txt","correct":true}
+{"index":220,"nl":"prints the last non-empty line of \"\/workspace\/dir1\/a.txt\"","command":"tail -n 1 \/workspace\/dir1\/a.txt","correct":false}
+{"index":221,"nl":"prune all the files in the \/workspace directory","command":"rm -rf \/workspace\/*","correct":false}
+{"index":222,"nl":"search for all the files in the  \/workspace directory which have size greater than 1KB (approx) and less than 32KB(approx).","command":"find \/workspace -size +1k -size -32k","correct":true}
+{"index":223,"nl":"search for all the files in the  \/workspace folder and sort them in the order of their depth and display the file names","command":"find \/workspace -type f | sort -k2n","correct":true}
+{"index":224,"nl":"Search for all the files in the \/workspace folder which are bigger than 1KB and display the biggest file.","command":"find \/workspace -type f -size +1k -exec ls -lh {} \\; | sort -hr | head -n 1","correct":true}
+{"index":225,"nl":"search for text files in the  \/workspace folder which do not have write access to others","command":"find \/workspace -type f ! -perm -w","correct":false}
+{"index":226,"nl":"Search for the directory \"mysql\" in the workspace directory.","command":"find . -name \"mysql\"","correct":false}
+{"index":227,"nl":"Print a list of all duplicate case insensitive filenames in the \/workspace directory tree","command":"find \/workspace -type f | sort | uniq -d | xargs ls -l","correct":false}
+{"index":228,"nl":"Search for the file old2.txt in the \/workspace folder and list its permissions and creation time.","command":"ls -l \/workspace\/old2.txt","correct":true}
+{"index":229,"nl":"search for the word \"hello\" in all the regular\/normal files in the  \/workspace folder and display the matched file name","command":"grep -r \"hello\" \/workspace","correct":false}
+{"index":230,"nl":"Calculate the md5 sum of all files in the \/workspace directory with the filename printed first","command":"find \/workspace -type f | xargs md5sum","correct":false}
+{"index":231,"nl":"Calculate the md5 sum of all files in directory tree \"\/workspace\"","command":"find \/workspace -type f -exec md5sum {} +","correct":true}
+{"index":232,"nl":"Count the number of unique 3 to 6 character file extensions are in the \/workspace directory tree","command":"find \/workspace -type f | grep '\\.[0-9]{3,6}$' | sort | uniq | wc -l","correct":false}
+{"index":233,"nl":"Create a copy of the \/workspace directory structure in the \/usr directory,","command":"cp -r \/workspace\/* \/usr","correct":false}
+{"index":234,"nl":"Display a long listing of the oldest file under '\/workspace' directory tree","command":"ls -lt \/workspace | head -n 1","correct":false}
+{"index":235,"nl":"Find the largest 2 directories under \/workspace directory","command":"du -sh \/workspace\/* | sort -rh | head -n 2","correct":false}
+{"index":236,"nl":"List all files with their paths that have identical content in \/workspace directory","command":"find \/workspace -type f -exec cat {} + | sort | uniq -c | awk '$1 == 2 {print $0}' | cut -d' ' -f2-","correct":false}
+{"index":237,"nl":"Make directories for each unique file path in \"\/workspace\/files.txt\"","command":"mkdir -p $(awk '{print $1}' \/workspace\/files.txt)","correct":false}
+{"index":238,"nl":"Print the total disk usage in bytes of all files listed in \"\/workspace\/files.txt\"","command":"du -sh \/workspace\/files.txt","correct":false}
+{"index":239,"nl":"Unhide all hidden files in the \/workspace directory. Do not include subdirectories.","command":"ls -a \/workspace | grep '^.' | xargs rm -rf","correct":false}
+{"index":240,"nl":"Count the number of differing lines in \"\/workspace\/dir1\/long.txt\" and \"\/workspace\/dir1\/terminate.txt\"","command":"diff \/workspace\/dir1\/long.txt \/workspace\/dir1\/terminate.txt | wc -l","correct":false}
+{"index":241,"nl":"Count the number of differing lines in \"\/workspace\/dir1\/terminate.txt\" and \"\/workspace\/dir1\/long.txt\" with 0 lines of unified context","command":"diff -u \/workspace\/dir1\/terminate.txt \/workspace\/dir1\/long.txt | wc -l","correct":false}
+{"index":242,"nl":"Counts lines in file \/workspace\/dir1\/a.txt ignoring empty lines and lines with spaces only.","command":"wc -l \/workspace\/dir1\/a.txt | grep -v '^$' | grep -v '^[[:space:]]*$'","correct":false}
+{"index":243,"nl":"Create a symbolic link in directory \"~\/newlinks\" for each file listed in \"\/workspace\/results.txt\"","command":"ln -s \/workspace\/results.txt ~\/newlinks\/","correct":false}
+{"index":244,"nl":"Delete all hidden files under \/workspace","command":"rm -rf \/workspace\/.*","correct":false}
+{"index":245,"nl":"Display a dump of \"\/workspace\/dir1\/long.txt\" as floating point values of double size","command":"cat \/workspace\/dir1\/long.txt | awk '{print $1}' | bc -l","correct":false}
+{"index":246,"nl":"Display differences between list of files in \/workspace\/dir1 and \/workspace\/dir2.","command":"diff -r \/workspace\/dir1 \/workspace\/dir2","correct":true}
+{"index":247,"nl":"Display the file size of file '\/workspace\/dir1\/sum.c' in bytes","command":"du -b \/workspace\/dir1\/sum.c","correct":false}
+{"index":248,"nl":"Display the last slash-separated part of each filename path in \/workspace\/dir1\/file.txt","command":"echo \/workspace\/dir1\/file.txt | awk -F\/ '{print $NF}'","correct":false}
+{"index":249,"nl":"Display the sizes and filepaths of all files\/directories in \/workspace directory sorted in descending order of size","command":"du -sh \/workspace\/* | sort -rh","correct":false}
+{"index":250,"nl":"Print percentage of the space used on the \/workspace directory.","command":"df -h \/workspace | awk '{print $5}'","correct":false}
+{"index":251,"nl":"Print the contents of \"\/workspace\/dir1\/long.txt\" in reverse order","command":"cat \/workspace\/dir1\/long.txt | tac","correct":true}
+{"index":252,"nl":"Create an empty file \"Icon\" in workspace\/ with a carriage return character in the end of its name.","command":"touch workspace\/Icon\\r","correct":false}
+{"index":253,"nl":"Create a symbolc link in the \/workspace\/dir1 to root folder","command":"ln -s \/root \/workspace\/dir1","correct":false}
+{"index":254,"nl":"Display permissions, user, group, and full path for each file in the \/workspace directory tree","command":"ls -ld \/workspace\/*","correct":false}
+{"index":255,"nl":"Search for 'hello' case insensitively in all files under \/workspace directory tree and show the matched lines with their filenames","command":"grep -i \"hello\" \/workspace\/* | awk '{print $0, FILENAME}'","correct":false}
+{"index":256,"nl":"Unpack all *.gz archives in the \/workspace directory tree","command":"find \/workspace -type f -name \"*.gz\" -exec gunzip {} \\;","correct":true}
+{"index":257,"nl":"Uncompress \"\/workspace\/archive.tar.gz\" and extract the archive to \"\/backup\"","command":"tar -xzvf \/workspace\/archive.tar.gz -C \/backup","correct":true}
+{"index":258,"nl":"Create a symbolic link to \"\/workspace\/dir1\/terminate.txt\" named \"\/workspace\/test\"","command":"ln -s \/workspace\/dir1\/terminate.txt \/workspace\/test","correct":true}
+{"index":259,"nl":"Retrieve only build number of current kernel, ie. #104","command":"uname -r","correct":false}
+{"index":260,"nl":"Print reverse lookup for adress 127.0.0.1","command":"nslookup -type=ptr 127.0.0.1","correct":true}
+{"index":261,"nl":"List file information of the full path of command \"grep\"","command":"ls -l $(which grep)","correct":true}
+{"index":262,"nl":"Extract host name part from \"http:\/\/www.google.com\"","command":"echo http:\/\/www.google.com | cut -d'\/' -f3","correct":true}
+{"index":263,"nl":"List environment variables and their values, escaping all semicolons with a backslash.","command":"env | sed 's\/;\/\\\\;\/g'","correct":true}
+{"index":264,"nl":"Displays a tree of all process alongside their command line arguments.","command":"ps -ef | awk '{print $1 \" \" $2 \" \" $3 \" \" $4 \" \" $5 \" \" $6}'","correct":false}
+{"index":265,"nl":"Create intermediate directories \"dir\" and \"subdir\" as required and create \"subsubdir\"","command":"mkdir -p dir subdir\/subsubdir","correct":false}
+{"index":266,"nl":"Print numbers 1 through 10 separated by \":\"","command":"echo \"1:2:3:4:5:6:7:8:9:10\"","correct":true}
+{"index":267,"nl":"print all readline bindings","command":"bind -p","correct":false}
+{"index":268,"nl":"list names of bind functions containing \"p\"","command":"bind -l | grep p","correct":true}
+{"index":269,"nl":"Save first IP address of domain 'google.com' in 'address' variable and display it","command":"ip addr show | grep \"inet \" | head -n 1 | awk '{print $2}' | cut -d\/ -f1 > address && echo $(cat address)","correct":false}
+{"index":270,"nl":"Remove all characters except \";\" and digits from the string \"  Hello world;876\t  \"","command":"echo \"  Hello world;876\t  \" | tr -cd ';0-9'","correct":true}
+{"index":271,"nl":"Remove leading and trailing spaces or tabs from \"  Hello world!\t  \"","command":"echo \"  Hello world!\t  \" | sed 's\/^[ \\t]*\/\/;s\/[ \\t]*$\/\/'","correct":true}
+{"index":272,"nl":"Remove the last 3 characters from \"987654321\"","command":"sed 's\/.$\/\/' \"987654321\"","correct":false}
+{"index":273,"nl":"Print source of the file system containing current working directory.","command":"ls -l \/","correct":false}
+{"index":274,"nl":"List all variables (names only) with names containing \"H\".","command":"echo $* | grep -o '[A-Za-z]*H[A-Za-z]*' | sort -u","correct":false}
+{"index":275,"nl":"Print a list of unique users who are logged in","command":"who | sort -u","correct":true}
+{"index":276,"nl":"ping 192.168.1.1","command":"ping 192.168.1.1","correct":true}
+{"index":277,"nl":"Print a line of 99 '=' characters","command":"echo -n \"=\" | tr ' ' '\\n' | head -c 99","correct":false}
+{"index":278,"nl":"Count number of users logged in","command":"who | wc -l","correct":true}
+{"index":279,"nl":"Displays calendar of a previous, current and next month for December of 2120 year.","command":"cal -m 12\/2020","correct":false}
+{"index":280,"nl":"Extract, sort and print only group names from \/etc\/group.","command":"cat \/etc\/group | cut -d: -f1","correct":true}
+{"index":281,"nl":"Calculate the sum of all the numbers from 1 to 10","command":"echo \"scale=2; 1+2+3+4+5+6+7+8+9+10\" | bc","correct":false}
+{"index":282,"nl":"Count the number of files and directories in the entire testbed directory","command":"find \/path\/to\/testbed -type f | wc -l","correct":false}
+{"index":283,"nl":"Print the number of python files in the testbed directory.","command":"find testbed -type f -name \"*.py\" | wc -l","correct":true}
+{"index":284,"nl":"Sort the lines of textfile1.txt in reverse alphabetical order and save the result to a new file named textfile1_reverse_sorted.txt","command":"sort -r textfile1.txt > textfile1_reverse_sorted.txt","correct":false}
+{"index":285,"nl":"Search for all files containing the word 'Shell' in testbed.","command":"grep -r \"Shell\" testbed","correct":false}
+{"index":286,"nl":"Find all symbolic links in the testbed directory.","command":"find \/path\/to\/testbed -type l","correct":false}
+{"index":287,"nl":"Get the total size of all files in testbed\/ and save it to total_size.txt","command":"du -sh testbed\/* > total_size.txt","correct":false}
+{"index":288,"nl":"List all files in the directory \/testbed\/dir1 and sort them by size in human-readable format","command":"ls -lh \/testbed\/dir1","correct":true}
+{"index":289,"nl":"Count the number of lines in files under the directory \/testbed\/dir2.","command":"find \/testbed\/dir2 -type f | wc -l","correct":false}
+{"index":290,"nl":"Print the name and size of the 3 largest files in the directory \/testbed\/dir3","command":"ls -lh \/testbed\/dir3 | sort -hr | head -n 3","correct":false}
+{"index":291,"nl":"Find all files modified in the last 2 hours and compress them into a tarball named archive.tar.gz in the directory \/testbed","command":"find \/testbed -type f -mtime -2 -exec gzip {} +","correct":false}
+{"index":292,"nl":"List all subdirectories of \/testbed that are not named subdir1","command":"ls -d \/testbed\/subdir* | grep -v \"subdir1\"","correct":false}
+{"index":293,"nl":"Search for all files that contain the string 'text file' under the directory \/testbed","command":"find \/testbed -type f -exec grep -l \"text file\" {} \\;","correct":true}
+{"index":294,"nl":"Compute the MD5 hash of all files under the directory \/testbed and store them in a file named hashes.txt in the same directory","command":"find \/testbed -type f -exec md5sum {} + > hashes.txt","correct":false}
+{"index":295,"nl":"Print the last 10 lines of the file \/testbed\/dir3\/subdir1\/subsubdir1\/textfile3.txt","command":"tail -n 10 \/testbed\/dir3\/subdir1\/subsubdir1\/textfile3.txt","correct":true}
+{"index":296,"nl":"Print the line number and contents of all lines containing the string 'value3' in the file \/testbed\/dir1\/subdir1\/jsonfile1.json","command":"grep -n \"value3\" \/testbed\/dir1\/subdir1\/jsonfile1.json","correct":true}
+{"index":297,"nl":"Find all files in the directory \/testbed that have been modified in the last 24 hours and print their path","command":"find \/testbed -type f -mtime -1","correct":true}
+{"index":298,"nl":"Search for all the files in \/testbed directory and its subdirectories that contain the word 'Hello' and replace it with 'Hi' in-place.","command":"find \/testbed -type f -exec sed -i 's\/Hello\/Hi\/g' {} +","correct":true}
+{"index":299,"nl":"Display the contents of textfile3.txt and textfile4.txt side by side, with line numbers and a separator between them.","command":"cat -n textfile3.txt textfile4.txt | awk '{print $1 \"\\t\" $2}' | column -t","correct":false}

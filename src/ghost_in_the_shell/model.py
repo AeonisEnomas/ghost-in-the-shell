@@ -37,7 +37,7 @@ GENERATE_SYSTEM = (
     "Reply with only the command on one line: no explanation, no markdown, no code fences."
 )
 
-# The explain prompt evaluated in round 2.
+# The prompt for explanations.
 EXPLAIN_SYSTEM = (
     "You explain Linux bash commands to a beginner. Describe in one or two plain-English "
     "sentences exactly what the command does, including what each flag and file path "

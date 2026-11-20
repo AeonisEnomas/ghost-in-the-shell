@@ -38,9 +38,8 @@ confirmation, and commands that need administrator rights are never run from
 the app.
 
 The project began as an NLP course project ("Fine-tuning small language
-models"). The model was chosen through four rounds of execution-based
-evaluation on held-out test sets; the full study is in
-[`docs/model_selection.md`](docs/model_selection.md).
+models"). How the model was trained and tested is in
+[`docs/finetuning.md`](docs/finetuning.md).
 
 ## Features
 
@@ -87,61 +86,31 @@ the interface design, are in [`docs/app.md`](docs/app.md).
 
 ## Results
 
-**Model selection.** Eight open models were scored by running their commands
-in a sandbox and comparing the effect with the reference answers (275 prompts
-from the [NL2SH-ALFA](https://huggingface.co/datasets/westenfelder/NL2SH-ALFA)
-test set).
+**The model.** Qwen2.5-Coder-1.5B was fine-tuned with QLoRA on 49,489 request
+and command pairs from four public datasets, filtered for wrong answers,
+synthetic tasks and rarely used tools. It is compared with the same base model
+exported the same way, on two test sets where every command is run in a
+sandbox and judged by what it does:
 
-| Model | Execution accuracy | Seconds per answer |
+| | App requests (169) | NL2SH-ALFA (274) |
 |---|---|---|
-| Qwen2.5-Coder-3B | 51.6% | 2.89 |
-| Gemma-4-E2B | 49.8% | 2.72 |
-| Qwen2.5-Coder-1.5B | 43.6% | 1.60 |
-| Llama-3.2-3B | 36.4% | 3.02 |
-| Qwen3.5-2B, Qwen2.5-Coder-0.5B, Llama-3.2-1B, Qwen3.5-0.8B | 16.0–34.2% | 0.64–6.12 |
+| Base Qwen2.5-Coder-1.5B | 68.6% | 47.1% |
+| Fine-tuned | 72.8% | 50.0% |
+| McNemar p | 0.34 | 0.41 |
 
-**Fine-tuning.** Both Qwen2.5-Coder finalists were fine-tuned with QLoRA on
-10,000 NL2SH-ALFA training pairs. A decision rule was fixed before training:
-keep the 3B model only if it beats the 1.5B model by at least 5 points with
-p < 0.05.
+- **App requests** are short tasks of the kind the app is built for, written
+  for this project ([`evaluation/app_requests`](evaluation/app_requests)).
+- **NL2SH-ALFA** is a public benchmark of longer, more formal prompts
+  ([`evaluation/nl2sh_alfa`](evaluation/nl2sh_alfa)).
 
-| | Base | Fine-tuned | McNemar p |
-|---|---|---|---|
-| Qwen2.5-Coder-1.5B | 43.6% | 46.2% | 0.37 |
-| Qwen2.5-Coder-3B | 51.6% | 50.9% | 0.89 |
-| 3B vs 1.5B, both fine-tuned | | +4.7 points | 0.06 |
+The fine-tuned model is ahead on both by 3 to 4 points. With test sets of this
+size that gain is not statistically significant. It also always replies with a
+bare command, where the base wraps a quarter of its replies in extra text.
+Details and limitations are in [`docs/finetuning.md`](docs/finetuning.md).
 
-The 3B model missed the rule on both counts, so the 1.5B model was chosen; it
-is also twice as fast. Fine-tuning weakened the model's explanations, so
-explanations come from the base model.
-
-**Round 4.** That first fine-tune did not improve the model, so it was
-repeated on cleaner data: 49,489 pairs from four sources, filtered for wrong
-answers, synthetic tasks and rarely used tools, trained for two epochs. It is
-scored on NL2SH-ALFA and on a new test of 169 short, app-style requests
-([`benchmarks/app_test`](benchmarks/app_test)), against the base model exported
-the same way.
-
-| | NL2SH-ALFA | App test |
-|---|---|---|
-| Base Qwen2.5-Coder-1.5B | 46.4% | 68.6% |
-| Fine-tuned, round 4 | 50.0% | 72.8% |
-| McNemar p | 0.30 | 0.34 |
-
-The round 4 model is ahead on both tests by about 4 points. With test sets of
-this size that gain is not statistically significant. The app ships it.
-
-**The app** ([`evaluation/results/report.md`](evaluation/results/report.md),
-measured with the earlier fine-tuned model):
-
-- The request gate accepts all 300 test prompts and stops all 30 handwritten
-  off-topic requests.
-- All 72 destructive commands the models produced on 50 risky prompts are
-  rated Caution or Dangerous.
-- Of 24 injection and misuse attacks, 11 are stopped before reaching the model;
-  every harmful command produced by the rest is rated Caution or Dangerous.
-- About 1.6 s per request on a 2014 laptop CPU (i7-4712HQ), of which the dry
-  run takes tens of milliseconds.
+**The app.** The request gate accepts all 300 NL2SH-ALFA test prompts and stops
+all 30 handwritten off-topic requests. A request takes about 1 s on a 2014
+laptop CPU (i7-4712HQ), of which the dry run takes 50 to 250 ms.
 
 ## How to run
 
@@ -178,17 +147,18 @@ mv models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf models/qwen2.5-coder-1.5b.Q4_K
 ```
 
 **The command writer** (fine-tuned Qwen2.5-Coder-1.5B, about 1 GB). Open
-[`training/round4/finetune.ipynb`](training/round4/finetune.ipynb) in Google
+[`finetune/finetune.ipynb`](finetune/finetune.ipynb) in Google
 Colab with a T4 GPU and run all cells. Preparing the data takes about 5
 minutes and training about 2.5 hours; if the session disconnects, run all
 cells again and training resumes. The notebook saves
-`qwen2.5-coder-1.5b-ft-r4.Q4_K_M.gguf` to Google Drive; download it into
-`models/`.
+`qwen2.5-coder-1.5b-finetuned.Q4_K_M.gguf` to Google Drive; download it into
+`models/`. It also saves `qwen2.5-coder-1.5b-base-export.Q4_K_M.gguf`, which
+only the model tests need.
 
 **The request classifier** (about 10 seconds; downloads Dolly-15k on first run):
 
 ```bash
-uv run python training/relevance/train_relevance.py
+uv run python classifier/train_classifier.py
 ```
 
 ### 3. Start the app
@@ -221,36 +191,29 @@ two models load. The app is reachable from this computer only.
 | `GHOST_THREADS` | up to 4 | CPU threads per model |
 | `XDG_STATE_HOME` | `~/.local/state` | history and model logs go in `ghost-in-the-shell/` under it |
 
-### Tests and evaluation
+### Tests
 
 ```bash
-uv run pytest                                    # 230 unit, integration and interface tests
+uv run pytest                                    # 230 unit, integration and interface tests of the app
 uv run --with playwright python tests/browser_check.py shots/   # with the app running: every flow in Chromium
-uv run python evaluation/app_eval.py             # end-to-end evaluation of the finished app
 ```
 
 Most tests run against the real models and the classifier, so complete step 2 first.
 
-### Reproducing model selection
+### Testing the model
 
-From `benchmarks/model_selection/` (several hours on a laptop CPU; every
-script resumes where it stopped):
+Both tests compare the fine-tuned model with its base and take a few minutes
+each on a laptop CPU (saved answers are reused):
 
 ```bash
-uv run python generate.py        # round 1: eight models
-uv run python score.py results/preds/*.jsonl
-uv run python round2.py          # round 2: prompting, retrieval, risky prompts, explanations
-uv run python round2_report.py
-uv run python round3_eval.py     # round 3: needs both fine-tuned GGUF files in models/
-uv run python round4_eval.py     # round 4: needs the two files from the round 4 notebook
+cd evaluation/app_requests && uv run python run.py
+cd ../nl2sh_alfa && uv run python run.py
 ```
-
-The app test runs from `benchmarks/app_test/`; see its README.
 
 ## Project layout
 
 ```
-src/ghost_in_the_shell/
+src/ghost_in_the_shell/   the app
   sanitize.py      untrusted text: control tokens, hidden characters, terminal escapes
   relevance.py     request classifier and injection-phrase detection
   model.py         the two llama.cpp servers: writer and explainer
@@ -260,21 +223,21 @@ src/ghost_in_the_shell/
   pipeline.py      the steps above, and the rules for running
   history.py       local SQLite history
   ui/              Streamlit interface, custom components, theme
-benchmarks/
-  model_selection/ four rounds on NL2SH-ALFA and the execution scorer
-  app_test/        169 app-style requests, their sample folder and scorer
-training/
-  round3/          first fine-tune: notebook, executed copy, records
-  round4/          the shipped fine-tune: notebook, data and training records
-  relevance/       request classifier: training script and report
-evaluation/        end-to-end evaluation of the app
-tests/             pytest suite and the browser check
-docs/              model_selection.md, app.md
+tests/             tests of the app (pytest) and the browser check
+finetune/          the fine-tuning notebook and the records of the run
+evaluation/        tests of the model: base against fine-tuned
+  app_requests/    169 app-style requests, their sample folder and scorer
+  nl2sh_alfa/      the public benchmark, its test filesystems and scorer
+classifier/        training script and data for the request classifier
+data/nl2sh_alfa/   the NL2SH-ALFA training and test splits
+docs/              app.md, finetuning.md
+models/            model files (not in the repository; see "Get the models")
 ```
 
 ## Limitations
 
-- The model is right about half the time on hard benchmark tasks; many of its
+- The model gives exactly the right result for about three quarters of
+  everyday requests and half of the harder benchmark prompts; some of its
   other answers are valid alternatives that do something slightly different.
   Read the explanation and the dry run.
 - The risk check follows rules. It handles the usual tricks, but an unusual
@@ -289,11 +252,11 @@ docs/              model_selection.md, app.md
 
 - [NL2SH-ALFA](https://huggingface.co/datasets/westenfelder/NL2SH-ALFA)
   (Westenfelder et al., NAACL 2025, MIT): training and test data, included in
-  `data/raw/`
+  `data/nl2sh_alfa/`
 - [Bash Instruct III](https://huggingface.co/datasets/Frost2o24/bash-instruct-III-55k)
   (MIT), [mecha-org/linux-command-dataset](https://huggingface.co/datasets/mecha-org/linux-command-dataset)
   (Apache 2.0) and [aelhalili/bash-commands-dataset](https://huggingface.co/datasets/aelhalili/bash-commands-dataset)
-  (MIT): additional training data for round 4
+  (MIT): additional training data
 - [InterCode-ALFA](https://github.com/westenfelder/InterCode-ALFA) (MIT): the
   test filesystems used by the scorer
 - [databricks-dolly-15k](https://huggingface.co/datasets/databricks/databricks-dolly-15k)

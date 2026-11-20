@@ -51,7 +51,8 @@ def render() -> None:
             "are never run from the app. Model control tokens and hidden characters are stripped from requests "
             "and rejected in commands; text from the model, files and commands is never rendered as HTML.")),
         ("Bugs", ui.man_paragraphs(
-            "The model is right about half the time on hard benchmark tasks. Read the explanation and the dry run.",
+            "The model is wrong for about a quarter of everyday requests and half of the harder benchmark "
+            "prompts. Read the explanation and the dry run.",
             "The risk check follows rules: an unusual command can still be rated too low. Unknown programs are "
             "never rated read-only.",
             "The dry run tracks only the working folder; effects elsewhere appear under risk.")),
@@ -60,5 +61,5 @@ def render() -> None:
             ("GHOST_MODELS_DIR", "where the model files are (default: models/ in the project)"),
             ("GHOST_THREADS", "CPU threads per model (default: up to 4)"),
         ])),
-        ("See also", ui.man_paragraphs("docs/model_selection.md, docs/app.md, evaluation/results/report.md")),
+        ("See also", ui.man_paragraphs("docs/app.md, docs/finetuning.md, evaluation/README.md")),
     ], VERSION, "November 2026"))

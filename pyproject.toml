@@ -5,7 +5,6 @@ description = "Talk to Linux in plain English: an offline app that turns request
 requires-python = ">=3.12"
 dependencies = [
     "bashlex>=0.18",
-    "bm25s>=0.3.16",
     "huggingface-hub>=2.4.0",
     "joblib>=1.6.0",
     "pandas>=3.1.1",

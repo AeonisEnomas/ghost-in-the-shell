@@ -17,9 +17,9 @@ class Settings:
     models_dir: Path = field(
         default_factory=lambda: Path(os.environ.get("GHOST_MODELS_DIR", PROJECT_ROOT / "models"))
     )
-    # Fine-tuned model (round 4) for writing commands, base model for explaining
-    # them (fine-tuning weakened explanations; see docs/model_selection.md).
-    generator_file: str = "qwen2.5-coder-1.5b-ft-r4.Q4_K_M.gguf"
+    # The fine-tuned model writes commands; the base model explains them, because
+    # training on command-only replies weakens explanations (docs/finetuning.md).
+    generator_file: str = "qwen2.5-coder-1.5b-finetuned.Q4_K_M.gguf"
     explainer_file: str = "qwen2.5-coder-1.5b.Q4_K_M.gguf"
     threads: int = field(
         default_factory=lambda: int(os.environ.get("GHOST_THREADS", min(4, os.cpu_count() or 1)))
