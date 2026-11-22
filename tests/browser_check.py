@@ -1,18 +1,4 @@
-"""Browser check: drive every flow of the running app in Chromium, like a user.
-
-Covers what Streamlit's AppTest cannot: the custom components (prompt, command
-blocks, command palette, history table), dialogs, keyboard shortcuts, the
-streaming explanation, page navigation and the phone layout. Each step is
-screenshotted, and every broken expectation is reported.
-
-Usage, with the app running on port 8501 (started from a folder you do not
-mind previewing in; the only commands run for real are read-only):
-
-    uv run --with playwright python tests/browser_check.py screenshots/
-
-Set CHROMIUM to a Chromium or headless-shell binary if Playwright's own browser
-is not installed.
-"""
+# Browser check: drive every flow of the running app in Chromium, like a user.
 
 import os
 import sys
@@ -81,30 +67,25 @@ with sync_playwright() as p:
     expect(page.locator("img.banner-art").count() == 1, "banner ghost missing")
     expect(page.locator(".statusbar").is_visible(), "status bar not visible")
 
-    # An example request
     page.get_by_role("button", name="count the lines in every python file").click()
     settle(page, 3)
     expect(focused_block(page).count() == 1, "no focused block after the example")
     expect(page.locator("img.banner-art").count() == 0, "banner still shown with a result")
     shot(page, "02_example")
 
-    # The explanation streams in and finishes
     page.wait_for_selector(".explain:not(.explain--wait):not(.explain--live)", timeout=60000)
     settle(page)
     shot(page, "03_explained")
 
-    # Read-only run: runs straight from the block
     block_action(page, "run")
     expect("✓ ran" in focused_block(page).inner_text(), "read-only command did not run from the block")
     expect(page.get_by_text("output", exact=True).count() >= 1, "no output pane after running")
     shot(page, "04_ran")
 
-    # Prompt history: ArrowUp recalls the last request
     page.locator("input.in").press("ArrowUp")
     expect("python" in page.locator("input.in").input_value(), "ArrowUp did not recall the last request")
     page.locator("input.in").fill("")
 
-    # Edit dialog shows the current command and checks a new version
     block_action(page, "edit")
     dialog = page.get_by_role("dialog")
     current = focused_block(page).locator("code.cmd").inner_text()
@@ -115,7 +96,6 @@ with sync_playwright() as p:
     expect("edited" in focused_block(page).inner_text(), "edited marker missing")
     shot(page, "05_edited")
 
-    # Keys for the focused block: with the prompt not focused, e opens the edit dialog
     page.locator("input.in").evaluate("el => el.blur()")
     page.keyboard.press("e")
     settle(page)
@@ -123,7 +103,6 @@ with sync_playwright() as p:
     page.get_by_role("dialog").get_by_role("button", name="Cancel").click()
     settle(page)
 
-    # Explain mode with a dangerous command: dialog, typed confirmation
     send(page, "rm -rf *", mode="explain")
     expect("DANGEROUS" in focused_block(page).inner_text().upper(), "rm -rf * not rated dangerous")
     block_action(page, "run")
@@ -139,9 +118,6 @@ with sync_playwright() as p:
     dialog.get_by_role("button", name="Cancel").click()
     settle(page)
 
-    # A second dangerous command must not inherit the confirmation. Run is
-    # clicked while the explanation is still streaming: the rerun that follows
-    # its completion must not close the dialog.
     send(page, "rm -rf *.log", mode="explain")
     focused_block(page).get_by_role("button", name="run").click()
     time.sleep(1.5)
@@ -154,12 +130,10 @@ with sync_playwright() as p:
     dialog.get_by_role("button", name="Cancel").click()
     settle(page)
 
-    # Admin rights: blocked in the block
     send(page, "sudo pacman -Syu", mode="explain")
     expect("admin rights" in focused_block(page).inner_text(), "sudo command not blocked")
     shot(page, "08_sudo")
 
-    # Off-topic request, then continue anyway
     send(page, "what is the capital of france", mode="ask")
     expect(page.get_by_text("look like a task", exact=False).count() >= 1, "off-topic notice missing")
     shot(page, "09_off_topic")
@@ -167,13 +141,11 @@ with sync_playwright() as p:
     settle(page, 3)
     expect("capital of france" in focused_block(page).inner_text(), "continue anyway did not produce a block")
 
-    # Older blocks focus on click
     older = page.locator("article.block.compact").first
     older.click()
     settle(page, 1.5)
     expect(page.locator("article.block.focused").count() == 1, "clicking an older block did not focus it")
 
-    # Command palette
     page.keyboard.press("Control+k")
     time.sleep(0.6)
     expect(page.locator(".backdrop.open").count() == 1, "ctrl+k did not open the palette")
@@ -183,7 +155,6 @@ with sync_playwright() as p:
     settle(page, 2)
     expect("/history" in page.url, "palette did not navigate to History")
 
-    # History table: click a row to reopen it
     shot(page, "11_history")
     rows = page.locator("tr.row")
     expect(rows.count() >= 5, f"history shows only {rows.count()} rows")
@@ -192,7 +163,6 @@ with sync_playwright() as p:
     expect("/history" not in page.url, "history row did not open the session")
     shot(page, "12_reopened")
 
-    # Folder dialog: go up one level and open it
     before = page.locator(".tbar-title").inner_text()
     page.get_by_role("button", name="cd").click()
     settle(page)
@@ -203,13 +173,11 @@ with sync_playwright() as p:
     settle(page, 1.5)
     expect(page.locator(".tbar-title").inner_text() != before, "folder did not change")
 
-    # Manual page
     page.get_by_role("link", name="Manual").click()
     settle(page, 1.5)
     expect(page.get_by_text("GHOST(1)").count() >= 1, "manual page missing")
     shot(page, "14_manual")
 
-    # Phone width
     page.set_viewport_size({"width": 400, "height": 1000})
     page.goto(URL)
     page.wait_for_selector("input.in", timeout=120000)

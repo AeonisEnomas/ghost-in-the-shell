@@ -1,10 +1,4 @@
-"""The folder every app-test request is run in.
-
-A small, made-up home directory with a project folder inside it: notes, logs,
-spreadsheets, Python files, photos, archives. Every file has fixed content,
-and its age is set relative to the moment the folder is built, so "changed in
-the last 24 hours" means the same files on any day and any machine.
-"""
+# The folder every app-test request is run in.
 
 import gzip
 import hashlib
@@ -18,7 +12,6 @@ CWD = f"{HOME}/project"
 
 HOUR, DAY = 3600, 86400
 DEFAULT_AGE = 90 * DAY
-# Ages that differ from the default. Recent files are spaced apart so "newest" has one answer.
 AGES = {
     "project/notes.txt": 110 * 60,
     "project/src/main.py": 130 * 60,
@@ -40,7 +33,7 @@ EMPTY_DIRS = ["project/empty_dir", "Pictures"]
 
 
 def blob(name: str, size: int, magic: bytes = b"") -> bytes:
-    """Fixed pseudo-random bytes, standing in for a photo, video or document."""
+    # Fixed pseudo-random bytes, standing in for a photo, video or document.
     out, counter = bytearray(magic), 0
     while len(out) < size:
         out += hashlib.sha256(f"{name}:{counter}".encode()).digest()
@@ -120,7 +113,6 @@ NOTES = [
 ]
 
 FILES: dict[str, str | bytes] = {
-    # --- top of the project folder
     "project/README.md": "# Project\n\nA small demo project.\n\n## Usage\n\nRun `python run.py`.\n\n"
                          "See docs/guide.md for details.\n",
     "project/notes.txt": lines(*NOTES),
@@ -153,7 +145,6 @@ FILES: dict[str, str | bytes] = {
     "project/placeholder.dat": "",
     "project/my file.txt": "A file with a space in its name.\n",
     "project/report.pdf": blob("report.pdf", 180_000, b"%PDF-1.4\n"),
-    # --- source code
     "project/src/__init__.py": "",
     "project/src/main.py": (
         "# Entry point for the demo project\nimport os\nimport sys\n\nfrom utils import greet\n\n\n"
@@ -176,7 +167,6 @@ FILES: dict[str, str | bytes] = {
     "project/tests/test_utils.py": (
         "import utils\n\n\ndef test_greet():\n"
         '    assert utils.greet("Ada") == "Hello, Ada!"\n'),
-    # --- documents and media
     "project/docs/guide.md": "# Guide\n\nSet the database password in the .env file.\n\nThen run the app.\n",
     "project/docs/api.md": "# API\n\nGET /api/items returns the list of items.\n",
     "project/docs/guide.md.bak": "# Guide\n\nOld version of the guide.\n",
@@ -186,13 +176,11 @@ FILES: dict[str, str | bytes] = {
     "project/photos/sunset.jpg": blob("sunset.jpg", 55_000, b"\xff\xd8\xff\xe0"),
     "project/photos/IMG_001.JPG": blob("IMG_001.JPG", 70_000, b"\xff\xd8\xff\xe0"),
     "project/photos/portrait.png": blob("portrait.png", 30_000, b"\x89PNG\r\n\x1a\n"),
-    # --- data
     "project/data/sales_2023.csv": lines("month,units", "jan,120", "feb,135", "mar,150"),
     "project/data/sales_2024.csv": lines("month,units", "jan,140", "feb,155", "mar,171"),
     "project/data/raw/dump.json": "".join(
         f'{{"id": {i}, "label": "item-{i}", "value": {i * 37 % 1000}}}\n' for i in range(28_000)),
     "project/data/raw/video.mp4": blob("video.mp4", 5_000_000),
-    # --- logs, archives, leftovers
     "project/logs/jan.log": lines("2026-01-05 INFO Backup finished", "2026-01-19 INFO Backup finished"),
     "project/logs/feb.log": lines("2026-02-02 INFO Backup finished", "2026-02-16 INFO Backup finished"),
     "project/logs/mar.log": lines("2026-03-02 INFO Backup finished", "2026-03-16 WARNING Backup was slow"),
@@ -207,7 +195,6 @@ FILES: dict[str, str | bytes] = {
     "project/build/output.o": blob("output.o", 4_000, b"\x7fELF"),
     "project/tmp/scratch.txt": "scratch\n",
     "project/tmp/old_output.txt": "result: 42\n",
-    # --- the rest of the home folder
     "Documents/resume.docx": blob("resume.docx", 20_000, b"PK\x03\x04"),
     "Documents/taxes/2023.pdf": blob("2023.pdf", 60_000, b"%PDF-1.4\n"),
     "Downloads/installer.deb": blob("installer.deb", 50_000),
@@ -217,7 +204,7 @@ FILES: dict[str, str | bytes] = {
 
 
 def build(root: Path, now: float) -> None:
-    """Create the folder under `root` (which becomes "/" in the sandbox)."""
+    # Create the folder under `root` (which becomes "/" in the sandbox).
     home = root / HOME.lstrip("/")
     for rel, content in FILES.items():
         path = home / rel
@@ -228,7 +215,6 @@ def build(root: Path, now: float) -> None:
         (home / rel).mkdir(parents=True)
     (root / "tmp").mkdir(mode=0o777)
 
-    # Ages last, deepest paths first, because creating a file changes its folder's time.
     for path in sorted(home.rglob("*"), key=lambda p: -len(p.parts)):
         age = AGES.get(str(path.relative_to(home)), DEFAULT_AGE)
         os.utime(path, (now - age, now - age))

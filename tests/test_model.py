@@ -1,4 +1,4 @@
-"""Integration tests against the real models. Skipped when the GGUF files are missing."""
+# Integration tests against the real models. Skipped when the GGUF files are missing.
 
 import pytest
 

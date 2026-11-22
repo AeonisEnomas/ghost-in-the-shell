@@ -1,14 +1,4 @@
-"""Session state and the actions that change it, shared by all pages.
-
-The workspace is a feed of command blocks, like a terminal session. Each
-block is a `View` with its own id; every widget that belongs to a block is
-keyed by that id, so state never carries over from one command to the next
-(confirming one dangerous command never enables Run for another).
-
-Explanations are written in a background thread and streamed into a shared
-buffer, so the page never waits for them and the text appears as it is
-written.
-"""
+# Session state and the actions that change it, shared by all pages.
 
 import os
 import threading
@@ -35,8 +25,8 @@ FEED_LIMIT = 30
 
 @dataclass
 class View:
-    """One command in the session feed and everything known about it."""
-    source: str                       # "ask" or "explain"
+    # One command in the session feed and everything known about it.
+    source: str
     request: str
     review: Review
     entry_id: int
@@ -62,7 +52,7 @@ class Notice:
 
 @dataclass
 class Explanation:
-    """Shared between the writer thread and the page; only the writer appends."""
+    # Shared between the writer thread and the page; only the writer appends.
     text: str = ""
     done: bool = False
     error: str = ""
@@ -70,7 +60,7 @@ class Explanation:
 
 @st.cache_resource(show_spinner=False)
 def services() -> tuple[Assistant, History]:
-    """Started once per app process and shared by every browser tab."""
+    # Started once per app process and shared by every browser tab.
     settings = Settings()
     models = Models(settings)
     models.start()
@@ -96,7 +86,7 @@ def _write_explanation(command: str, target: Explanation) -> None:
 
 
 def explanation(command: str) -> Explanation:
-    """The explanation for a command, started in the background if needed."""
+    # The explanation for a command, started in the background if needed.
     pool, jobs, lock = _explanations()
     with lock:
         job = jobs.get(command)
@@ -118,12 +108,12 @@ def session():
         except ValueError:
             s.folder = Path.home()
         s.start_folder = s.folder
-        s.feed = []               # list[View], oldest first
-        s.view = None             # the focused View
+        s.feed = []
+        s.view = None
         s.notice = None
         s.error = ""
-        s.pending = None          # (kind, text) queued by a widget callback
-        s.dialog = None           # ("run" | "edit" | "folder", view uid or None)
+        s.pending = None
+        s.dialog = None
         s.fill = ""
     return s
 
@@ -157,8 +147,6 @@ def _add(view: View) -> None:
     s.view = view
     explanation(view.review.command)
 
-
-# ---------------------------------------------------------------- actions
 
 def ask(request: str, force: bool = False) -> None:
     assistant, history = services()
@@ -197,12 +185,12 @@ def check(command: str, source: str = "explain", request: str = "", entry_id: in
 
 
 def restore(entry: Entry) -> None:
-    """Open a history entry in the session, re-checked against the current folder."""
+    # Open a history entry in the session, re-checked against the current folder.
     check(entry.command, entry.mode, entry.request, entry.id)
 
 
 def run_pending() -> bool:
-    """Carry out an action queued by a widget callback. Returns True if one ran."""
+    # Carry out an action queued by a widget callback. Returns True if one ran.
     s = session()
     if not s.pending:
         return False

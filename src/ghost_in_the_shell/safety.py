@@ -1,22 +1,4 @@
-"""Risk assessment of a shell command before it is previewed or run.
-
-The command is parsed with bashlex into the simple commands it would execute.
-Quoting tricks (r''m), wrappers (sudo, env, xargs, timeout), nested shells
-(bash -c "..."), command substitution and find -exec are unwrapped, so the
-check sees the programs that would actually run. Each simple command and each
-redirection is then matched against rules that describe its effect.
-
-Every command gets one of four levels:
-
-  READ_ONLY  only reads or prints
-  CHANGES    creates or edits files in an ordinary, recoverable way
-  CAUTION    deletes or overwrites, needs admin rights, uses the network,
-             or does something the check cannot see into
-  DANGER     can destroy data or the system in a way that is hard to undo
-
-The check is advisory and errs on the side of CAUTION: a program it does not
-know is never reported as read-only.
-"""
+# Risk assessment of a shell command before it is previewed or run.
 
 import re
 import shlex
@@ -61,17 +43,16 @@ class Assessment:
 
 @dataclass
 class _Simple:
-    """One program invocation, with the context it runs in."""
+    # One program invocation, with the context it runs in.
     argv: list[str]
     redirects: list[tuple[str, str]] = field(default_factory=list)
-    pipeline: int = -1        # index of the pipeline it belongs to, -1 if alone
-    position: int = 0         # position inside that pipeline
+    pipeline: int = -1
+    position: int = 0
     elevated: bool = False
     dynamic_name: bool = False
-    via_xargs: bool = False   # operands arrive on standard input
+    via_xargs: bool = False
 
 
-# ---------------------------------------------------------------- paths
 
 SYSTEM_DIRS = ("/etc", "/usr", "/bin", "/sbin", "/lib", "/lib64", "/boot", "/var", "/opt",
                "/srv", "/root", "/sys", "/proc", "/dev", "/home", "/mnt", "/media")
@@ -80,7 +61,7 @@ HARMLESS_TARGETS = {"/dev/null", "/dev/stdout", "/dev/stderr", "/dev/tty", "-", 
 
 
 def _path_scope(path: str) -> str | None:
-    """Describe a path that covers far more than a single project, or None."""
+    # Describe a path that covers far more than a single project, or None.
     p = path.rstrip("/") or "/"
     if p in {"/", "/*", "/.*"}:
         return "the whole filesystem"
@@ -98,7 +79,6 @@ def _is_glob(word: str) -> bool:
     return any(c in word for c in "*?[")
 
 
-# ---------------------------------------------------------------- parsing
 
 WRAPPERS_WITH_ARG = {
     "sudo": {"-u", "-g", "-C", "-D", "-h", "-p", "-r", "-t", "-U", "-T"},
@@ -121,10 +101,7 @@ INTERPRETERS = SHELLS | {"python", "python3", "perl", "ruby", "node", "php", "lu
 
 
 def _unwrap(argv: list[str]) -> tuple[list[str], bool, bool, list[list[str]]]:
-    """Strip wrappers such as sudo or xargs.
-
-    Returns (argv, elevated, via_xargs, nested commands).
-    """
+    # Strip wrappers such as sudo or xargs.
     elevated = via_xargs = False
     nested: list[list[str]] = []
     while argv:
@@ -163,12 +140,12 @@ def _base(word: str) -> str:
 
 
 class _Collector:
-    """Walk a bashlex tree and collect simple commands."""
 
+    # Walk a bashlex tree and collect simple commands.
     def __init__(self) -> None:
         self.commands: list[_Simple] = []
         self.pipelines = 0
-        self.extra_sources: list[str] = []   # strings to parse recursively (bash -c, eval)
+        self.extra_sources: list[str] = []
 
     def visit(self, node, pipeline: int = -1, position: int = 0) -> None:
         kind = node.kind
@@ -237,6 +214,7 @@ class _Collector:
 
     def _find_exec(self, argv, pipeline, position, elevated) -> None:
         root = _find_root(argv)
+        # Broad: the find root is outside the current folder, so -exec {} can act far beyond it.
         broad = (_path_scope(root) or "everything in the current folder") != "everything in the current folder"
         i = 0
         while i < len(argv):
@@ -246,8 +224,6 @@ class _Collector:
                 while j < len(argv) and argv[j] not in (";", "\\;", "+"):
                     inner.append(argv[j])
                     j += 1
-                # "{}" stands for each file found. When the search covers a wide
-                # area, give it the scope of the search root.
                 inner = [root if w == "{}" and broad else w for w in inner]
                 if inner:
                     self.add(inner, [], pipeline, position, elevated=elevated)
@@ -256,7 +232,7 @@ class _Collector:
 
 
 def _fallback_split(command: str) -> list[list[str]]:
-    """Rough split used when bashlex cannot parse the command."""
+    # Rough split used when bashlex cannot parse the command.
     lexer = shlex.shlex(command, posix=True, punctuation_chars=";&|()<>")
     lexer.whitespace_split = True
     commands, current = [], []
@@ -294,7 +270,6 @@ def _collect(command: str, depth: int = 0) -> tuple[list[_Simple], bool]:
     return commands, parsed
 
 
-# ---------------------------------------------------------------- rules
 
 READ_ONLY_PROGRAMS = set("""
 ls ll dir cat tac head tail less more bat grep egrep fgrep rg ag ack find fd locate which whereis type
@@ -311,12 +286,9 @@ systemctl service ufw iptables nft mount umount crontab xdg-open open less diffs
 shuf neofetch fastfetch screenfetch printenv locale getconf ulimit tput clear reset sha224sum sha384sum
 """.split())
 
-# Programs in READ_ONLY_PROGRAMS that are only read-only for some arguments.
-# Their writing forms are caught by the rules below.
 
 CREATES = {"mkdir", "touch", "ln", "tee", "zip", "gzip", "gunzip", "bzip2", "bunzip2", "xz", "unxz",
            "7z", "rsync", "install", "mktemp", "split", "csplit", "convert", "ffmpeg", "wget", "curl"}
-# Programs that send or fetch data. Simple lookups (ping, dig, host) are not listed.
 NETWORK = {"curl", "wget", "ssh", "scp", "sftp", "ftp", "rsync", "nc", "ncat", "netcat", "telnet", "aria2c"}
 DISK_TOOLS = {"mkfs", "wipefs", "shred", "fdisk", "sfdisk", "gdisk", "sgdisk", "parted", "mkswap",
               "cryptsetup", "blkdiscard", "badblocks", "hdparm", "fstrim"}
@@ -327,7 +299,7 @@ PACKAGE_READ = re.compile(r"^(-Q\w*|-Ss?\w*|-Si|-F\w*|list|search|show|info|poli
 
 
 def _options(argv: list[str]) -> str:
-    """All single-letter options joined, e.g. ['rm', '-rf', '-v'] -> 'rfv'."""
+    # All single-letter options joined, e.g. ['rm', '-rf', '-v'] -> 'rfv'.
     letters = ""
     for word in argv[1:]:
         if word == "--":
@@ -465,6 +437,7 @@ def _rule_docker(argv: list[str]) -> list[Finding]:
         level = Level.DANGER if ("-a" in words or "--all" in words or "volume" in words) else Level.CAUTION
         return [Finding(level, "Deletes containers, images or data", f"{_base(argv[0])} {text[:60]} removes stored data.")]
     if words and words[0] in ("rm", "rmi") and re.search(r"\$\((docker|podman) ", text):
+        # 'rm' targets containers; other docker verbs target images.
         return [Finding(Level.DANGER, "Removes every container or image",
                         f"The list of targets is every {words[0] == 'rm' and 'container' or 'image'} on the system.")]
     if words and words[0] in ("rm", "rmi", "kill", "stop") or text.startswith(("volume rm", "image rm", "container rm")):
@@ -542,7 +515,6 @@ def _rule_sed_like(argv: list[str]) -> list[Finding]:
 def _rule_archive(argv: list[str]) -> list[Finding]:
     name, opts = _base(argv[0]), _options(argv)
     if name == "tar":
-        # tar also accepts bundled letters without a dash: "tar czf out.tgz dir".
         if len(argv) > 1 and not argv[1].startswith("-"):
             opts += argv[1]
         if "t" in opts or "--list" in argv:
@@ -669,7 +641,7 @@ SENDERS = {"nc", "ncat", "netcat", "curl", "wget", "scp", "rsync", "sftp", "ftp"
 
 
 def _rule_upload(simple: "_Simple", stages: list["_Simple"]) -> list[Finding]:
-    """Data leaving the computer: uploads, and local data piped into a network program."""
+    # Data leaving the computer: uploads, and local data piped into a network program.
     name = _base(simple.argv[0])
     words = simple.argv[1:]
     uploads = (name in ("curl",) and any(w in ("-T", "--upload-file", "-d", "--data", "--data-binary", "-F", "--form")
@@ -691,7 +663,7 @@ FORK_BOMB = re.compile(r"(\w+|:)\s*\(\)\s*\{[^}]*\1\s*\|\s*\1")
 
 
 def assess(command: str, cwd: Path | None = None) -> Assessment:
-    """Assess the risk of running `command`, optionally in folder `cwd`."""
+    # Assess the risk of running `command`, optionally in folder `cwd`.
     findings: list[Finding] = []
     if FORK_BOMB.search(command):
         findings.append(Finding(Level.DANGER, "Fork bomb", "Starts copies of itself until the computer freezes."))
@@ -719,8 +691,7 @@ def assess(command: str, cwd: Path | None = None) -> Assessment:
             by_pipeline.setdefault(simple.pipeline, []).append(simple)
 
     for stages in by_pipeline.values():
-        # Keep one command per stage: the first one collected at each position
-        # (find's -exec commands share the position of find itself).
+        # One stage per pipeline position; find's -exec commands share find's position.
         stages = list({s.position: s for s in reversed(stages)}.values())
         stages.sort(key=lambda s: s.position)
         names = [_base(s.argv[0]) if s.argv else "" for s in stages]
@@ -729,8 +700,6 @@ def assess(command: str, cwd: Path | None = None) -> Assessment:
                 source = "downloaded" if set(names[:i]) & {"curl", "wget"} else "generated"
                 findings.append(Finding(Level.DANGER, "Runs piped text as code",
                                         f"Feeds {source} text into {name}, which executes it unchecked."))
-        # "find ROOT ... | xargs rm": the files come from the search, so the
-        # deletion covers the search root.
         first = stages[0]
         if first.argv and _base(first.argv[0]) == "find":
             scope = _path_scope(_find_root(first.argv))

@@ -16,9 +16,9 @@ def test_request_loses_role_tokens():
 
 
 @pytest.mark.parametrize("disguised", [
-    "<|im_​start|>",          # zero-width space inside the token
-    "<｜im_start｜>",      # full-width vertical bars
-    "<|im_<|x|>start|>",           # nested, reassembles after one pass
+    "<|im_​start|>",
+    "<｜im_start｜>",
+    "<|im_<|x|>start|>",
     "<|IM_START|>",
     "<tool_call>",
 ])

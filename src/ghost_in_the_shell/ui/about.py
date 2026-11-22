@@ -1,4 +1,4 @@
-"""The manual page, laid out like a Unix man page: GHOST(1)."""
+# The manual page, laid out like a Unix man page: GHOST(1).
 
 import streamlit as st
 

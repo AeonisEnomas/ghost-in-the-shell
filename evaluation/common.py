@@ -1,10 +1,4 @@
-"""Shared by the two model tests: which models are compared, how they are asked,
-the sandbox commands run in, and the paired significance test.
-
-Each model runs on CPU through llama-server (llama.cpp) with the same system
-prompt the app uses, greedy decoding and a fixed seed, so the same request
-always gives the same answer.
-"""
+# Shared by the two model tests: which models are compared, how they are asked, the sandbox commands run in, and the paired significance test.
 
 import json
 import re
@@ -20,30 +14,21 @@ from ghost_in_the_shell.model import GENERATE_SYSTEM as SYSTEM_PROMPT
 HERE = Path(__file__).parent
 MODELS_DIR = HERE.parent / "models"
 
-# Name used in result files -> model file. "base" and "finetuned" were exported
-# by the same notebook, so they differ only in their weights. "base-original"
-# is Qwen's own GGUF of the same model, built with a different converter.
 MODELS = {
     "base": "qwen2.5-coder-1.5b-base-export.Q4_K_M.gguf",
     "finetuned": "qwen2.5-coder-1.5b-finetuned.Q4_K_M.gguf",
     "base-original": "qwen2.5-coder-1.5b.Q4_K_M.gguf",
 }
-# Comparisons reported by both tests, as (A, B).
 PAIRS = [("base", "finetuned"), ("base-original", "finetuned"), ("base", "base-original")]
 
 PORT = 8089
 URL = f"http://127.0.0.1:{PORT}"
 
-# Host directories mounted read-only (or virtual) on top of a sandbox's
-# writable root. They are left out when a sandbox's files are compared.
 HOST_MOUNTS = {"usr", "etc", "proc", "dev", "bin", "sbin", "lib", "lib64", "setup.sh"}
 
 
-# ---------------------------------------------------------------- sandbox
-
 def bwrap_args(fs_root: Path, env: dict[str, str], cwd: str = "/") -> list[str]:
-    """Bubblewrap arguments for a throwaway system: `fs_root` becomes "/", the
-    host's programs are read-only, and there is no network."""
+    # Bubblewrap arguments for a throwaway system: `fs_root` becomes "/", the host's programs are read-only, and there is no network.
     args = [
         "bwrap", "--unshare-all", "--die-with-parent", "--new-session",
         "--bind", str(fs_root), "/",
@@ -65,10 +50,8 @@ def bwrap_args(fs_root: Path, env: dict[str, str], cwd: str = "/") -> list[str]:
     return args + ["--chdir", cwd]
 
 
-# ---------------------------------------------------------------- asking a model
-
 def extract_command(text: str) -> tuple[str, bool]:
-    """Pull the command out of a reply. Returns (command, had_format_error)."""
+    # Pull the command out of a reply. Returns (command, had_format_error).
     raw = text.strip()
     fence = re.search(r"```(?:\w+)?\n?(.*?)```", raw, re.S)
     body = fence.group(1).strip() if fence else raw
@@ -112,8 +95,7 @@ def ask(request: str) -> dict:
 
 
 def answer_all(name: str, items: list[dict], out: Path) -> None:
-    """Write the model's answer to every item (dicts with "index" and "nl") to `out`,
-    one JSON line each. Answers already in the file are kept, so a run can resume."""
+    # Write the model's answer to every item (dicts with "index" and "nl") to `out`, one JSON line each. Answers already in the file are kept, so a run can resume.
     done = set()
     if out.exists():
         done = {json.loads(line)["index"] for line in out.read_text().splitlines() if line.strip()}
@@ -127,7 +109,7 @@ def answer_all(name: str, items: list[dict], out: Path) -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     server = start_server(gguf)
     try:
-        ask("list files")  # warm-up, not recorded
+        ask("list files")
         with out.open("a") as fh:
             for item in todo:
                 fh.write(json.dumps({**item, **ask(item["nl"])}) + "\n")
@@ -137,11 +119,8 @@ def answer_all(name: str, items: list[dict], out: Path) -> None:
         server.wait(timeout=30)
 
 
-# ---------------------------------------------------------------- statistics
-
 def mcnemar(a, b) -> tuple[int, int, float]:
-    """Paired exact McNemar test on the items where exactly one model is right.
-    `a` and `b` are boolean pandas Series with the same index."""
+    # Paired exact McNemar test on the items where exactly one model is right.
     a_only = int((a & ~b).sum())
     b_only = int((~a & b).sum())
     n = a_only + b_only

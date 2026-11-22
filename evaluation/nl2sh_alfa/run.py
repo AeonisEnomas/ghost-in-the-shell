@@ -1,21 +1,4 @@
-"""Test the models on NL2SH-ALFA, the public benchmark (300 prompts).
-
-Every model in common.MODELS answers every prompt (answers already saved in
-results/answers/ are reused). The test filesystems and the reference results
-are then rebuilt, and all models are scored against them in the same session:
-some prompts depend on file ages or on the state of the machine, so reference
-results must not be carried over from another day.
-
-Accuracy is reported on two sets of prompts:
-
-- scoreable: the first reference command gives the same result twice, and a
-  command that does nothing does not pass;
-- clean: in addition, the second reference is stable too, and at least one
-  reference succeeds in this sandbox. Where both fail (a tool this machine
-  lacks, no network), the scorer would only be comparing error messages.
-
-Usage, from this folder:  uv run python run.py
-"""
+# Test the models on NL2SH-ALFA, the public benchmark (300 prompts).
 
 import json
 import sys
@@ -26,9 +9,9 @@ import pandas as pd
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.parent))
 
-import sandbox  # noqa: E402
-import score  # noqa: E402
-from common import MODELS, PAIRS, answer_all, mcnemar  # noqa: E402
+import sandbox
+import score
+from common import MODELS, PAIRS, answer_all, mcnemar
 
 TEST_SET = HERE.parents[1] / "data" / "nl2sh_alfa" / "test.csv"
 RESULTS = HERE / "results"
@@ -43,7 +26,7 @@ def run_references(test: pd.DataFrame) -> list[dict]:
 
 
 def label_prompts(references: list[dict], again: list[dict]) -> pd.DataFrame:
-    """Which prompts can be scored, given a second run of the references made after scoring."""
+    # Which prompts can be scored, given a second run of the references made after scoring.
     rows = []
     for first, later in zip(references, again):
         nothing = score.effect("true", first["fs_num"])

@@ -1,21 +1,4 @@
-"""Test the models on app requests: short, everyday tasks of the kind the app is built for.
-
-Each request in prompts.json is run in the folder built by fixture.py and
-judged by what the command does, compared with a set of reference commands:
-
-- if the reference changes files, the prediction must leave the same files
-  behind (path, type, permissions, content); what it prints is ignored;
-- otherwise the prediction must print the same lines and change nothing.
-  Line order is ignored unless the request is about ordering.
-
-References are run again in every scoring session, never cached, so results do
-not depend on the day or on an earlier run.
-
-Usage, from this folder:
-  uv run python run.py            answer with every model in common.MODELS, then score
-  uv run python run.py check      validate the test set itself
-  uv run python run.py overlap    list requests too close to the fine-tuning data
-"""
+# Test the models on app requests: short, everyday tasks of the kind the app is built for.
 
 import atexit
 import bz2
@@ -39,8 +22,8 @@ from pathlib import Path
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.parent))
 
-import fixture  # noqa: E402
-from common import HOST_MOUNTS, MODELS, PAIRS, answer_all, bwrap_args, mcnemar  # noqa: E402
+import fixture
+from common import HOST_MOUNTS, MODELS, PAIRS, answer_all, bwrap_args, mcnemar
 
 PROMPTS = HERE / "prompts.json"
 RESULTS = HERE / "results"
@@ -53,11 +36,9 @@ def load_prompts() -> list[dict]:
     return json.loads(PROMPTS.read_text())
 
 
-# ---------------------------------------------------------------- running a command
-
 @functools.cache
 def template() -> Path:
-    """The test folder, built once per session and copied for every run."""
+    # The test folder, built once per session and copied for every run.
     root = Path(tempfile.mkdtemp(prefix="ghost-apptest-"))
     atexit.register(shutil.rmtree, root, ignore_errors=True)
     fixture.build(root / "fs", time.time())
@@ -65,8 +46,7 @@ def template() -> Path:
 
 
 def _content_digest(data: bytes) -> str:
-    """Hash of a file's content. Archives are compared by what they contain, so the
-    compression level or the order files were added in does not matter."""
+    # Hash of a file's content. Archives are compared by what they contain, so the compression level or the order files were added in does not matter.
     for magic, unpack in ((b"\x1f\x8b", gzip.decompress), (b"BZh", bz2.decompress),
                           (b"\xfd7zXZ", lzma.decompress)):
         if data.startswith(magic):
@@ -88,7 +68,7 @@ def _content_digest(data: bytes) -> str:
 
 
 def manifest(fs_root: Path) -> str:
-    """Every file, folder and link the command could have touched, as one string."""
+    # Every file, folder and link the command could have touched, as one string.
     entries = []
     for top in sorted(fs_root.iterdir()):
         if top.name in HOST_MOUNTS:
@@ -102,7 +82,7 @@ def manifest(fs_root: Path) -> str:
                 entries.append((rel, "l", os.readlink(path)))
             elif stat.S_ISDIR(st.st_mode):
                 entries.append((rel, "d", mode))
-                os.chmod(path, mode | 0o700)      # the command may have locked the folder
+                os.chmod(path, mode | 0o700)
                 stack.extend(path.iterdir())
             else:
                 os.chmod(path, mode | 0o400)
@@ -111,7 +91,7 @@ def manifest(fs_root: Path) -> str:
 
 
 def normalise(output: str) -> list[str]:
-    """Printed lines without layout differences: spacing, blank lines, a leading './'."""
+    # Printed lines without layout differences: spacing, blank lines, a leading './'.
     lines = []
     for line in output.splitlines():
         line = re.sub(r"(?<![\w./-])\./", "", " ".join(line.split()))
@@ -121,7 +101,7 @@ def normalise(output: str) -> list[str]:
 
 
 def run(command: str) -> dict:
-    """Run a command in a fresh copy of the test folder."""
+    # Run a command in a fresh copy of the test folder.
     with tempfile.TemporaryDirectory(prefix="ghost-apptest-run-") as tmp:
         fs_root = Path(tmp) / "fs"
         shutil.copytree(template(), fs_root, symlinks=True)
@@ -136,8 +116,6 @@ def run(command: str) -> dict:
         lines = normalise(out.decode("utf-8", errors="replace")[:MAX_OUTPUT])
         return {"lines": lines, "fs": manifest(fs_root), "exit": code}
 
-
-# ---------------------------------------------------------------- scoring
 
 @functools.cache
 def untouched() -> str:
@@ -165,10 +143,8 @@ def is_correct(command: str, prompt: dict, references: list[dict]) -> bool:
     return any(same_effect(result, ref, prompt.get("ordered", False)) for ref in references)
 
 
-# ---------------------------------------------------------------- commands
-
 def check() -> int:
-    """Every reference must work, give the same result twice, and not be matched by doing nothing."""
+    # Every reference must work, give the same result twice, and not be matched by doing nothing.
     prompts = load_prompts()
     problems = []
     ids = [p["id"] for p in prompts]
@@ -241,7 +217,7 @@ def main() -> None:
 
 
 def overlap(train_csv: Path = TRAINING_DATA) -> None:
-    """Requests that match, or nearly match, a request the model was fine-tuned on."""
+    # Requests that match, or nearly match, a request the model was fine-tuned on.
     import pandas as pd
 
     def words(text: str) -> frozenset:
@@ -270,5 +246,5 @@ if __name__ == "__main__":
     elif command == "overlap":
         overlap()
     else:
-        print(__doc__)
+        print("usage: run.py [run|check|overlap]")
         sys.exit(2)

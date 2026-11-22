@@ -1,15 +1,4 @@
-"""Interactive components built with Streamlit's component API (v2).
-
-Four pieces of the interface need real client-side behaviour: the terminal
-prompt (Tab switches mode, arrow keys recall earlier requests), the command
-blocks in the session feed (run, edit, copy and focus, by click or by key), the
-Ctrl+K command palette, and the history table (click a row to reopen it).
-
-The HTML, CSS and JavaScript here are fixed strings written for the app. All
-dynamic values (requests, commands, file names, model output) arrive through
-`data` and are inserted with `textContent`, never as HTML, so they cannot
-inject markup or script into the page.
-"""
+# Interactive components built with Streamlit's component API (v2).
 
 import streamlit as st
 
@@ -53,7 +42,6 @@ function colourCommand(target, command) {
 }
 """
 
-# ---------------------------------------------------------------- prompt
 
 _PROMPT_CSS = _BASE_CSS + """
 /* A pane with the mode and the key hints set into its top border. */
@@ -158,7 +146,6 @@ def prompt(*, mode: str, user: str, host: str, folder: str, folder_full: str, hi
                    key=key, on_submit_change=on_submit or (lambda: None), on_mode_change=lambda: None)
 
 
-# ---------------------------------------------------------------- command block
 
 _BLOCK_CSS = _BASE_CSS + """
 /* A pane: the time, folder and risk tag sit in the top border. */
@@ -296,7 +283,6 @@ def block(data: dict, key: str, on_action=None):
     return _block(data=data, key=key, on_action_change=on_action or (lambda: None))
 
 
-# ---------------------------------------------------------------- command palette
 
 _PALETTE_CSS = _BASE_CSS + """
 .backdrop { position: fixed; inset: 0; background: rgba(5,4,2,.72); z-index: 1000000;
@@ -381,7 +367,6 @@ def palette(items: list[dict], on_action=None, key: str = "palette"):
     return _palette(data={"items": items}, key=key, on_action_change=on_action or (lambda: None))
 
 
-# ---------------------------------------------------------------- history table
 
 _TABLE_CSS = _BASE_CSS + """
 .wrap { border: 1px solid var(--line2); overflow: hidden; background: var(--bg); }

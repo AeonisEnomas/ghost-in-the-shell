@@ -1,9 +1,4 @@
-"""HTML fragments for the interface.
-
-Every value that comes from the user, the file system or a model goes through
-html.escape (the function `e`) before it is placed in markup, so a file name,
-request or model reply can never inject HTML or script into the page.
-"""
+# HTML fragments for the interface.
 
 import re
 import socket
@@ -31,8 +26,6 @@ LEVEL_MEANING = {
                   "piped into a shell, private data sent away. Needs the word run typed.",
 }
 
-# The ghost's face is a shell prompt, ">_", like the app's mark. Drawn as
-# pixel art: "#" body (amber), "c" prompt (dark), "m" cursor (violet), "." empty.
 GHOST = [
     "....########....",
     "..############..",
@@ -52,7 +45,7 @@ GHOST = [
 
 
 def ghost_svg(pixel: int = 9) -> str:
-    """Pixel art for static/ghost.svg (regenerate the file after changing GHOST)."""
+    # Pixel art for static/ghost.svg (regenerate the file after changing GHOST).
     rects = []
     for y, row in enumerate(GHOST):
         for x, cell in enumerate(row):
@@ -93,7 +86,7 @@ def short_path(path: Path) -> str:
 
 
 def display_path(path: Path, limit: int = 52) -> str:
-    """Shorten a long path from the left, keeping the folders nearest to it."""
+    # Shorten a long path from the left, keeping the folders nearest to it.
     text = short_path(path)
     if len(text) <= limit:
         return text
@@ -117,12 +110,9 @@ def time_ago(moment: datetime) -> str:
 
 
 def _inline_code(escaped: str) -> str:
-    # Runs on text that is already escaped, so the backtick spans can only
-    # contain escaped characters.
     return re.sub(r"`([^`\n]{1,80})`", r"<code>\1</code>", escaped)
 
 
-# ---------------------------------------------------------------- shell
 
 def status_bar(system_name: str, package_manager: str | None, folder: Path, ready: bool,
                feed_size: int, last: str) -> str:
@@ -192,7 +182,6 @@ def system_line(message: str, score: float | None, phrases: tuple[str, ...], ton
             f'<div><strong>{e(message)}</strong>{detail}</div></div>')
 
 
-# ---------------------------------------------------------------- inspector panels
 
 def panel_head(label: str, meta: str = "", tone: str = "") -> str:
     tag = '<span class="ph-ai">ai</span>' if tone == "ai" else ""
@@ -299,7 +288,6 @@ def dialog_summary(command: str, level: Level, findings: tuple[Finding, ...], pr
             f'{_findings(findings)}{counts}</div>')
 
 
-# ---------------------------------------------------------------- history
 
 def stat_strip(stats: list[tuple[str, str]]) -> str:
     cells = "".join(f'<div class="stat"><span class="stat-n">{e(v)}</span><span class="stat-l">{e(k)}</span></div>'
@@ -312,10 +300,9 @@ def page_head(command: str, title: str, lede: str) -> str:
             f'<h1 class="phead-title">{e(title)}</h1><p class="phead-lede">{e(lede)}</p></header>')
 
 
-# ---------------------------------------------------------------- manual page
 
 def man_page(sections: list[tuple[str, str]], version: str, date: str) -> str:
-    """`sections` are (heading, html) pairs; the html must be built with this module's escaping helpers."""
+    # `sections` are (heading, html) pairs; the html must be built with this module's escaping helpers.
     body = "".join(f'<section class="man-s"><h2>{e(h)}</h2><div class="man-b">{html}</div></section>'
                    for h, html in sections)
     return (f'<article class="man"><div class="man-top"><span>GHOST(1)</span><span>Ghost in the Shell Manual</span>'

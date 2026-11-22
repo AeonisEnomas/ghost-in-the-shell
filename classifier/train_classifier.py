@@ -1,22 +1,4 @@
-"""Train the relevance classifier (is a request a shell task?).
-
-Data
-- Shell tasks: 12,000 requests sampled from the NL2SH-ALFA training split, plus
-  classifier/data/train_positive.txt (casual phrasings written for this project).
-- Not shell tasks: Dolly-15k instructions (CC BY-SA 3.0) with any instruction
-  mentioning Linux, shells, files or folders removed, plus
-  classifier/data/train_negative.txt (chit-chat, general coding questions,
-  attempts to address the model).
-
-The data are split 80/10/10, stratified. The threshold is chosen on the
-validation split as the highest one that still accepts 99% of shell tasks:
-wrongly refusing a real task costs the user more than letting an off-topic
-request through, which the safety check and the "continue anyway" button
-cover. Final numbers are reported on the test split and on handwritten sets
-never used in training.
-
-Usage: uv run python classifier/train_classifier.py
-"""
+# Train the relevance classifier (is a request a shell task?).
 
 import json
 import re

@@ -1,12 +1,4 @@
-"""Run a command against one of the five NL2SH-ALFA test filesystems.
-
-The filesystems come from the benchmark's official evaluator (setup scripts
-from github.com/westenfelder/InterCode-ALFA, MIT, in filesystems/), rebuilt
-with bubblewrap instead of Docker. Each run gets a fresh copy, no network, a
-read-only host /usr and /etc, and a 5 second limit. A run returns what the
-command printed and a record of every file left behind, so two commands can be
-compared by effect.
-"""
+# Run a command against one of the five NL2SH-ALFA test filesystems.
 
 import hashlib
 import os
@@ -21,13 +13,12 @@ from pathlib import Path
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.parent))
 
-from common import HOST_MOUNTS, bwrap_args  # noqa: E402
+from common import HOST_MOUNTS, bwrap_args
 
 SETUP_DIR = HERE / "filesystems"
 TEMPLATE_DIR = HERE / ".built_filesystems"
 ROOTS = ["testbed", "workspace", "system", "backup", "index", "root", "home", "tmp", "var"]
 
-# Test prompts map onto the five filesystems in order (from icalfa.main.index_to_img).
 SPLITS = [153, 49, 57, 23, 18]
 FS_ENV = {1: {"FILES": "/testbed/hello.c /testbed/FooBar.html"}}
 
@@ -45,7 +36,7 @@ def fs_for_index(index: int) -> int:
 
 
 def build_filesystems() -> None:
-    """Run each setup script once inside the sandbox to produce a fresh template."""
+    # Run each setup script once inside the sandbox to produce a fresh template.
     for fs_num in range(1, 6):
         target = TEMPLATE_DIR / f"fs{fs_num}"
         shutil.rmtree(target, ignore_errors=True)
@@ -55,8 +46,6 @@ def build_filesystems() -> None:
         args = bwrap_args(target, FS_ENV.get(fs_num, {}))
         args = args[:-2] + ["--ro-bind", str(script), "/setup.sh", "--chdir", "/"]
         subprocess.run(args + ["bash", "/setup.sh"], capture_output=True, timeout=60)
-        # The official images keep a copy of the setup script at "/", and 22
-        # prompts read it ("print the tenth line of setup_nl2b_fs_1.sh").
         copy = target / script.name
         shutil.copyfile(script, copy)
         copy.chmod(0o755)
@@ -103,11 +92,10 @@ def _manifest(fs_root: Path) -> dict[str, tuple]:
 
 
 def run(command: str, fs_num: int) -> RunResult:
-    """Execute `command` against a fresh copy of test filesystem `fs_num`."""
+    # Execute `command` against a fresh copy of test filesystem `fs_num`.
     with tempfile.TemporaryDirectory(prefix="ghost-nl2sh-") as tmp:
         fs_root = Path(tmp) / "fs"
         shutil.copytree(TEMPLATE_DIR / f"fs{fs_num}", fs_root, symlinks=True)
-        # Cap processes and memory so a fork bomb or runaway command stays contained.
         wrapped = f"ulimit -u 4096 -v 2097152 2>/dev/null; {command}"
         args = bwrap_args(fs_root, FS_ENV.get(fs_num, {})) + ["bash", "-c", wrapped]
         try:
@@ -116,7 +104,6 @@ def run(command: str, fs_num: int) -> RunResult:
             out, code = proc.stdout, proc.returncode
         except subprocess.TimeoutExpired as exc:
             out, code = exc.stdout or b"", -1
-        # Make everything removable even if the command chmod'ed it away.
         for dirpath, dirnames, _ in os.walk(fs_root):
             dirnames[:] = [d for d in dirnames if d not in HOST_MOUNTS or dirpath != str(fs_root)]
             for name in dirnames:
