@@ -1,10 +1,4 @@
-"""The session page: a terminal-like feed of command blocks with a prompt.
-
-Each request becomes a block. The focused block expands into an inspector
-(explanation, risk, dry run, output). Running is proportional to risk:
-read-only and ordinary changes run on click, Caution asks for confirmation
-with the list of affected files, and Dangerous needs the word "run" typed.
-"""
+# The session page: a terminal-like feed of command blocks with a prompt.
 
 import os
 from pathlib import Path
@@ -28,8 +22,6 @@ EXAMPLES = [
 ]
 LEVEL_KEY = {Level.READ_ONLY: "read", Level.CHANGES: "change", Level.CAUTION: "caution", Level.DANGER: "danger"}
 
-
-# ---------------------------------------------------------------- callbacks
 
 def on_prompt() -> None:
     s = st.session_state
@@ -65,8 +57,6 @@ def on_example(text: str) -> None:
     st.session_state.pending = ("ask", text)
 
 
-# ---------------------------------------------------------------- running
-
 def do_run(view: View, confirmation: str = "") -> None:
     assistant, history = services()
     level = view.review.assessment.level
@@ -101,12 +91,6 @@ def handle_pending() -> bool:
         return True
     return run_pending()
 
-
-# ---------------------------------------------------------------- dialogs
-#
-# A dialog stays open for as long as `session.dialog` names it: it is drawn
-# again on every rerun (the streaming explanation triggers reruns), and only
-# closed by its own buttons or by dismissing it.
 
 def close_dialog() -> None:
     st.session_state.dialog = None
@@ -226,8 +210,6 @@ def open_dialogs() -> None:
     else:
         s.dialog = None
 
-
-# ---------------------------------------------------------------- page parts
 
 def title_bar() -> None:
     s = session()

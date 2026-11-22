@@ -1,4 +1,4 @@
-"""Paths and settings. Each one can be overridden with an environment variable."""
+# Paths and settings. Each one can be overridden with an environment variable.
 
 import os
 from dataclasses import dataclass, field
@@ -17,9 +17,7 @@ class Settings:
     models_dir: Path = field(
         default_factory=lambda: Path(os.environ.get("GHOST_MODELS_DIR", PROJECT_ROOT / "models"))
     )
-    # Fine-tuned model for writing commands, base model for explaining them
-    # (fine-tuning weakened explanations; see docs/model_selection.md, round 3).
-    generator_file: str = "qwen2.5-coder-1.5b-ft.Q4_K_M.gguf"
+    generator_file: str = "qwen2.5-coder-1.5b-finetuned.Q4_K_M.gguf"
     explainer_file: str = "qwen2.5-coder-1.5b.Q4_K_M.gguf"
     threads: int = field(
         default_factory=lambda: int(os.environ.get("GHOST_THREADS", min(4, os.cpu_count() or 1)))

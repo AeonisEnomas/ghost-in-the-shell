@@ -11,8 +11,6 @@ pytestmark = pytest.mark.skipif(not sandbox.sandbox_available(), reason="bwrap n
 
 @pytest.fixture
 def folder():
-    # Inside the home folder, like a real project, to test that the working
-    # folder stays visible while the rest of /home is hidden.
     base = Path.home() / ".cache" / "ghost-test"
     base.mkdir(parents=True, exist_ok=True)
     import tempfile

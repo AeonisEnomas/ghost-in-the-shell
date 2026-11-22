@@ -1,11 +1,4 @@
-"""Facts about the system and the working folder.
-
-These are used to check a suggested command (is the program installed? does
-it belong to another Linux distribution?) and to show the folder in the
-interface. They are deliberately not added to the model's prompt: the model
-was fine-tuned on bare requests, and file names are attacker-controlled text
-that would give prompt injection a way in.
-"""
+# Facts about the system and the working folder.
 
 import functools
 import os
@@ -24,7 +17,6 @@ times trap true type typeset ulimit umask unalias unset wait . : [ [[ ]] { } ! t
 function if then else elif fi case esac for while until do done in
 """.split())
 
-# Package managers by distribution family (os-release ID and ID_LIKE values).
 PACKAGE_MANAGERS = {
     "arch": "pacman", "debian": "apt", "ubuntu": "apt", "fedora": "dnf", "rhel": "dnf",
     "centos": "dnf", "suse": "zypper", "opensuse": "zypper", "alpine": "apk", "void": "xbps-install",
@@ -40,8 +32,8 @@ FOREIGN_TOOLS = {
 
 @dataclass(frozen=True)
 class SystemInfo:
-    name: str                 # "Arch Linux"
-    ids: tuple[str, ...]      # ("arch",) or ("ubuntu", "debian")
+    name: str
+    ids: tuple[str, ...]
     package_manager: str | None
     user: str
     home: Path
@@ -88,7 +80,7 @@ def missing_programs(programs: tuple[str, ...]) -> list[str]:
 
 
 def distro_hints(programs: tuple[str, ...], info: SystemInfo | None = None) -> list[str]:
-    """Explain when a command uses another distribution's tools."""
+    # Explain when a command uses another distribution's tools.
     info = info or system_info()
     hints = []
     for program in programs:
@@ -103,7 +95,7 @@ def distro_hints(programs: tuple[str, ...], info: SystemInfo | None = None) -> l
 
 
 def syntax_error(command: str) -> str | None:
-    """Ask bash to parse the command without running it."""
+    # Ask bash to parse the command without running it.
     try:
         result = subprocess.run(["bash", "-n", "-c", command], capture_output=True, text=True, timeout=5)
     except subprocess.TimeoutExpired:
@@ -115,7 +107,7 @@ def syntax_error(command: str) -> str | None:
 
 
 def resolve_folder(text: str) -> Path:
-    """Turn user input into a usable folder path, or raise ValueError with a message."""
+    # Turn user input into a usable folder path, or raise ValueError with a message.
     text = text.strip()
     if not text:
         raise ValueError("Enter a folder path.")
@@ -150,8 +142,6 @@ def folder_info(path: Path, limit: int = 300) -> FolderInfo:
                     size = None if is_dir else item.stat(follow_symlinks=False).st_size
                 except OSError:
                     is_dir, size = False, None
-                # Names are shown, never sent to a model, but they can still
-                # contain control characters that garble the display.
                 entries.append(Entry(clean_model_text(item.name) or "?", is_dir, size))
     except OSError:
         pass

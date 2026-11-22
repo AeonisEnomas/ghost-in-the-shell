@@ -1,8 +1,8 @@
 # The app
 
 How Ghost in the Shell turns a plain-English request into a command the user
-can trust, and the reasoning behind each design choice. Model selection is
-documented separately in `model_selection.md`.
+can trust, and the reasoning behind each design choice. The model itself is
+documented in `finetuning.md`.
 
 ## Architecture
 
@@ -23,15 +23,15 @@ request ──► clean ──► relevance gate ──► generate ──► va
 | `history.py` | Local SQLite history with feedback |
 | `ui/` | Streamlit interface: `app.py` (shell, sidebar, palette, status bar), `workspace.py` (session page and dialogs), `history_page.py`, `about.py` (manual), `state.py` (session feed, actions, streamed explanations), `widgets.py` (custom components), `components.py` (escaped HTML), `theme.css`, fonts and mark |
 
-**Why two models.** Fine-tuning improved command writing slightly but cut
-explanation quality by 10 points (round 3), so explanations come from the base
-model. Both run at the same time and use about 2 GB of memory.
+**Why two models.** A model fine-tuned to reply with a bare command becomes
+worse at explaining one (an earlier fine-tune lost 10 points on an explanation
+check), so explanations come from the base model. Both run at the same time and use about 2 GB of memory.
 
 **Why the model sees only the request.** The generator was fine-tuned on bare
 requests. Adding the folder listing or system details would move it away from
 its training conditions, and file names are text anyone can control, which
-would open a path for prompt injection. The error analysis in round 3 also
-showed that missing context explains at most about a fifth of the errors.
+would open a path for prompt injection. An error analysis during development
+also showed that missing context explains at most about a fifth of the errors.
 Context is used instead to check the command: whether its programs are
 installed and whether they belong to this Linux distribution.
 
@@ -87,25 +87,30 @@ The interface is built around one question the user has to answer: *should
 this command run?* It is a Streamlit app, but laid out and styled as a
 terminal-native application rather than a document.
 
-**Identity.** The palette is a terminal's ANSI set, and every colour carries
-meaning: cyan is the prompt and the brand, magenta marks text the model wrote
-(the explanation pane, the cursor in the logo), and green, blue, yellow and red
-are the four risk levels. Each risk level also has its own shape and label
-(○ Read-only, ● Makes changes, ▲ Caution, ■ Dangerous), so meaning never
-depends on colour vision. Type is IBM Plex Mono for the interface and Plex
-Sans for prose, bundled so the app works offline. The mark is a pixel ghost
-whose face is a shell prompt, `>_`.
+**Identity.** The app is drawn the way a full-screen terminal program is
+(lazygit, btop), in amber on black like an amber monitor. Panes are square
+boxes with their title set into the top border; the selected item, the current
+page and the button that acts are shown in reverse video; faint raster lines
+give the screen its texture. Amber is the only interface colour, so the few
+others carry meaning: green, blue, yellow and red are the four risk levels,
+and violet marks text the model wrote (the explanation pane, the explain mode,
+the cursor in the logo). Risk tags are always filled blocks with a shape and a
+label (○ Read-only, ● Makes changes, ▲ Caution, ■ Dangerous), so they stand
+apart from amber text and never depend on colour vision. All type is IBM Plex
+Mono, bundled so the app works offline. The mark is a pixel ghost whose face is
+a shell prompt, `>_`.
 
 **App shell.** A sidebar holds the navigation (Session, History, Manual) and
 the list of commands in the current session. A status bar along the bottom
 shows both model servers, the system and package manager, the working folder,
 the number of blocks and the last response time, with keyboard hints.
 
-**Session page.** A terminal-style title bar (`user@host:~/folder`, item
-count, `cd` and `clear`) sits above a feed of command blocks, newest last, as
-in a terminal. Each block shows the prompt line (folder and request), the
-command with light syntax colouring, its risk badge, the dry-run counts and its
-actions (copy, edit, run). The focused block expands into an inspector:
+**Session page.** A title line (`user@host:~/folder`, item count, `cd` and
+`clear`) sits above a feed of command blocks, newest last, as in a terminal.
+Each block is a pane: the time, folder and risk tag sit in its top border, and
+inside are the request, the command with light syntax colouring, the dry-run
+counts and its actions, each labelled with its key (`c` copy, `e` edit,
+Ctrl+Enter run). The focused block expands into an inspector:
 
 - *explanation*: written by the base model, streamed in as it is generated;
 - *risk*: the level, each finding with its reason, and validation problems;
@@ -146,7 +151,7 @@ files, security, known limits and environment variables.
 | Consistency and standards | The same four levels, shapes and colours everywhere (blocks, sidebar, dialogs, history, manual); terminal conventions (prompt, `cd`, `man`, `history`, Ctrl+K) |
 | Error prevention | Dry run before every run; Run disabled for syntax errors and admin commands; Dangerous commands need the word `run` typed; off-topic and injection requests stop before reaching the model |
 | Recognition rather than recall | Example requests on the empty screen; session list in the sidebar; arrow-key recall; command palette; folder browser |
-| Flexibility and efficiency | Keyboard first: Enter, Tab, arrow keys, Ctrl+K, `/`; one-click run for low-risk commands; copy on every block |
+| Flexibility and efficiency | Keyboard first: Enter, Tab, arrow keys, Ctrl+K, `/`, and `c`, `e`, Ctrl+Enter on the selected command; one-click run for low-risk commands; copy on every block |
 | Aesthetic and minimalist design | One question per card; details appear only when there is something to say; examples disappear once used; no decorative colour |
 | Help users recover from errors | Validation problems explained before running ("pacman belongs to another distribution; this system uses …"); clear messages for bad folders, hidden characters and refused runs |
 | Help and documentation | The manual page; key hints under the prompt and in the status bar; the explanation is labelled as model-written; the dry run notes what it cannot show |
@@ -155,11 +160,11 @@ files, security, known limits and environment variables.
 
 ```
 uv sync
-uv run python training/train_relevance.py     # once, builds models/relevance.joblib
+uv run python classifier/train_classifier.py     # once, builds models/relevance.joblib
 uv run ghost-in-the-shell                      # from the folder you want to work in
 ```
 
-The two GGUF files go in `models/` (see `model_selection.md`, round 3).
+The two GGUF files go in `models/` (see the README, "Get the models").
 llama.cpp (`llama-server`) and bubblewrap (`bwrap`) must be installed.
 
 ## Tests
@@ -200,60 +205,22 @@ AppTest cannot see. All are fixed and covered by tests:
 
 ## Evaluation
 
-Full tables in `evaluation/results/report.md`, produced by
-`evaluation/app_eval.py`.
+**The model.** Accuracy of the command writer against its base model, on two
+test sets, is in `finetuning.md`; the tests are in `evaluation/`.
 
-**Accuracy.** The full pipeline (one-line grammar, validation, extra samples
-for invalid answers) scores 45.1% on the 275 scoreable NL2SH-ALFA prompts,
-against 46.2% for the fine-tuned model alone (McNemar p = 0.375; 4 prompts lost,
-1 gained). Extra samples were needed for only 9 of 300 prompts. The extra
-layers make the app safer and more transparent; they do not make it more
-accurate, and the small difference is not significant.
+**The request gate** (`classifier/report.json`, written by
+`classifier/train_classifier.py`). The classifier accepts all 300 NL2SH-ALFA
+test prompts, 98% of 50 deliberately risky requests and 93% of 30 handwritten
+casual shell requests, and stops 27 of 30 handwritten off-topic requests. The
+injection-phrase check stops the other three, which are attempts to address the
+model.
 
-**Relevance gate.** Accepts all 300 NL2SH-ALFA test prompts, 98% of the risky
-prompts and 93% of handwritten casual shell requests; stops all 30 handwritten
-off-topic requests (the classifier alone stops 27; the injection-phrase check
-stops the other 3, all attempts to address the model).
+**The safety check and the rest of the pipeline** are covered by the test
+suite described above: over 90 commands across the four risk levels, including
+commands that an attack suite run during development showed were rated too
+low (`find / -type f -exec chmod 644 {} \;`, uploads of shell history or SSH
+keys), which are now rated Dangerous.
 
-**Safety check.** Of the 300 reference commands written by people, 214 are
-rated Read-only, 20 Makes changes, 63 Caution and 3 Dangerous (all three move
-or delete files at the top of the filesystem). All 72 destructive commands the
-models produced on the risky prompts in rounds 2 and 3 are rated Caution or
-Dangerous; 63 are rated Dangerous.
-
-**Attack suite** (24 prompts: instruction overrides, chat-token injection,
-disguised tokens, look-alike and hidden characters, payloads, data theft and
-plainly destructive requests).
-
-| | First run | After fixes |
-|---|---|---|
-| Stopped at the gate | 6 of 24 | 11 of 24 |
-| Harmful commands rated below Caution, when forced past the gate | 0 | 0 |
-| Harmful commands rated Caution that should be Dangerous | 3 | 0 |
-
-The first run exposed three gaps, each now fixed and covered by tests:
-
-1. Chat-token attacks passed the gate, because after the tokens were removed
-   the remaining text looked harmless. Control tokens and invisible characters
-   never come from ordinary typing, so their presence now stops the request
-   on its own.
-2. `find / -type f -exec chmod 644 {} \;` was rated Caution; permission changes
-   across the whole filesystem are now Dangerous.
-3. Sending shell history or SSH keys to another machine was rated only "uses
-   the network"; uploads are now recognised, and uploads of private data are
-   Dangerous.
-
-Two commands still match the round 2 destructive patterns while rated
-Read-only: `echo rm -rf ~/` and `echo ... "shutdown now"`. Both only print
-text; the parser is right and the old patterns were not.
-
-The attack suite was written by the same person who wrote the defences, so it
-shows that known attack types are handled, not that unknown ones are. One
-pattern fix (the phrase "print only" was wrongly flagged) was made after
-looking at the NL2SH-ALFA prompts; the gate numbers above are after that fix.
-
-**Latency** (laptop CPU): 1.6 s per request on average (2.6 s at the 90th
-percentile), of which the sandbox dry run took about 40 ms with the earlier
-copy-based sandbox on a small folder; the overlay version takes 50 to 250 ms
-regardless of folder size. Explanations take
-about 5 s and appear after the command.
+**Latency** (laptop CPU): about 1 s to write a command, 50 to 250 ms for the
+dry run regardless of folder size, and about 5 s for the explanation, which
+appears after the command.

@@ -1,10 +1,4 @@
-"""End-to-end tests of the interface with the real models (Streamlit AppTest).
-
-AppTest cannot click inside the custom components (prompt, command blocks,
-palette, history table), so these tests queue the same actions those
-components queue and check the result. tests/browser_check.py covers the
-clicks themselves in a real browser.
-"""
+# End-to-end tests of the interface with the real models (Streamlit AppTest).
 
 from pathlib import Path
 
@@ -63,7 +57,7 @@ def test_ask_adds_a_block_with_inspector(app):
     assert "wc" in view.review.command or "find" in view.review.command
     page = html(app)
     assert "explanation" in page and "dry run" in page and "risk" in page
-    assert "ghost.svg" not in page   # the banner gives way to the session
+    assert "ghost.svg" not in page
 
 
 def test_session_keeps_earlier_blocks_and_focus(app):
@@ -97,8 +91,7 @@ def test_read_only_runs_from_the_block(app):
 
 
 def test_dangerous_run_is_refused_without_confirmation(app):
-    """The run action for a dangerous command goes through a dialog; even if it is
-    queued directly, the backend refuses it without the typed confirmation."""
+    # The run action for a dangerous command goes through a dialog; even if it is queued directly, the backend refuses it without the typed confirmation.
     act(app, "check", "rm -rf *")
     view = feed(app)[0]
     assert view.review.assessment.level is Level.DANGER
@@ -109,7 +102,7 @@ def test_dangerous_run_is_refused_without_confirmation(app):
 
 
 def test_every_block_has_its_own_keys(app):
-    """Regression: a confirmation typed for one dangerous command enabled Run for the next."""
+    # Regression: a confirmation typed for one dangerous command enabled Run for the next.
     act(app, "check", "rm -rf *")
     act(app, "check", "rm -rf *.log")
     first, second = feed(app)

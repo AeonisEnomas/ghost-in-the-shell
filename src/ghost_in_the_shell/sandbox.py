@@ -1,25 +1,4 @@
-"""Dry runs in a disposable sandbox, and real runs after the user confirms.
-
-A preview runs the command with bubblewrap. The working folder is mounted at
-its real path as an overlay: the real folder is the read-only lower layer, and
-every write, edit or deletion lands in a throwaway upper layer. The real folder
-is never touched, nothing is copied (so folders of any size preview
-instantly), and afterwards the upper layer is exactly the list of changes:
-
-- a regular file or folder that does not exist below was created;
-- one that does exist below was modified (if its content or mode differ);
-- a character device 0:0 ("whiteout") marks a deleted entry;
-- a folder flagged opaque replaced the folder below, so the entries below it
-  that are missing above were deleted.
-
-Inside the sandbox the rest of the system is read-only, /home is replaced by
-an empty folder (personal files outside the working folder can be neither read
-nor changed), there is no network, and the command is stopped after a few
-seconds, with limits on memory and the number of processes.
-
-Commands that need administrator rights are not previewed: sudo cannot work
-inside the sandbox, and a preview without the rights would be misleading.
-"""
+# Dry runs in a disposable sandbox, and real runs after the user confirms.
 
 import filecmp
 import os
@@ -77,9 +56,8 @@ def sandbox_available() -> bool:
     return shutil.which("bwrap") is not None
 
 
-# ---------------------------------------------------------------- changes
-
 def _is_whiteout(info: os.stat_result) -> bool:
+    # Overlayfs marks deleted files as a character device with rdev 0.
     return stat.S_ISCHR(info.st_mode) and info.st_rdev == 0
 
 
@@ -106,7 +84,7 @@ def _same_file(upper: Path, lower: Path) -> bool:
 
 
 def overlay_changes(upper: Path, lower: Path) -> tuple[FileChange, ...]:
-    """Read the changes a command made from the overlay's upper layer."""
+    # Read the changes a command made from the overlay's upper layer.
     changes: list[FileChange] = []
     for dirpath, dirnames, filenames in os.walk(upper):
         here = Path(dirpath)
@@ -131,13 +109,10 @@ def overlay_changes(upper: Path, lower: Path) -> tuple[FileChange, ...]:
                     changes.append(FileChange(str(rel), "modified", True))
             elif not _same_file(path, below):
                 changes.append(FileChange(str(rel), "modified", False))
-    # Inside a created or deleted folder, list the folder only.
     folders = {c.path for c in changes if c.is_dir and c.kind != "modified"}
     kept = [c for c in changes if not any(c.path.startswith(f + os.sep) for f in folders)]
     return tuple(sorted(kept, key=lambda c: ("deleted", "modified", "created").index(c.kind)))
 
-
-# ---------------------------------------------------------------- running
 
 def _bwrap_args(cwd: Path, home: Path, overlay: tuple[Path, Path] | None) -> list[str]:
     args = [
@@ -165,7 +140,7 @@ def _bwrap_args(cwd: Path, home: Path, overlay: tuple[Path, Path] | None) -> lis
 
 def _execute(args: list[str], timeout: float, cwd: Path | None = None,
              env: dict[str, str] | None = None) -> tuple[str, int | None, bool, bool]:
-    """Run a process group with a timeout. Returns (output, exit code, timed out, truncated)."""
+    # Run a process group with a timeout. Returns (output, exit code, timed out, truncated).
     process = subprocess.Popen(
         args, cwd=cwd, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT, start_new_session=True,
@@ -189,7 +164,7 @@ def _overlay_works(cwd: Path, home: Path, upper: Path, work: Path) -> bool:
 
 
 def preview(command: str, cwd: Path, elevated: bool = False) -> Preview:
-    """Dry-run `command` against an overlay of `cwd`."""
+    # Dry-run `command` against an overlay of `cwd`.
     cwd = cwd.resolve()
     if elevated:
         return Preview("skipped", "Commands that need administrator rights are not previewed: "
@@ -209,7 +184,6 @@ def preview(command: str, cwd: Path, elevated: bool = False) -> Preview:
             timeout=PREVIEW_TIMEOUT_S,
         )
         changes = overlay_changes(upper, cwd) if overlay else ()
-        # The kernel leaves an unreadable folder in the work directory.
         for path in work.rglob("*"):
             try:
                 path.chmod(0o700)
@@ -229,7 +203,7 @@ def preview(command: str, cwd: Path, elevated: bool = False) -> Preview:
 
 
 def run(command: str, cwd: Path, timeout: float = RUN_TIMEOUT_S) -> RunResult:
-    """Run `command` for real in `cwd`. Only call after the user has confirmed."""
+    # Run `command` for real in `cwd`. Only call after the user has confirmed.
     start = time.perf_counter()
     output, code, timed_out, truncated = _execute(
         ["bash", "-c", command], timeout=timeout, cwd=cwd, env={**os.environ, "TERM": "dumb"},

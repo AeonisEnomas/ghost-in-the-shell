@@ -1,19 +1,4 @@
-"""From a plain-English request to a checked, previewed command.
-
-    request
-      -> clean          remove control tokens and hidden characters
-      -> relevance      is it a shell task? does it try to instruct the model?
-      -> generate       fine-tuned model, one line
-      -> validate       bash syntax, programs installed, right distribution
-                        (on failure, up to two more samples are tried)
-      -> assess         risk level and reasons
-      -> preview        dry run in the sandbox, over a throwaway layer of the folder
-
-Nothing runs for real until the user confirms, and the rules for that are
-enforced here, not only in the interface: commands are re-assessed before
-running, commands that need administrator rights are refused, and dangerous
-ones need a typed confirmation.
-"""
+# From a plain-English request to a checked, previewed command.
 
 import time
 from dataclasses import dataclass, field
@@ -32,12 +17,13 @@ RETRY_TEMPERATURE = 0.7
 
 
 class RunRefused(Exception):
-    """The command may not be run from the app. The message is shown to the user."""
+    # The command may not be run from the app. The message is shown to the user.
+    pass
 
 
 @dataclass(frozen=True)
 class Review:
-    """Everything known about a command before it runs."""
+    # Everything known about a command before it runs.
     command: str
     issues: tuple[str, ...]
     assessment: Assessment
@@ -81,7 +67,7 @@ class Assistant:
         self.relevance = relevance
 
     def review(self, command: str, cwd: Path) -> Review:
-        """Validate, assess and preview a command, from the model or typed by the user."""
+        # Validate, assess and preview a command, from the model or typed by the user.
         command = check_command(command)
         assessment = assess(command, cwd)
         issues = validation_issues(command, assessment)
@@ -89,12 +75,7 @@ class Assistant:
         return Review(command, issues, assessment, preview)
 
     def ask(self, request: str, cwd: Path, force: bool = False) -> Outcome:
-        """Turn a request into a reviewed command.
-
-        With force=False, requests that do not look like shell tasks, or that
-        try to instruct the model, stop with status "off_topic" so the user
-        can decide whether to continue.
-        """
+        # Turn a request into a reviewed command.
         signs = manipulation_signs(request)
         try:
             request = clean_request(request)
@@ -143,7 +124,7 @@ class Assistant:
         return self.models.explain(command)
 
     def run(self, command: str, cwd: Path, confirmation: str = "") -> sandbox.RunResult:
-        """Run a command for real. Re-checks it rather than trusting the caller."""
+        # Run a command for real. Re-checks it rather than trusting the caller.
         command = check_command(command)
         assessment = assess(command, cwd)
         if assessment.elevated:

@@ -13,8 +13,8 @@ relevance = RelevanceChecker.load(Settings().models_dir / "relevance.joblib")
 
 
 class ScriptedModels:
-    """Returns prepared answers: greedy first, then one per retry seed."""
 
+    # Returns prepared answers: greedy first, then one per retry seed.
     def __init__(self, *answers):
         self.answers = list(answers)
         self.calls = []

@@ -1,0 +1,1138 @@
+nl,bash,source,utility
+Show all processes in BSD user format,ps aux,mecha,ps
+Log uptime every 30 minutes,crontab -e # */30 * * * * uptime >> /tmp/uptime.log,mecha,crontab
+Run a main Go package,go run path/to/package,alfa,go
+delete all the files in the file system which belong to the user edwarda after user confirmation,"find / -user edwarda -ok rm ""{}"" \;",alfa,find
+Delete user guest,sudo userdel guest,mecha,userdel
+Show the inode number and add type indicators for all files,ls -iF,mecha,ls
+Show postgres's sessions without the header.,w -h postgres,frost,w
+"In orders.tsv, which 10 values of column 2 occur most often?",awk '{print $2}' orders.tsv | sort | uniq -c | sort -nr | head -n 10,frost,awk
+Make user netadmin and set shell to /bin/sh,useradd -s /bin/sh netadmin,mecha,useradd
+"On the file request.html, show just the first line.",head -n 1 request.html,frost,head
+"Find all files with the extension "".php"" in the current directory and its subdirectories, and replace all occurrences of ""bar"" with ""baz"" in those files whenever ""foo"" is found.",`find . -name '*.php' | xargs sed -i '/foo/s/bar/baz/g'`,alfa,find
+Tally column 1 of error.log and print the 25 top values by count.,"cut -d, -f1 error.log | sort | uniq -c | sort -nr | head -n 25",frost,cut
+Show the last 10 lines containing 'disk full' in dmesg.log.,grep 'disk full' dmesg.log | tail -n 10,frost,grep
+Tally how many times each log level appears in request.log.,grep -oE '(INFO|WARN|ERROR|DEBUG)' request.log | sort | uniq -c | sort -nr,frost,grep
+Unmount the NFS share at /mnt/nfs,umount /mnt/nfs,mecha,umount
+locate files under media modified in the last 21 days,find media -type f -mtime -21,frost,find
+[c]reate a g[z]ipped archive and write it to a [f]ile.,tar czf auth.zip inventory.yaml,frost,tar
+Pause for 13 seconds,sleep 13,mecha,sleep
+Ping yahoo.com and show timestamp for each reply,ping -D yahoo.com,mecha,ping
+Rebase the current branch on top of another specified branch,git rebase new_base_branch,alfa,git
+Print just the octal permission bits of release.pdf.,stat -c '%a' release.pdf,frost,stat
+Recursively change the owner of a directory and its contents,chown -R user path/to/directory,alfa,chown
+List access keys for Object Storage,linode-cli object-storage keys list,alfa,linode-cli
+Find all hidden directories starting from the current directory,"find . -type d -name "".*""",alfa,find
+List the disk usage of tests broken down one level deep.,du -h --max-depth=1 tests 2>/dev/null | sort -rh,frost,du
+List all available topics,gcloud topic --help,alfa,gcloud
+replace tabs with commas in backup.tsv and write to backup.tsv.csv,"sed 's/\t/,/g' backup.tsv > backup.tsv.csv",frost,sed
+Show last 5 lines of find output,find . -type f | tail -n 5,mecha,find
+"Print whether the sorted contents of ""set1"" and ""set2"" differ",diff -q <(sort set1) <(sort set2),alfa,diff
+"Rank the values of column 5 in products.csv by frequency, highest first, top 15 only.","cut -d, -f5 products.csv | sort | uniq -c | sort -nr | head -n 15",frost,cut
+"From product.txt, count the lines.",wc -l < product.txt,frost,wc
+"Find all files with the extension "".py"" in the current working directory and copy them to the home directory.","find $(pwd) -name ""*.py"" -exec cp {} $(echo ~) \;",alfa,find
+Give me a frequency tally of column 2 in debug.log and show the 20 biggest.,awk '{print $2}' debug.log | sort | uniq -c | sort -nr | head -n 20,frost,awk
+"Take response.md and count each unique line, most common first.",sort response.md | uniq -c | sort -nr,frost,sort
+Find the most recently modified file in the current directory and print its modification time and pathname.,"find . -printf ""%T@ %p\n"" | sort -r | head -n1",alfa,find
+"display long list of all the files in the folder /home/peter which belong to no user and change the owner,group of all these files (after user confirmation) to ""peter"",""peter""",find /home/peter -nouser -exec ls -l {} \; -ok chown peter.peter {} \;,alfa,find
+get the 5 most common words in auth.json,tr ' ' '\n' < auth.json | sort | uniq -c | sort -nr | head -n 5,frost,tr
+Show me how to show the last 10 lines containing 'permission denied' in debug.log.,grep 'permission denied' debug.log | tail -n 10,frost,grep
+List a service account's keys,gcloud iam service-accounts keys list --iam-account service_account_email,alfa,gcloud
+Change the owner of results.py to jenkins.,sudo chown jenkins results.py,frost,chown
+Create a bundle file of the last 5 commits of the current branch,git bundle create path/to/file.bundle -5 HEAD,alfa,git
+Show a hex dump of the first 64 bytes of account.old.,xxd -l 64 account.old,frost,xxd
+Show the parent chain leading to PID 6969.,pstree -s 6969,frost,pstree
+remove all the log files which have not been modified in the last 5 days,find /logs -type f -mtime +5 -exec rm {} \;,alfa,find
+Rename order.log to order.log.old without overwriting if the target already exists.,mv -n order.log order.log.old,frost,mv
+Show a hex dump of the first 64 bytes of results.tmp.,xxd -l 64 results.tmp,frost,xxd
+Find the 20 hottest values in column 5 of products.tsv (by frequency).,awk '{print $5}' products.tsv | sort | uniq -c | sort -nr | head -n 20,frost,awk
+"Reversibly sorts content of the '${TMP}/${SCRIPT_NAME}.pid' file, comparing human readable numbers in file strings.",cat ${TMP}/${SCRIPT_NAME}.pid|sort -rh;,alfa,cat
+Show transaction.json with line numbers.,cat -n transaction.json,frost,cat
+Ping facebook.com and set deadline to 5 seconds,ping -w 5 facebook.com,mecha,ping
+Show the configured hostname from /etc/hostname.,cat /etc/hostname,frost,cat
+List open files owned by operator.,lsof -u operator,frost,lsof
+I need to follow the fail2ban journal but only show lines mentioning 'deprecated'.,journalctl -u fail2ban -f | grep --line-buffered -i 'deprecated',frost,journalctl
+download https://app01.service.io/list.txt and count the lines,curl -s https://app01.service.io/list.txt | wc -l,frost,curl
+Find the 10 most common 'null'-related lines in nginx-access.log.,grep 'null' nginx-access.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+"Read order.yaml, then convert everything to uppercase.",tr 'a-z' 'A-Z' < order.yaml,frost,tr
+Show kernel messages with color auto,dmesg --color=auto,mecha,dmesg
+"Read a line from standard input with prompt ""Continue (y/n)?"" and save response in variable ""choice""","read -p ""Continue (y/n)?"" choice",alfa,read
+Copy backup.txt into include only if it's newer than what's there.,cp -u backup.txt include/,frost,cp
+Extract just the email addresses from changelog.tsv.,grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+' changelog.tsv | sort -u,frost,grep
+Copy customer.pdf into assets only if it's newer than what's there.,cp -u customer.pdf assets/,frost,cp
+Display the list of all currently running processes,ps aux,aelhalili,ps
+Start 'dd if=/dev/zero of=test.img bs=1M count=1024' with nice value 15 so it doesn't hog the CPU.,nice -n 15 dd if=/dev/zero of=test.img bs=1M count=1024,frost,nice
+Find all .py files under /opt/app.,find /opt/app -type f -name '*.py',frost,find
+How many lines in api.log mention 'unreachable'?,grep -c 'unreachable' api.log | cat,frost,grep
+"Split ""input.txt"" into files with 1 line each and use a prefix ""output."" and a suffix length of 5",split --lines=1 --suffix-length=5 input.txt output.,alfa,split
+find all the regular/normal files in the /path folder and delete them,find /path -type f -delete,alfa,find
+Find all files in the current directory that were modified within the last two days and copy them to the backup directory with the current timestamp as the name.,find ~/* -mtime -2 | xargs -I '{}' cp {} /backup/'`date -u +%s`'/,alfa,find
+Search  all directory from /usr downwards for files whose inode number is 1234 and print them .,find /usr -inum 1234 -print,alfa,find
+List the unique 'DEBUG' messages in ingest.log.,grep 'DEBUG' ingest.log | sort -u,frost,grep
+Find the 10 most common 'corrupt'-related lines in error.log.,grep 'corrupt' error.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+Change to the directory /usr/share/kde4,cd /usr/share/kde4,mecha,cd
+"On the file order.pdf, show the first 20 lines.",head -n 20 order.pdf,frost,head
+Display the Go version used to build a specific executable file,go version path/to/executable,alfa,go
+Delete johnny user,userdel johnny,mecha,userdel
+Treat warnings as errors,cargo clippy -- --deny warnings,alfa,cargo
+Ping amazon.com with 1 second timeout and 23 times,ping -W 1 -c 23 amazon.com,mecha,ping
+Find directories named tmp anywhere under /usr/local/bin.,find /usr/local/bin -type d -name 'tmp',frost,find
+Print a list of all regular files residing in the current directory,find . -maxdepth 1 -type f -print0,alfa,find
+Find all .less files in the current directory tree,find . -name *.less,alfa,find
+Rename customer.css to customer.css.old without overwriting if the target already exists.,mv -n customer.css customer.css.old,frost,mv
+Show kernel messages in the pager with human-readable output.,dmesg -H,frost,dmesg
+"Check if dump.txt exists and cat it, otherwise say it's missing.",[ -f dump.txt ] && cat dump.txt || echo 'not found',frost,[
+force remove all the text files that have not been modified in the last 89 days,"find .  -name ""*.txt"" -type f -daystart -mtime +89 | xargs rm -f",alfa,find
+Disables overwriting existing files,set -o noclobber,alfa,set
+Query CNAME record for www.google.com and display only answer section,dig www.google.com CNAME +noall +answer,mecha,dig
+Check if all TeX Live executables are present,tlmgr check executes,alfa,tlmgr
+Create the include directory if needed and then cd into it.,mkdir -p include && cd include,frost,mkdir
+"Find all files with the extension "".txt"" in the entire file system and execute the command ""chmod a+x"" on each of them.",find / -name '*.txt' -exec chmod a+x {} +,alfa,find
+"Find all files with the extension "".zip"" and list the details of each file.","`find -name ""*.zip"" -exec ls -ld {} \;`",alfa,find
+Show lines in gateway.log that do NOT contain 'failed'.,grep -v 'failed' gateway.log,frost,grep
+Make a backup copy of payment.xml called payment.xml.bak,cp payment.xml payment.xml.bak,frost,cp
+"Search the /etc/passwd file for any lines that contain the values from the second field onwards of the /tmp/foo file, separated by a pipe character.","grep -F ""$(cut -f2- -d_ /tmp/foo | tr '\n' '|' | sed 's/|$//')"" /etc/passwd",alfa,grep
+delete all blank lines from dump.log,sed '/^$/d' dump.log,frost,sed
+Show me how to follow the fail2ban journal but only show lines mentioning 'deprecated'.,journalctl -u fail2ban -f | grep --line-buffered -i 'deprecated',frost,journalctl
+Find the 5 hottest values in column 3 of server.log (by frequency).,awk '{print $3}' server.log | sort | uniq -c | sort -nr | head -n 5,frost,awk
+Take index.csv and sort it and drop duplicate lines.,sort -u index.csv,frost,sort
+"Print ""This is a sentence."" by replacing all consecutive space characters with a single newline character","echo ""This is   a sentence."" | tr -s "" "" ""\012""",alfa,echo
+"Find all files with the extension "".txt"" and give them execute permission for all users.","find . -name ""*.txt"" -exec chmod a+x {} \;",alfa,find
+Change the group of a file to a group that the current user belongs to.,chown :deploy lib,frost,chown
+Show me the inode number for every file in the root directory,ls -i /,mecha,ls
+Print single quotes,"echo ""It's working""",mecha,echo
+Find all *.php (case insensitive) files and *.js files/directories (case insensitive) under /home/jul/here excluding *.js files/directories under /home/jul/here/exclude/* paths,"find /home/jul/here -type f -iname ""*.php"" -o -iname ""*.js"" ! -path ""/home/jul/here/exclude/*""",alfa,find
+Set event.bak to permissions 644.,chmod 644 event.bak,frost,chmod
+"Check if audit.log exists and cat it, otherwise say it's missing.",[ -f audit.log ] && cat audit.log || echo 'not found',frost,[
+Rename schema.old to schema.old.old without overwriting if the target already exists.,mv -n schema.old schema.old.old,frost,mv
+Find all files with the extension .jpg and copy them to the target directory.,find -type f -iname '*.jpg' | xargs -I % echo % cp % target_directory,alfa,find
+change just the group of inventory.yaml to backup,sudo chgrp backup inventory.yaml,frost,chgrp
+kill every process listening on port 27017,lsof -ti :27017 | xargs -r kill -9,frost,lsof
+"Find all files with the extension .jpg in the current directory and its subdirectories, and for each file found, move it to a new file with the same name but with the extension .bak.","find . -iname ""*.jpg"" | xargs -I {} mv {} {}.bak",alfa,find
+List all TCP sockets in the CLOSED state,ss -t state closed,mecha,ss
+Decompress a file and write to `stdout` (implies `--keep`),xz --decompress --stdout path/to/file.xz,alfa,xz
+Follow the postgresql journal but only show lines mentioning 'deprecated'.,journalctl -u postgresql -f | grep --line-buffered -i 'deprecated',frost,journalctl
+"Download the content from the URL ""https://google.com"" and print the effective URL to the console, then save the output to the file ""/dev/null"".","curl -sL -w ""%{url_effective}\\n"" ""https://google.com"" -o /dev/null",alfa,curl
+Update a DNS record for a domain,linode-cli domains records-update domain_id record_id --target new_target_value,alfa,linode-cli
+Find all directories with permissions of 640 and add the group set-gid permission to them.,find / -type d -perm -640 -exec chmod g+s \{\} \;,alfa,find
+"Print the ping time number only of a single request to ""8.8.8.8""",ping -c 1 8.8.8.8 |  awk 'FNR == 2 { print $(NF-1) }' | cut -d'=' -f2,alfa,ping
+List all the files in the Downloads directory,ls ~/Downloads,aelhalili,ls
+Extract just the email addresses from debug.csv.,grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+' debug.csv | sort -u,frost,grep
+get the 5 most common words in results.yaml,tr ' ' '\n' < results.yaml | sort | uniq -c | sort -nr | head -n 5,frost,tr
+Define and export an environmental variable that persists across shell restarts (builtin),set --universal --export variable_name variable_value,alfa,set
+Start the GUI in amend mode,git cola --amend,alfa,git
+Find all .zip files under reports and delete them. (Careful: destructive.),find reports -type f -name '*.zip' -print0 | xargs -0 rm -f,frost,find
+Change employee45's password,passwd employee45,mecha,passwd
+"For index.csv, show a hex dump of the first 64 bytes.",xxd -l 64 index.csv,frost,xxd
+"Given invoice.csv, keep only non-empty lines.",grep -v '^$' invoice.csv,frost,grep
+Modify remote index,crane index filter,alfa,crane
+"Show the current balances in `Asset` and `Liability` accounts, excluding zeros",hledger balancesheet,alfa,hledger
+Background 'make -j4' at nice level 5.,nice -n 5 make -j4 &,frost,nice
+Find all files in the /usr/local directory and change their permissions to 644.,find /usr/local -type f -exec chmod 644 {} \;,alfa,find
+Query A record for google.com with UDP,dig google.com +notcp,mecha,dig
+Create a user in the given database with a given username,doctl databases user create database_id user_name,alfa,doctl
+Compile and run a source file (it has to contain a `main` package),go run file.go,alfa,go
+"Reversibly sorts content of the '${TMP}/${SCRIPT_NAME}.kb' file, comparing human readable numbers in file strings.",cat ${TMP}/${SCRIPT_NAME}.kb|sort -rh;,alfa,cat
+Delete a subvolume,sudo btrfs subvolume delete path/to/subvolume,alfa,btrfs
+Please show the first 20 lines in backup.yaml.,head -n 20 backup.yaml,frost,head
+Reload the apache2 service,systemctl reload apache2,mecha,systemctl
+Traceroute to yahoo.com using only IPv6 addresses,traceroute -6 yahoo.com,mecha,traceroute
+"Show the contents of the /usr/local/bin directory sorted by modification time, newest first.",ls -lt /usr/local/bin,frost,ls
+Find all files with the extension .txt in the current directory and its subdirectories and compress them using gzip.,find ./ -name '*.txt' -exec gzip {} \;,alfa,find
+list only the .css files in /srv/data,ls /srv/data/*.css,frost,ls
+Print everything in nginx-error.log except the last 15 lines.,head -n -15 nginx-error.log,frost,head
+"Show me all files, with details, sorted by size (largest first)",ls -laS,mecha,ls
+"Please show its size, owner and permissions in inventory.sql.",stat inventory.sql,frost,stat
+Give root ownership of grub.cfg,chown root grub.cfg,mecha,chown
+"Search the entire file system for files with the extension "".conf"" and print the results, then use xargs to replace all occurrences of ""foo"" with ""bar"" in those files.","find / -name ""*.conf"" -print | xargs sed -i 's/foo/bar/g'",alfa,find
+What are the disk usage of downloads broken down one level deep?,du -h --max-depth=1 downloads 2>/dev/null | sort -rh,frost,du
+Get a detailed list of all files on the system larger than 10MB,find / -size +10M -printf “%12s %t %h/%fn”,alfa,find
+Send credential information to all configured credential helpers to store for later use,"echo ""url=http://example.com"" | git credential approve",alfa,echo
+Change the owner of build.js to ubuntu.,sudo chown ubuntu build.js,frost,chown
+Check a btrfs filesystem,sudo btrfs check path/to/partition,alfa,btrfs
+Delete the first line of payment.ini in place.,sed -i '1d' payment.ini,frost,sed
+"Rank the values of column 9 in cron.log by frequency, highest first, top 15 only.",awk '{print $9}' cron.log | sort | uniq -c | sort -nr | head -n 15,frost,awk
+Install python3-pip,sudo apt install python3-pip,mecha,apt
+Display memory usage in megabytes with total,free -m -t,mecha,free
+View documentation for executing a command on the host from inside a container,tldr distrobox-host-exec,alfa,tldr
+Remove the last file extension from standard input,sed 's/^/./' | rev | cut -d. -f2- | rev | cut -c2-,alfa,sed
+"From users.csv, list the 10 most frequent field-5 entries with their counts.",awk '{print $5}' users.csv | sort | uniq -c | sort -nr | head -n 10,frost,awk
+Restore login for docker_ops,passwd -u docker_ops,mecha,passwd
+Show the progress of the check,sudo btrfs check --progress path/to/partition,alfa,btrfs
+"Given archive.tsv, show the 20 longest lines.","awk '{ print length, $0 }' archive.tsv | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+Show git's sessions without the header.,w -h git,frost,w
+Fetch JSON from https://192.168.1.10/api/users and pretty-print it with jq.,curl -s https://192.168.1.10/api/users | jq .,frost,curl
+display the long listing detials of all the files in the folder junk which is in home folder.,"find ~/junk   -name ""*"" -exec ls -l {} \;",alfa,find
+Delete all files named 'sample' (case insensitive) under '/home/user/Series' directory tree with superuser privilege,sudo find /home/user/Series/ -iname sample -exec rm {} \;,alfa,find
+Create a new organization,pio org create organization_name,alfa,pio
+change just the group of manifest.zip to developers,sudo chgrp developers manifest.zip,frost,chgrp
+"Check if config.log exists and cat it, otherwise say it's missing.",[ -f config.log ] && cat config.log || echo 'not found',frost,[
+"Show its size, owner and permissions of index.png.",stat index.png,frost,stat
+"Find all files and directories in the current directory tree with ""linkin park"" in their names and copy them to /Users/tommye/Desktop/LP","find . -iname ""*linkin park*"" -exec cp -r {} /Users/tommye/Desktop/LP \;",alfa,find
+Find all .log files under /etc/nginx and delete them. (Careful: destructive.),find /etc/nginx -type f -name '*.log' -print0 | xargs -0 rm -f,frost,find
+"Given response.txt, sort it and drop duplicate lines.",sort -u response.txt,frost,sort
+Allow group to execute test.sh,chmod g+x test.sh,mecha,chmod
+"display all the files only in the path ""./sr*sc""","find . -path ""./sr*sc""",alfa,find
+How do I total the resident memory of all celery processes in MB?,"ps -C celery -o rss= | awk '{s+=$1} END{print s/1024 "" MB""}'",frost,ps
+Traceroute to example.com setting type of service 16,traceroute -t 16 example.com,mecha,traceroute
+"For output.py, show the first 20 lines.",head -n 20 output.py,frost,head
+Show all running processes with full details.,ps aux,frost,ps
+"Find all directories with a name ending in "".mp3"" within a maximum depth of 5 and a minimum depth of 2, and count the number of lines in each of them.",find ~ -maxdepth 5 -mindepth 2 -type d -name '*.mp3' | xargs wc -l,alfa,find
+"Display memory usage in kilobytes with all options, update every 11 seconds, 11 times",free -k -o -l -w -t -s 11 -c 11,mecha,free
+"In request.log, which 10 values of column 9 occur most often?","cut -d, -f9 request.log | sort | uniq -c | sort -nr | head -n 10",frost,cut
+Query A record for google.com and set +nostats,dig google.com +nostats,mecha,dig
+Rename test.html to test.html.old,mv test.html test.html.old,frost,mv
+Change the owner of manifest.py to jenkins.,sudo chown jenkins manifest.py,frost,chown
+move all .py files into the fixtures directory,mv *.py fixtures/,frost,mv
+delete all digits from invoice.conf,tr -d '0-9' < invoice.conf,frost,tr
+Count how many unique IP-like first fields appear in dmesg.log.,awk '{print $1}' dmesg.log | sort | uniq -c | sort -nr,frost,awk
+Wait 10 minutes,sleep 600,mecha,sleep
+Find files in /mnt/data owned by operator.,find /mnt/data -type f -user operator,frost,find
+"Given index.log, show the 20 longest lines.","awk '{ print length, $0 }' index.log | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+"Find all files (regardless of name) in the current directory and all subdirectories, excluding directories, and search for the text 'text' in each file.",find . -name '*.*' ! -type d | xargs grep 'text',alfa,find
+List open files owned by deploy.,lsof -u deploy,frost,lsof
+How many lines in server.log mention 'rejected'?,grep -c 'rejected' server.log | cat,frost,grep
+Count how often each column-1 value appears in data.tsv; show the 5 most common.,"cut -d, -f1 data.tsv | sort | uniq -c | sort -nr | head -n 5",frost,cut
+Find & calculate total number of worlds in all .txt file from current directory,find .  -type f  -name '*.txt' -exec wc -w {} \; | awk '{total += $1} END{print total}',alfa,find
+"For each line which has a common first field in file1.csv and file2.txt, output the first 4 fields of file1.csv - both files must be sorted first.","join -o 1.1,1.2,1.3,1.4 -t, file1.csv file2.txt",alfa,join
+Delete a DNS record from a domain,linode-cli domains records-delete domain_id record_id,alfa,linode-cli
+"For inventory.sql, show its size, owner and permissions.",stat inventory.sql,frost,stat
+Count how often each column-2 value appears in orders.tsv; show the 10 most common.,awk '{print $2}' orders.tsv | sort | uniq -c | sort -nr | head -n 10,frost,awk
+Find all test2.h files under current directory,sudo find . -name test2.h,alfa,find
+Set data.tmp to permissions 644.,chmod 644 data.tmp,frost,chmod
+Show the top 15 most frequent values in field 1 of the comma-separated file cron.log.,"cut -d, -f1 cron.log | sort | uniq -c | sort -nr | head -n 15",frost,cut
+How many lines in nginx-error.log mention 'TODO'?,grep -c 'TODO' nginx-error.log | cat,frost,grep
+Give me a frequency tally of column 4 in inventory.csv and show the 15 biggest.,awk '{print $4}' inventory.csv | sort | uniq -c | sort -nr | head -n 15,frost,awk
+"Create a file with the current timestamp in each directory with the name ""seconds.txt"".",yes | xargs -I % touch %/`date +%s`.txt,alfa,yes
+Show me how to tally how many times each log level appears in request.log.,grep -oE '(INFO|WARN|ERROR|DEBUG)' request.log | sort | uniq -c | sort -nr,frost,grep
+Replace every occurrence of 'info' with '127.0.0.1' in index.conf and print the result.,sed 's/info/127.0.0.1/g' index.conf,frost,sed
+Force-kill process 6665.,kill -9 6665,frost,kill
+Remove write permission for group and others on settings.xml.,chmod go-w settings.xml,frost,chmod
+Find any socket using port 9200 via netstat.,netstat -anp | grep :9200,frost,netstat
+Mount an xfs disk on /mnt/storage,mount -t xfs /dev/sdd1 /mnt/storage,mecha,mount
+Deny all incoming traffic,sudo ufw default deny incoming,mecha,ufw
+Find all files in the Downloads directory that are not empty and are larger than 1MB and list them with their permissions.,"find ~/Downloads ! -empty -size +1M -exec ls -lp ""{}"" \;",alfa,find
+Remove write permission for group and others on payload.bak.,chmod go-w payload.bak,frost,chmod
+Change the permissions of a file named 'test.sh' to be executable,chmod +x test.sh,aelhalili,chmod
+Print only lines 10 through 20 of profile.yaml.,"sed -n '10,20p' profile.yaml",frost,sed
+Sample iostat 10 times at 5-second intervals.,iostat 5 10,frost,iostat
+"Find all files with the extension "".pdf"" in the entire file system and execute the command ""sed '/foo/s/bar/baz/g' {}"" on each of them.",find / -name '*.pdf' -exec sed '/foo/s/bar/baz/g' {} \;,alfa,find
+What are the 25 most common entries in column 4 of gateway.log?,awk '{print $4}' gateway.log | sort | uniq -c | sort -nr | head -n 25,frost,awk
+"Search for strings that match the pattern of either 6 lowercase letters followed by an underscore followed by 6 lowercase letters, or 3 lowercase letters followed by an underscore followed by 5 digits in all .csv files, and print the second column followed by a colon followed by the first column.","grep -Ei '([a-z]{6}_[a-z]{6}|[a-z]{3}_[0-9]{5})' *.csv | awk '{ print $2 "":"" $1 }'",alfa,grep
+Tally column 4 of syslog.log and print the 25 top values by count.,awk '{print $4}' syslog.log | sort | uniq -c | sort -nr | head -n 25,frost,awk
+"From session.yaml, show the last 15 lines.",tail -n 15 session.yaml,frost,tail
+Set a specific dependency to a specific version,cargo update --package dependency --precise 1.2.3,alfa,cargo
+Count the number of lines in debug.bak.,wc -l debug.bak,frost,wc
+Show me how to count 'traceback' occurrences in the memcached journal today.,journalctl -u memcached --since today --no-pager | grep -c 'traceback',frost,journalctl
+Open a ssh connection to user@host with X11 forwarding to run GUI programs,ssh user@host -X,alfa,ssh
+"Find all files in the current year and search for the phrase ""hello world"" in them, displaying only the number of occurrences.",find `date +%Y` -name '*.*' | xargs grep -lio 'hello world',alfa,find
+Locate all *.mov files in the current directory tree,find . -name '*.mov',alfa,find
+Show the process tree for user erin.,pstree erin,frost,pstree
+Find the 10 hottest values in column 1 of orders.tsv (by frequency).,"cut -d, -f1 orders.tsv | sort | uniq -c | sort -nr | head -n 10",frost,cut
+list only the .js files in src,ls src/*.js,frost,ls
+Delete all files in the current directory.,find . -exec /bin/rm {} \;,alfa,find
+Squeeze repeated spaces into a single space in test.csv.,tr -s ' ' < test.csv,frost,tr
+Compress camera.jpg using bzip2,bzip2 camera.jpg,mecha,bzip2
+Start/reboot/shutdown/suspend/resume a guest,virsh command guest_id,alfa,virsh
+"Find all files with the extension "".txt"" and search for the string ""string"" in them, ignoring case.","find -name ""*.txt"" | xargs grep -i ""string""",alfa,find
+Output all elements from arrays (or all the values from objects) in JSON or JSON-Lines data from `stdin` to `stdout`.,cat payment.css | jello -l,frost,cat
+Connect with update host keys,ssh -o UpdateHostKeys=yes user@hostname,mecha,ssh
+Run 'dd if=/dev/zero of=test.img bs=1M count=1024' niced to 15 in the background.,nice -n 15 dd if=/dev/zero of=test.img bs=1M count=1024 &,frost,nice
+"Copy all files and folders recursively from the source directory ""/dir1/src/"" to the destination directory ""/dir2/dest/"", including all files with the extension "".jpg"" and excluding all other files.",rsync -rpog --include='*/' --include='*.jpg' --exclude='*' /dir1/src/ /dir2/dest/,alfa,rsync
+"For catalog.old, show the last 20 lines.",tail -n 20 catalog.old,frost,tail
+List files in the current directory and below,find -ls,alfa,find
+Connect with VPN tunnel,ssh -o Tunnel=yes user@hostname,mecha,ssh
+Gracefully terminate the process with PID 7580.,kill 7580,frost,kill
+Create a symbolic link named latest.log pointing to index.txt.,ln -s index.txt latest.log,frost,ln
+Find empty files in dist.,find dist -type f -empty,frost,find
+Run job monthly,crontab -e # @monthly /monthly_job.sh,mecha,crontab
+Count how many lines in kern.log match 'ERROR'.,grep -c 'ERROR' kern.log,frost,grep
+Change niceness of processes using specific TTY,sudo renice +6 -t pts/1,mecha,renice
+Open one or more files in read-only mode,libreoffice --view path/to/file1 path/to/file2 ...,alfa,libreoffice
+search all .html files under config for the word TODO,find config -name '*.html' -print0 | xargs -0 grep -l TODO,frost,find
+Count the number of files in the /usr/ports directory tree whose names begin with 'pkg-plist' and which contain 'unexec.rmdir%D',find /usr/ports/ -name pkg-plist\* -exec grep 'unexec.rmdir %D' '{}' '+' | wc -l,alfa,find
+Query A record for google.com and set +all,dig google.com +all,mecha,dig
+Find files in artifacts larger than 500M.,find artifacts -type f -size +500M,frost,find
+get the 5 most common words in profile.ini,tr ' ' '\n' < profile.ini | sort | uniq -c | sort -nr | head -n 5,frost,tr
+Show me how to count 'exception' occurrences in the systemd-networkd journal today.,journalctl -u systemd-networkd --since today --no-pager | grep -c 'exception',frost,journalctl
+Print the contents of event.md to the terminal.,cat event.md,frost,cat
+Count total lines across all .css files in /var/lib/mysql.,find /var/lib/mysql -type f -name '*.css' -print0 | xargs -0 cat | wc -l,frost,find
+what's the size of build.jpg in bytes?,stat -c '%s' build.jpg,frost,stat
+Persist update check in background,nohup ./check_updates.sh &,mecha,nohup
+Make release.pdf executable.,chmod +x release.pdf,frost,chmod
+Push a new branch if it does not exist (disabled by default),hg push --new-branch,alfa,hg
+Show last lines of XML file,xmllint --format file.xml | tail,mecha,xmllint
+Print every even numbered line,awk 'NR % 2 == 0' file.txt,mecha,awk
+"Print a hex dump of ""$DIREC"" as characters","echo ""$DIREC"" | od -c",alfa,echo
+"Find all files in the current working directory with the extensions .sql, .py, or .js and move them to the /tmp directory.",find $(pwd) -iregex '.*\.(sql|py|js)' -exec mv {} /tmp \;,alfa,find
+View documentation for managing the OATH application,tldr ykman oath,alfa,tldr
+"display all the files in the current folder which are in the path ""./sr*sc""",find . -path './sr*sc',alfa,find
+Set permissions recursively to 644,chmod -R 644 folder,mecha,chmod
+List open files owned by dave.,lsof -u dave,frost,lsof
+Display all system information except hardware platform,uname -asrvmpo,mecha,uname
+"Find all files with the extension "".sh"" in the current directory and its subdirectories, then execute a command to replace the content of each file with a comment containing the original content.",find . -name '*.sh' -type f -exec sed -i 's/\(.*\)/# \1/g' \{\} \;,alfa,find
+"In inventory.csv, which 15 values of column 4 occur most often?",awk '{print $4}' inventory.csv | sort | uniq -c | sort -nr | head -n 15,frost,awk
+replace tabs with commas in auth.json and write to auth.json.csv,"sed 's/\t/,/g' auth.json > auth.json.csv",frost,sed
+show postgresql logs from the last 7 days,journalctl -u postgresql --since '7 days ago',frost,journalctl
+"From customer.ini, convert everything to uppercase.",tr 'a-z' 'A-Z' < customer.ini,frost,tr
+Show the top 5 most frequent values in field 5 of the comma-separated file kern.log.,"cut -d, -f5 kern.log | sort | uniq -c | sort -nr | head -n 5",frost,cut
+"From cron.log, list the 10 most frequent field-7 entries with their counts.","cut -d, -f7 cron.log | sort | uniq -c | sort -nr | head -n 10",frost,cut
+"Find all files with the extension "".txt"" in the current directory and its subdirectories, and compress them into an archive file called ""archive.tar.gz"".","find . -iname ""*.txt"" | xargs tar -zcvf archive.tar.gz",alfa,find
+List available templates,git ignore-io list,alfa,git
+Print just the octal permission bits of index.json.,stat -c '%a' index.json,frost,stat
+Set audit.tar.gz to permissions 644.,chmod 644 audit.tar.gz,frost,chmod
+show prometheus logs from the last 5 days,journalctl -u prometheus --since '5 days ago',frost,journalctl
+Move all files in /var/log/messages to /backup/messages,mv /var/log/messages/* /backup/messages/,mecha,mv
+What are the 20 largest subdirectories of src?,du -h src/* 2>/dev/null | sort -rh | head -n 20,frost,du
+Find the 10 most common 'segfault'-related lines in build.log.,grep 'segfault' build.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+Change the owner of migration.json to carol.,sudo chown carol migration.json,frost,chown
+Count error lines in the ssh journal since yesterday.,journalctl -u ssh --since yesterday | grep -ic error,frost,journalctl
+Sort customer.json and remove duplicate lines.,sort -u customer.json,frost,sort
+Use gzip for the binary file program.bin,gzip program.bin,mecha,gzip
+"Find all files with the extension "".pdf"" in the current working directory and delete them.","find $(pwd) -name ""*.pdf"" | xargs rm -f",alfa,find
+Get the PID of the newest gunicorn process.,pgrep -n gunicorn,frost,pgrep
+Find all files excluding *.gz files in the current directory tree and compress them with gzip,"find . -type f ! -name '*.gz' -exec gzip ""{}"" \;",alfa,find
+Change the owner of manifest.sh to carol.,sudo chown carol manifest.sh,frost,chown
+"Find all files in the current working directory that are older than 3 days, are not empty, and move them to the /tmp/backup/ directory.","find ""$(pwd)"" -type f -mtime +3 ! -empty -exec mv -t /tmp/backup/ {} +;",alfa,find
+Find the 10 most common 'stale'-related lines in metrics.log.,grep 'stale' metrics.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+Find all files with the extension .txt in the current working directory and update the access time for each of them.,find $(pwd) -name '*.txt' | xargs touch -a,alfa,find
+change just the group of test.bak to deploy,sudo chgrp deploy test.bak,frost,chgrp
+Show the unique sorted lines of payment.conf.,sort payment.conf | uniq,frost,sort
+Sort index.csv and remove duplicate lines.,sort -u index.csv,frost,sort
+show only the lines in changelog.json that appear more than once,uniq -d changelog.json,frost,uniq
+"Copy the executable ""python2.7"" in $PATH to ""myenv/bin/python""",cp `which python2.7` myenv/bin/python,alfa,cp
+Find all files in the Downloads directory that are larger than 1024 bytes and delete them.,find ~/Downloads -type f -size +1024c -exec rm -rf {} \;,alfa,find
+"display a long listing of all the files that begin with the name ""Metallica"" in the entire file system",find / -name 'Metallica*' -exec ls -l {} \;,alfa,find
+move all .bak files into the src directory,mv *.bak src/,frost,mv
+Apply a range of commits to the current branch (see also `git rebase --onto`),git cherry-pick start_commit~..end_commit,alfa,git
+Search for files named LICENSE,locate LICENSE,mecha,locate
+Set 755 recursively on /opt/scripts,chmod -R 755 /opt/scripts,mecha,chmod
+Follow the apache2 journal but only show lines mentioning 'refused'.,journalctl -u apache2 -f | grep --line-buffered -i 'refused',frost,journalctl
+Show me how to count 'unauthorized' occurrences in the grafana-server journal today.,journalctl -u grafana-server --since today --no-pager | grep -c 'unauthorized',frost,journalctl
+Move release.zip into the logs folder.,mv release.zip logs/,frost,mv
+Find the 25 hottest values in column 4 of sales.csv (by frequency).,"cut -d, -f4 sales.csv | sort | uniq -c | sort -nr | head -n 25",frost,cut
+Copy archive.csv into the vendor directory.,cp archive.csv vendor/,frost,cp
+Find all directories in the home directory that have been modified in the last 30 minutes.,find $(echo ~) -type d -mmin -30,alfa,find
+change just the group of product.jpg to developers,sudo chgrp developers product.jpg,frost,chgrp
+What's bound to port 27017?,lsof -i :27017,frost,lsof
+"On the file order.md, show a hex dump of the first 64 bytes.",xxd -l 64 order.md,frost,xxd
+List files and show their inode numbers,ls -i,mecha,ls
+Fetch and save the kubeconfig,doctl kubernetes cluster kubeconfig save cluster_name,alfa,doctl
+List all tags,git tag,alfa,git
+"Given account.txt, show the 20 longest lines.","awk '{ print length, $0 }' account.txt | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+display all the regular/normal files in the current folder which have been modified in the last 24 hours,find . -mtime 0 -type f,alfa,find
+Sync files and specify a custom daemon user,rsync -avz --daemon --uid=nobody source_dir/ destination_dir/,mecha,rsync
+list only the .json files in images,ls images/*.json,frost,ls
+Run 'dd if=/dev/zero of=test.img bs=1M count=1024' at a lower priority (nice 15).,nice -n 15 dd if=/dev/zero of=test.img bs=1M count=1024,frost,nice
+"Replace newlines with spaces in the file filename.txt, but only print the first line.",sed -i -n '1h;1!H;${;g;s/\n/ /g;p;}' filename.txt,alfa,sed
+Filter netstat for connections to or from mail.internal.,netstat -tn | grep mail.internal,frost,netstat
+Find directories named releases anywhere under artifacts.,find artifacts -type d -name 'releases',frost,find
+"Run mtr to example.com with IPv4, 25 cycles, interval 1s, and output in XML format",mtr -4 --xml -c 25 -i 1 example.com,mecha,mtr
+List all the directories inside the /home directory,ls -d /home/*/,aelhalili,ls
+Find the 25 hottest values in column 1 of error.log (by frequency).,"cut -d, -f1 error.log | sort | uniq -c | sort -nr | head -n 25",frost,cut
+"Given inventory.csv, count the lines.",wc -l inventory.csv,frost,wc
+Rename training_batch_1 to batch1_training,groupmod -n batch1_training training_batch_1,mecha,groupmod
+Test a script with LOG_LEVEL=debug,env LOG_LEVEL=debug ./test.sh,mecha,env
+change just the group of customer.log to www-data,sudo chgrp www-data customer.log,frost,chgrp
+"Read metrics.txt, then strip trailing whitespace.",sed 's/[[:space:]]*$//' metrics.txt,frost,sed
+"From app.log, list the 10 most frequent field-5 entries with their counts.","cut -d, -f5 app.log | sort | uniq -c | sort -nr | head -n 10",frost,cut
+Count total lines across all .yaml files in dist.,find dist -type f -name '*.yaml' -print0 | xargs -0 cat | wc -l,frost,find
+"For debug.tar.gz, count the lines.",wc -l debug.tar.gz,frost,wc
+download https://db02.local/list.txt and count the lines,curl -s https://db02.local/list.txt | wc -l,frost,curl
+"Find all files with the extension "".txt"" and compress them using gzip.",find -name '*.txt' -exec gzip {} +,alfa,find
+Count the lines of customer.csv.,wc -l customer.csv,frost,wc
+Find all directories under current directory whose names are 33 characters long,"find . -type d -name ""?????????????????????????????????""",alfa,find
+Display a cow with output from another command.,ls | xcowsay,frost,ls
+"Show its size, owner and permissions of sales.sql.",stat sales.sql,frost,stat
+"Unzip and untar ""tarball.tar.gz""",zcat tarball.tar.gz | tar x,alfa,zcat
+"Create a compressed archive file named ""testfile.tar.gz"" containing all the files in the ""/var/www/html"" directory.",tar cvzf testfile.tar.gz /var/www/html/*,alfa,tar
+kill every process listening on port 53,lsof -ti :53 | xargs -r kill -9,frost,lsof
+display all the text files in the current folder except readme files,"find . -type f -name ""*.txt"" ! -name README.txt -print",alfa,find
+Please show a hex dump of the first 64 bytes in customer.md.,xxd -l 64 customer.md,frost,xxd
+"Find all files with the extension "".sh"" in the entire file system and display the size of each file in a human-readable format.",find / -type f -name '*.sh' | xargs du -sh,alfa,find
+Find files in modules larger than -1M.,find modules -type f -size -1M,frost,find
+Show lines in scheduler.log that do NOT contain 'timeout'.,grep -v 'timeout' scheduler.log,frost,grep
+Modify a connection's gateway,"nmcli connection modify ""My Connection"" ipv4.gateway 192.168.1.1",mecha,nmcli
+Remove a user,sudo userdel username,alfa,userdel
+"In gc.log, which 5 values of column 1 occur most often?","cut -d, -f1 gc.log | sort | uniq -c | sort -nr | head -n 5",frost,cut
+"Given access.log, show the last 15 lines.",tail -n 15 access.log,frost,tail
+List available timezones,timedatectl list-timezones,alfa,timedatectl
+Find directories named config anywhere under /mnt/data.,find /mnt/data -type d -name 'config',frost,find
+What are the 20 most common entries in column 9 of output.log?,awk '{print $9}' output.log | sort | uniq -c | sort -nr | head -n 20,frost,awk
+Find all files with the extension .txt in the entire system and copy them to the Documents folder in the home directory.,find / -type f -iname '*.txt' | xargs -I {} cp {} ~/Documents/,alfa,find
+Check the local Homebrew installation for potential problems,brew doctor,alfa,brew
+Create a tar file with the current date as the name and compress all files in the current directory.,tar -zcvvf $(date +%F).tar.gz *,alfa,tar
+Find the 15 hottest values in column 2 of products.tsv (by frequency).,"cut -d, -f2 products.tsv | sort | uniq -c | sort -nr | head -n 15",frost,cut
+"Edit data.tsv in place, replacing 'cookie' with 'PUT'.",sed -i 's/cookie/PUT/g' data.tsv,frost,sed
+POST a JSON body to https://db02.example.com/api/users,"curl -X POST -H 'Content-Type: application/json' -d '{""name"":""alice""}' https://db02.example.com/api/users",frost,curl
+Case-insensitively find 'null' in syslog.,grep -i 'null' syslog,frost,grep
+show grafana-server logs from the last 2 days,journalctl -u grafana-server --since '2 days ago',frost,journalctl
+Replace any 8 alphanumeric characters with the current date and nanoseconds.,sed -e 's/[[:alnum:]]\{8\}/ $(date +%s%N) /',alfa,sed
+I need to tally how many times each log level appears in request.log.,grep -oE '(INFO|WARN|ERROR|DEBUG)' request.log | sort | uniq -c | sort -nr,frost,grep
+What are the 20 most common entries in column 1 of debug.log?,awk '{print $1}' debug.log | sort | uniq -c | sort -nr | head -n 20,frost,awk
+Show me how to count 'rejected' occurrences in the memcached journal today.,journalctl -u memcached --since today --no-pager | grep -c 'rejected',frost,journalctl
+"Read report.log, then count the lines.",wc -l < report.log,frost,wc
+Show me how to list the unique 'DEBUG' messages in ingest.log.,grep 'DEBUG' ingest.log | sort -u,frost,grep
+"Find all files in the current directory and its subdirectories with the extension "".txt"" and display the last 5 lines of each file.","find ./ -name ""*.txt"" | xargs tail -n 5",alfa,find
+Create a directory with the name of the current date and time in the format of YYYYMMDDHHMMSS.,mkdir $(date +%Y%m%d%H%M%S),alfa,mkdir
+Set results.csv to permissions 644.,chmod 644 results.csv,frost,chmod
+show grafana-server logs from the last 14 days,journalctl -u grafana-server --since '14 days ago',frost,journalctl
+Show me the disk usage of downloads broken down one level deep.,du -h --max-depth=1 downloads 2>/dev/null | sort -rh,frost,du
+Count how often each column-5 value appears in products.csv; show the 15 most common.,"cut -d, -f5 products.csv | sort | uniq -c | sort -nr | head -n 15",frost,cut
+Show the top 25 most frequent values in field 9 of the whitespace-separated file inventory.tsv.,awk '{print $9}' inventory.tsv | sort | uniq -c | sort -nr | head -n 25,frost,awk
+Take data.md and strip trailing whitespace.,sed 's/[[:space:]]*$//' data.md,frost,sed
+Create a directory called 'tmp' in your home,mkdir ~/tmp,mecha,mkdir
+Stop nginx server now,service nginx stop,mecha,service
+find & Substitute Only When the Line Matches with the Pattern Using sed,"find . -type f -name ""*.txt"" -exec sed '/\-/s /\-.*//g'  {} \;",alfa,find
+"Find all files with the extension "".txt"" in the current directory, sort them in reverse order, take the first one and print its contents.","find . -name ""*.txt"" -maxdepth 1 -print0 |sort -zR|head -1z |xargs -0 cat",alfa,find
+move all .gif files into the bin directory,mv *.gif bin/,frost,mv
+Find all files with permission 777 in the current directory (not including subdirectories) and delete them.,`find -mindepth 1 -maxdepth 1 -perm 777 -exec rm -f {} \;`,alfa,find
+Change marketing group to sales_chart.jpg,chgrp marketing sales_chart.jpg,mecha,chgrp
+Find all files with the extension .png in the entire system and move them to the folder /home/thumbnails.,find / -type f -name '*.png' -exec mv {} /home/thumbnails \;,alfa,find
+Change the ownership of all aluno1's files in the current directory and below to aluno2,find . -user aluno1 -exec chown aluno2 {},alfa,find
+"Find all files with the extension .docx in the current directory and its subdirectories, and move them to the Documents folder.",find -maxdepth 2 -type f -name '*.docx' | xargs -I{} mv {} ~/Documents,alfa,find
+Read the hostname straight from its config file.,cat /etc/hostname,frost,cat
+Which processes have files open in vendor?,lsof +D vendor,frost,lsof
+Rename export.zip to export.zip.old,mv export.zip export.zip.old,frost,mv
+"search for the directory ""config"" in the current folder and change directory to it","cd `find . -name ""config""`",alfa,cd
+change just the group of account.conf to deploy,sudo chgrp deploy account.conf,frost,chgrp
+"Print the hexadecimal bytes and printable characters of ""Hello world""",echo Hello world | od -t x1 -t c,alfa,echo
+"Find all files in the /tmp directory that were modified within the last day and execute the command ""echo"" followed by the file name for each file.",find /tmp -mtime -1 -exec echo {} \;,alfa,find
+delete all blank lines from request.json,sed '/^$/d' request.json,frost,sed
+Get all namespaces in the current cluster,kubectl get namespaces,alfa,kubectl
+"On the file notes.jpg, show the first 20 lines.",head -n 20 notes.jpg,frost,head
+Stop the fail2ban service,service fail2ban stop,mecha,service
+Count how often each column-3 value appears in nginx-error.log; show the 5 most common.,"cut -d, -f3 nginx-error.log | sort | uniq -c | sort -nr | head -n 5",frost,cut
+Find all files with the extension .mp3 in the /usr/share/ directory and move them to the /tmp/music/ directory.,find /usr/share/ -name *.mp3 -exec mv '{}' /tmp/music/ ;,alfa,find
+Show logged in users sorted by idle time,w | sort -k5,mecha,w
+Show me how to count 'SIGTERM' occurrences in the nginx journal today.,journalctl -u nginx --since today --no-pager | grep -c 'SIGTERM',frost,journalctl
+"Save the first line of ""$j"" into variable ""k"" in ksh",echo $j | read k,alfa,echo
+Find the 10 most common '500'-related lines in gateway.log.,grep '500' gateway.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+Prints folder path where $mystring file is located.,echo dirname: $(dirname $mystring),alfa,echo
+Show CPU and disk I/O statistics every 5 seconds.,iostat 5,frost,iostat
+"Connect to a Bluetooth device (e.g., 'XX:XX:XX:XX:XX:XX')",bluetoothctl connect XX:XX:XX:XX:XX:XX,aelhalili,bluetoothctl
+Find the 25 hottest values in column 2 of customers.csv (by frequency).,awk '{print $2}' customers.csv | sort | uniq -c | sort -nr | head -n 25,frost,awk
+Find all files in the current directory and its sub-directories that have not been assessed in more than 30 days.,find . -atime +30 -print,alfa,find
+strip leading whitespace from every line of metrics.conf and save to clean.txt,sed 's/^[[:space:]]*//' metrics.conf > clean.txt,frost,sed
+Force-kill process 1460.,kill -9 1460,frost,kill
+"Copies """"$project_dir""/iTunesArtwork"", to the 'Payload/iTunesArtwork', rewriting files if necessary.","cp -f ""$project_dir""/iTunesArtwork Payload/iTunesArtwork",alfa,cp
+Assign user6 ownership of backup.tar.gz,chown user6 backup.tar.gz,mecha,chown
+Take backup.csv and strip trailing whitespace.,sed 's/[[:space:]]*$//' backup.csv,frost,sed
+Ping facebook.com with 2 second timeout and 7 times,ping -W 2 -c 7 facebook.com,mecha,ping
+Find all Git dependencies and print which application requires them,"npm query "":type(git)"" | jq 'map(.name)' | xargs -I {} npm why {}",alfa,npm
+"Rank the values of column 1 in orders.tsv by frequency, highest first, top 10 only.","cut -d, -f1 orders.tsv | sort | uniq -c | sort -nr | head -n 10",frost,cut
+Change the owner of dump.old to alice.,sudo chown alice dump.old,frost,chown
+strip leading whitespace from every line of report.csv and save to clean.txt,sed 's/^[[:space:]]*//' report.csv > clean.txt,frost,sed
+Determine the file type of order.pdf.,file order.pdf,frost,file
+Set a specific JVM as one-off default for the shell instance,cs java --jvm jvm_name:jvm_version --env,alfa,cs
+find all the directories in current folder and delete them,find . -type d -delete,alfa,find
+Show every open file under vendor.,lsof +D vendor,frost,lsof
+"Find all files that have been modified in the last 0 minutes and execute the command ""ls -ltrH"" on them.",find -type f -mmin 0 -exec ls -ltrH {} +,alfa,find
+Count 'SIGTERM' occurrences in the containerd journal today.,journalctl -u containerd --since today --no-pager | grep -c 'SIGTERM',frost,journalctl
+Show the current git status in short form.,git status -s,frost,git
+Debug failed cron job,journalctl -u cron.service,mecha,journalctl
+Lower the priority of process 4274 to nice value 10.,renice -n 10 -p 4274,frost,renice
+Generate an example Go program from a given XML from `stdin` and send output to a file.,cat users.yaml | zek -p -o summary.py,frost,cat
+Run curl without interruption,nohup curl https://example.com &,mecha,nohup
+check if web01.local is reachable with 3 pings,ping -c 3 web01.local,frost,ping
+get the 5 most common words in summary.tsv,tr ' ' '\n' < summary.tsv | sort | uniq -c | sort -nr | head -n 5,frost,tr
+Find directories named project anywhere under src.,find src -type d -name 'project',frost,find
+what's the size of payment.log in bytes?,stat -c '%s' payment.log,frost,stat
+Find all directories under /home/username/public_html/modules  and set their permission to 750,find /home/username/public_html/modules -type d -exec chmod 750 {} +,alfa,find
+delete all blank lines from product.csv,sed '/^$/d' product.csv,frost,sed
+delete all blank lines from users.txt,sed '/^$/d' users.txt,frost,sed
+I need to count 'SIGTERM' occurrences in the nginx journal today.,journalctl -u nginx --since today --no-pager | grep -c 'SIGTERM',frost,journalctl
+Update ref with a message,git update-ref -m message HEAD 4e95e05,alfa,git
+Read only 100 bytes of a file starting from the 500th byte,od --read-bytes 100 --skip-bytes=500 -v path/to/file,alfa,od
+Show disk usage in gigabytes,df -BG,mecha,df
+Find the PIDs of all haproxy processes.,pgrep haproxy,frost,pgrep
+Background 'dd if=/dev/zero of=test.img bs=1M count=1024' at nice level 15.,nice -n 15 dd if=/dev/zero of=test.img bs=1M count=1024 &,frost,nice
+Count how many unique IP-like first fields appear in gc.log.,awk '{print $1}' gc.log | sort | uniq -c | sort -nr,frost,awk
+Retrieve details about a database cluster's maintenance windows,doctl databases maintenance-window get database_id,alfa,doctl
+"From output.log, list the 5 most frequent field-4 entries with their counts.","cut -d, -f4 output.log | sort | uniq -c | sort -nr | head -n 5",frost,cut
+Ping facebook.com with 5 second timeout and 150 times,ping -W 5 -c 150 facebook.com,mecha,ping
+check the type of every file in build,file build/*,frost,file
+Display dmesg in human-friendly mode.,dmesg -H,frost,dmesg
+"Find all files in the home directory with a "".py"" extension and delete them.","find ~/ -type f -iname ""*.py"" | xargs -I{} rm -f '{}'",alfa,find
+"Find all files with the extension "".js"" in the entire file system and list them with their size and other attributes.",find / -iname '*.js' | xargs ls -lh,alfa,find
+Count 'unauthorized' occurrences in the grafana-server journal today.,journalctl -u grafana-server --since today --no-pager | grep -c 'unauthorized',frost,journalctl
+"Rank the values of column 4 in nginx-error.log by frequency, highest first, top 15 only.","cut -d, -f4 nginx-error.log | sort | uniq -c | sort -nr | head -n 15",frost,cut
+"When the method returns or an exception occurs, observe the count property of the second parameter.",watch dropped null '5}' -e -s,frost,watch
+Prints process tree with command line arguments of a process having id $PID.,"pstree -a ""$PID""",alfa,pstree
+Change the owner of invoice.zip to postgres.,sudo chown postgres invoice.zip,frost,chown
+"Make directories to ""/my/other/path/here"" as needed",mkdir -p /my/other/path/here,alfa,mkdir
+strip leading whitespace from every line of schema.conf and save to clean.txt,sed 's/^[[:space:]]*//' schema.conf > clean.txt,frost,sed
+Change niceness of all ssh connections from this host,"sudo renice +5 -p $(ss -tnp | grep ESTAB | awk '{print $6}' | cut -d',' -f2)",mecha,renice
+Take schema.conf and convert everything to uppercase.,tr 'a-z' 'A-Z' < schema.conf,frost,tr
+"Show CPU and disk I/O stats every 5 seconds, 10 times.",iostat 5 10,frost,iostat
+Show the last 20 lines of users.js.,tail -n 20 users.js,frost,tail
+"In data.tsv, which 5 values of column 1 occur most often?","cut -d, -f1 data.tsv | sort | uniq -c | sort -nr | head -n 5",frost,cut
+"Removes all files like '*.bak' in a current folder, and prints messages about what is being done.",rm -v *.bak,alfa,rm
+Make product.tar.gz executable.,chmod +x product.tar.gz,frost,chmod
+List notifications for the current account (as would be seen in <https://github.com/notifications>),gh notifications,alfa,gh
+"From response.md, count each unique line, most common first.",sort response.md | uniq -c | sort -nr,frost,sort
+Copy account.conf into the releases directory.,cp account.conf releases/,frost,cp
+Please count the lines in data.tar.gz.,wc -l data.tar.gz,frost,wc
+Follow the rabbitmq journal but only show lines mentioning 'exception'.,journalctl -u rabbitmq -f | grep --line-buffered -i 'exception',frost,journalctl
+Display the man page for a command from section 7,man 7 command,alfa,man
+Find all files in the current directory and move them to the TargetDir directory in the home directory.,find ./* -exec mv -t ~/TargetDir {} +,alfa,find
+Find all .yaml files under /etc/nginx and delete them. (Careful: destructive.),find /etc/nginx -type f -name '*.yaml' -print0 | xargs -0 rm -f,frost,find
+Prints only unique strings of those stored in variables $COMMANDS and $ALIASES.,"echo ""$COMMANDS""$'\n'""$ALIASES"" | sort -u",alfa,echo
+Rename audit.sql to audit.sql.old,mv audit.sql audit.sql.old,frost,mv
+"Rank the values of column 7 in data.csv by frequency, highest first, top 5 only.","cut -d, -f7 data.csv | sort | uniq -c | sort -nr | head -n 5",frost,cut
+"Check if users.yaml exists and cat it, otherwise say it's missing.",[ -f users.yaml ] && cat users.yaml || echo 'not found',frost,[
+"Print appended data in ""file"" that match ""my_pattern""",tail -f file | grep --line-buffered my_pattern,alfa,tail
+Lower the priority of process 4299 to nice value 10.,renice -n 10 -p 4299,frost,renice
+Count how often each column-5 value appears in worker.log; show the 5 most common.,awk '{print $5}' worker.log | sort | uniq -c | sort -nr | head -n 5,frost,awk
+What are the 15 most common entries in column 1 of report.tsv?,awk '{print $1}' report.tsv | sort | uniq -c | sort -nr | head -n 15,frost,awk
+Show only listening TCP ports,netstat -lt,mecha,netstat
+"Find all files with the extension "".txt"" in the entire file system and execute the command ""sed -E 's/400/600/g' {} +"" on them.","find / -name ""*.txt"" -exec sed -E 's/400/600/g' {} +",alfa,find
+"Check if schema.sql exists and cat it, otherwise say it's missing.",[ -f schema.sql ] && cat schema.sql || echo 'not found',frost,[
+Display the ancestors of process 2161 as a tree.,pstree -s 2161,frost,pstree
+"From response.txt, sort it and drop duplicate lines.",sort -u response.txt,frost,sort
+Show lines in nginx-error.log that do NOT contain '500'.,grep -v '500' nginx-error.log,frost,grep
+"Rank the values of column 3 in nginx-access.log by frequency, highest first, top 20 only.","cut -d, -f3 nginx-access.log | sort | uniq -c | sort -nr | head -n 20",frost,cut
+List cost category definitions,aws ce list-cost-category-definitions,alfa,aws
+Take report.log and count the lines.,wc -l < report.log,frost,wc
+Copy all files in /var/log/alternatives.log to /backup/alternatives,cp /var/log/alternatives.log/* /backup/alternatives/,mecha,cp
+Prevent auto-remove,sudo apt remove --no-auto-remove nginx,mecha,apt
+"Read error.md, then count the lines.",wc -l < error.md,frost,wc
+Give me a frequency tally of column 7 in nginx-access.log and show the 15 biggest.,awk '{print $7}' nginx-access.log | sort | uniq -c | sort -nr | head -n 15,frost,awk
+change just the group of server.png to mysql,sudo chgrp mysql server.png,frost,chgrp
+"Rank the values of column 7 in metrics.tsv by frequency, highest first, top 20 only.","cut -d, -f7 metrics.tsv | sort | uniq -c | sort -nr | head -n 20",frost,cut
+follow redirects when fetching https://api.corp.net,curl -L https://api.corp.net,frost,curl
+Set mode 644 for webpage.html,chmod 644 webpage.html,mecha,chmod
+Take catalog.ini and show the 20 longest lines.,"awk '{ print length, $0 }' catalog.ini | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+Count 'DEBUG' occurrences in the firewalld journal today.,journalctl -u firewalld --since today --no-pager | grep -c 'DEBUG',frost,journalctl
+Add a development or build dependency,cargo add dependency --dev|build,alfa,cargo
+Download the file http://www.example.com with the current timestamp as the filename and save it as a .tar.gz file.,curl -O http://www.example.com $(date +%s).tar.gz,alfa,curl
+List all regular files in /var/www and below that have changed in the last 10 minutes,"find /var/www -cmin -10 -type f -printf ""%c %pn""",alfa,find
+"find all the files in the current folder which have been modified in the last 60 minutes, which are atleast 1 level deep and display a long listing of these files",find . -mindepth 1 -mmin -60 | xargs -r ls -ld,alfa,find
+"Search the entire file system starting from the root directory for files ending with "".sh"" that have been modified more than 90 minutes ago and print the path of each file.","find / -maxdepth -name ""*.sh"" -mmin +90 | awk '{print $1}'",alfa,find
+Query A record for google.com with recursion desired,dig google.com +rd,mecha,dig
+show cron logs from the last 60 days,journalctl -u cron --since '60 days ago',frost,journalctl
+Find all dependencies with postinstall scripts and uninstall them,"npm query "":attr(scripts, [postinstall])"" | jq 'map(.name) | join(""\n"")' -r | xargs -I {} npm uninstall {}",alfa,npm
+"Mount disk using options rw,sync","mount -o rw,sync /dev/sdn1 /mnt/sync",mecha,mount
+I need to follow the postgresql journal but only show lines mentioning 'deprecated'.,journalctl -u postgresql -f | grep --line-buffered -i 'deprecated',frost,journalctl
+"Count how many times each line appears in index.md, most frequent first.",sort index.md | uniq -c | sort -nr,frost,sort
+"Find all files (not directories) in the current directory and its subdirectories, ignoring case, and sort the results by the second field (separated by a colon) in the output.",grep -i -I '..$' `ls -ald */[!.]*` | sort -u -t : -k 2,alfa,grep
+Show me how to follow the apache2 journal but only show lines mentioning 'refused'.,journalctl -u apache2 -f | grep --line-buffered -i 'refused',frost,journalctl
+"Convert ""595a"" into characters and then print the hexadecimal and printable characters of each byte","echo 595a | awk -niord '$0=chr(""0x""RT)' RS=.. ORS= | od -tx1c",alfa,echo
+"Rank the values of column 4 in sales.csv by frequency, highest first, top 25 only.","cut -d, -f4 sales.csv | sort | uniq -c | sort -nr | head -n 25",frost,cut
+monitor system performance with vmstat every 5 seconds using human-readable units,vmstat -S M 5,frost,vmstat
+"Execute the file utility for each file found under /etc or below that contains ""test"" in its pathname",find /etc -print0 | grep -azZ test | xargs -0 file,alfa,find
+Find the 10 most common 'DEBUG'-related lines in auth.log.,grep 'DEBUG' auth.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+"Run the backup script, sending stdout and stderr to output.log.",./backup.sh > output.log 2>&1,frost,./backup.sh
+Display help about using `gh` with MinTTY,gh help mintty,alfa,gh
+Go to line 100,less +100 file.txt,mecha,less
+Copy dump.tar.gz into data only if it's newer than what's there.,cp -u dump.tar.gz data/,frost,cp
+"Rank the values of column 3 in export.csv by frequency, highest first, top 20 only.","cut -d, -f3 export.csv | sort | uniq -c | sort -nr | head -n 20",frost,cut
+Enable ARP on enp0s3,sudo ifconfig enp0s3 arp,mecha,ifconfig
+count the bytes in response.tmp,wc -c response.tmp,frost,wc
+Start the postgresql service,systemctl start postgresql,mecha,systemctl
+"Enable a specific network interface (e.g., 'eth0')",sudo ip link set eth0 up,aelhalili,ip
+Create a file called 'temp' in /home/erin,touch /home/erin/temp,mecha,touch
+Extract characters 4 through 8 from the file /usr/local/sbin/script and convert all lowercase letters to uppercase.,cut -c 4-8 /usr/local/sbin/script | tr '[:lower:]' '[:upper:]',alfa,cut
+Take customer.json and sort it and drop duplicate lines.,sort -u customer.json,frost,sort
+Show me how to follow the containerd journal but only show lines mentioning 'permission denied'.,journalctl -u containerd -f | grep --line-buffered -i 'permission denied',frost,journalctl
+show mongod logs from the last 1 days,journalctl -u mongod --since '1 days ago',frost,journalctl
+Find all .txt files under /home/deploy.,find /home/deploy -type f -name '*.txt',frost,find
+gracefully stop all processes owned by svc-app,pkill -u svc-app,frost,pkill
+"Replace all newlines (\n) in the file.txt with a space, except for the last line.",sed -i '$!N;s/\n/ /' file.txt,alfa,sed
+recursively search migrations for 'expired' and show line numbers,grep -rn 'expired' migrations,frost,grep
+Recursively set owner and group of scripts to deploy:operators.,sudo chown -R deploy:operators scripts,frost,chown
+"Append all regular files modified in the last 24 hours to the ""$archive.tar"" tar archive","find . -mtime -1 -type f -exec tar rvf ""$archive.tar"" '{}' \;",alfa,find
+"Print the first field of the output of the command ""ls -l ~/"".",ls -l ~/|awk 'NR==1 {print $1}',alfa,ls
+Show lines in kern.log that do NOT contain 'ERROR'.,grep -v 'ERROR' kern.log,frost,grep
+Give me a frequency tally of column 7 in metrics.tsv and show the 20 biggest.,"cut -d, -f7 metrics.tsv | sort | uniq -c | sort -nr | head -n 20",frost,cut
+Create a new user 'john' in the system,sudo useradd john,aelhalili,useradd
+Let the user choose between multiple items and save the selected one to a file,"echo -e ""red\ngreen\nblue"" | dmenu > color.txt",alfa,echo
+The last file in the list.,cat `ls -r | head -1`,alfa,cat
+"Infinitely print ""1"" then ""0""",yes 0 | sed '1~2s/0/1/',alfa,yes
+Change the owner of session.tmp to jenkins.,sudo chown jenkins session.tmp,frost,chown
+Show me the 20 largest subdirectories of src.,du -h src/* 2>/dev/null | sort -rh | head -n 20,frost,du
+which directories under backup are eating the most space?,du -h --max-depth=1 backup | sort -rh,frost,du
+send a GET request to https://localhost/api and show the response headers,curl -I https://localhost/api,frost,curl
+Mount the CD-ROM to /media/cdrom,mount /dev/cdrom /media/cdrom,mecha,mount
+"On this box, list the top 5 remote IPs by number of connections.",ss -tn | awk 'NR>1 {print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -n 5,frost,ss
+find all files that names are dir-name-here,"find / -name ""dir-name-here""",alfa,find
+strip leading whitespace from every line of index.csv and save to clean.txt,sed 's/^[[:space:]]*//' index.csv > clean.txt,frost,sed
+Show what PID 5640 has open.,lsof -p 5640,frost,lsof
+Initialize a repository with the specified name for the initial branch,git init --initial-branch=branch_name,alfa,git
+I need to show the last 50 lines containing 'refused' in api.log.,grep 'refused' api.log | tail -n 50,frost,grep
+Run a task in the project environment,pixi run task,alfa,pixi
+Write a one-liner to list the top 5 remote IPs by number of connections.,ss -tn | awk 'NR>1 {print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -n 5,frost,ss
+replace tabs with commas in product.txt and write to product.txt.csv,"sed 's/\t/,/g' product.txt > product.txt.csv",frost,sed
+Print the machine hostname from the environment.,"echo ""$HOSTNAME""",frost,echo
+Display logs and changes for recent commits within the specified time frame,"git whatchanged --since=""2 hours ago""",alfa,git
+"Find all PDF files in the current directory and its subdirectories, and give the group execute permission for each file.",find -maxdepth 2 -iname '*.pdf' -exec chmod g+x {} \;,alfa,find
+Find all .png files under lib.,find lib -type f -name '*.png',frost,find
+Keep only lines that do not contain numbers,sed -n '/[^0-9]/p' file.txt,mecha,sed
+display a list of all files in the folder passed as argument to a script,find $@ -ls,alfa,find
+Rename devops1 to devops_main,usermod -l devops_main devops1,mecha,usermod
+Show me how to follow the memcached journal but only show lines mentioning 'traceback'.,journalctl -u memcached -f | grep --line-buffered -i 'traceback',frost,journalctl
+"Display memory usage in bytes with all options, update every 10 seconds, 10 times",free -b -o -l -w -t -s 10 -c 10,mecha,free
+"Find all files with the extension "".txt"" and execute the command ""chmod +x"" on each of them.","find -name ""*.txt"" -exec chmod +x {} \;",alfa,find
+"Wrap up imerge operation, after all conflicts are resolved",git imerge finish,alfa,git
+"Delete all files with the name ending in "".log"" in the current directory and its subdirectories.","rm -f $(find . -iname ""*.log"" -type f)",alfa,rm
+move all .jpg files into the templates directory,mv *.jpg templates/,frost,mv
+Lower the priority of process 7551 to nice value 10.,renice -n 10 -p 7551,frost,renice
+"Edit error.conf in place, replacing '0.0.0.0' with 'kernel'.",sed -i 's/0.0.0.0/kernel/g' error.conf,frost,sed
+"Find all files with a "".txt"" extension in the entire file system, sort them in reverse order, and display the first 10 results.",find / -name '*.txt' | sort -r | head -n 10,alfa,find
+Re-enable login for user helpline,passwd -u helpline,mecha,passwd
+Find the 10 most common 'retry'-related lines in auth.log.,grep 'retry' auth.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+Show just the first line of access.zip.,head -n 1 access.zip,frost,head
+Set a bridge interface of a specific network,lxc network set network_name bridge.external_interfaces eth0,alfa,lxc
+Find all files in the root directory and execute the command to move them to the /var/backups directory.,find / -type f -exec mv '{}' /var/backups \;,alfa,find
+list only the .gif files in assets,ls assets/*.gif,frost,ls
+How many lines in metrics.log mention 'DEBUG'?,grep -c 'DEBUG' metrics.log | cat,frost,grep
+"Print lines 2960 to 2966 from the output of ""history""","history | sed -n '2960,2966p'",alfa,history
+Print the number of fields on each line of metrics.log.,awk '{print NF}' metrics.log,frost,awk
+Find all files with the extension .txt in the /opt directory and execute the command sed to delete all empty lines in each file.,find /opt -name '*.txt' -exec sed -i '/^$/d' {} \;,alfa,find
+"Print last day of April, 2009",cal 4 2009 | tr ' ' '\n' | grep -v ^$ | tail -n 1,alfa,cal
+Set the hostname of the computer,"sudo hostnamectl set-hostname ""hostname""",alfa,hostnamectl
+Show the last 20 warning entries for memcached.,journalctl -u memcached -p warning -n 20 --no-pager,frost,journalctl
+Create a directory called 'mime' in your home,mkdir ~/mime,mecha,mkdir
+Find .conf files in /srv up to 4 levels deep,"find /srv -maxdepth 4 -name ""*.conf""",mecha,find
+Create a directory called 'emacs' in your home,mkdir ~/emacs,mecha,mkdir
+"Show process details for PID 1154 with group, nice, start, elapsed time","ps -p 1154 -o pid,ppid,fgroup,ni,lstart,etime",mecha,ps
+Set test.xml to permissions 644.,chmod 644 test.xml,frost,chmod
+"Change directory to the output of command '~/marker.sh go ""$@""'","cd $( ~/marker.sh go ""$@"" )",alfa,cd
+Follow the haproxy journal but only show lines mentioning 'WARNING'.,journalctl -u haproxy -f | grep --line-buffered -i 'WARNING',frost,journalctl
+"Sort ""$file"" and output the result to ""$file""",sort -o $file $file,alfa,sort
+"Find all files with the extension "".php"" in the current directory and its subdirectories, and replace all occurrences of ""glob"" with ""globul"" in each file.","find . -type f -iname ""*.php"" -exec sed -i 's/glob/globul/g' {} +",alfa,find
+"Find all files in the current directory and its subdirectories, and execute the command ""sed '/^#.*/d' {}"" on each of them.",find ./ -type f -exec sed '/^#.*/d' {} \;,alfa,find
+"Check if audit.txt exists and cat it, otherwise say it's missing.",[ -f audit.txt ] && cat audit.txt || echo 'not found',frost,[
+Run make install with niceness +2,nice -n 2 sudo make install,mecha,nice
+"From server.yaml, show the 20 longest lines.","awk '{ print length, $0 }' server.yaml | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+Open file and set smartindent,vim -c 'set smartindent' file.txt,mecha,vim
+Label a pod,kubectl label pod pod_name key=value,alfa,kubectl
+Find all the files/directories under user's home directory that do not belong to the user $USER,find ~ ! -user ${USER},alfa,find
+"Force create a symbolic link without dereferencing named ""alpha"" to ""alpha_2""",ln -nsf alpha_2 alpha,alfa,ln
+Only download package lists,sudo apt update --download-only,mecha,apt
+"Find all files (with any extension) in the current directory and its subdirectories, up to a maximum depth of 2, and execute the command 'grep -l 'example' on each of them.","find . -maxdepth 2 -type f -name ""*.*"" -exec grep -l 'example' {} \;",alfa,find
+Show lines in dmesg.log that do NOT contain 'unauthorized'.,grep -v 'unauthorized' dmesg.log,frost,grep
+Find the 10 most common 'SIGTERM'-related lines in debug.log.,grep 'SIGTERM' debug.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+change just the group of payload.bak to wheel,sudo chgrp wheel payload.bak,frost,chgrp
+find all the files in the file system which are bigger than 3 bytes,find / -size +3 -print,alfa,find
+"Given error.md, count the lines.",wc -l < error.md,frost,wc
+change permissions to 644 on all files under /mnt/data,find /mnt/data -type f -print0 | xargs -0 chmod 644,frost,find
+Fetch https://192.168.1.10/health and print only the HTTP status code.,curl -s -o /dev/null -w '%{http_code}' https://192.168.1.10/health,frost,curl
+Count how often each column-5 value appears in orders.csv; show the 20 most common.,awk '{print $5}' orders.csv | sort | uniq -c | sort -nr | head -n 20,frost,awk
+Add files or directories to the staging area,hg add path/to/file,alfa,hg
+list all files under the current directory called cookies.txt,find -name cookies.txt,alfa,find
+how can I see content of memo.txt,cat memo.txt,alfa,cat
+Tally column 4 of inventory.csv and print the 15 top values by count.,awk '{print $4}' inventory.csv | sort | uniq -c | sort -nr | head -n 15,frost,awk
+What are the disk usage of tests broken down one level deep?,du -h --max-depth=1 tests 2>/dev/null | sort -rh,frost,du
+"Find all files with the extension "".txt"" in the current directory and its subdirectories, search for the word ""text"" in each file, sort the results, and count the number of unique occurrences.","find . -iname ""*.txt"" -exec grep -i ""text"" {} \; | sort | uniq -c",alfa,find
+what's the size of access.py in bytes?,stat -c '%s' access.py,frost,stat
+Reattach latest screen if only one,screen -r,mecha,screen
+change just the group of data.tmp to staff,sudo chgrp staff data.tmp,frost,chgrp
+Run dd with niceness +13,nice -n 13 dd if=/dev/sda of=/backup.img,mecha,nice
+Display disk usage of the current directory,du,mecha,du
+Find all files in the current directory (max depth of 1) and make them executable for all users.,find ./ -maxdepth 1 -type f -exec chmod a+x {} \;,alfa,find
+"Given response.md, sort it and drop duplicate lines.",sort -u response.md,frost,sort
+Show all open files under /var/log,lsof +D /var/log,mecha,lsof
+Print only lines 10 through 20 of data.ini.,"sed -n '10,20p' data.ini",frost,sed
+"Rank the values of column 3 in server.log by frequency, highest first, top 5 only.",awk '{print $3}' server.log | sort | uniq -c | sort -nr | head -n 5,frost,awk
+"Add group write permission to all files and directories in the current directory including hidden files and excluding ""..""",chmod g+w $(ls -1a | grep -v '^..$'),alfa,chmod
+Rename users.xml to users.xml.old without overwriting if the target already exists.,mv -n users.xml users.xml.old,frost,mv
+Split a file at a line matching a regular expression,csplit path/to/file /regular_expression/,alfa,csplit
+List just the filenames under vendor that contain 'failed'.,grep -rl 'failed' vendor,frost,grep
+Please show just the first line in invoice.pdf.,head -n 1 invoice.pdf,frost,head
+Count how often each column-1 value appears in error.log; show the 25 most common.,"cut -d, -f1 error.log | sort | uniq -c | sort -nr | head -n 25",frost,cut
+I need to count 'traceback' occurrences in the memcached journal today.,journalctl -u memcached --since today --no-pager | grep -c 'traceback',frost,journalctl
+Show the first 5 lines of nginx-error.log.,head -n 5 nginx-error.log,frost,head
+Pull the latest 'nginx' Docker image from Docker Hub,sudo docker pull nginx,aelhalili,docker
+Install jq with pacman.,sudo pacman -S jq,frost,pacman
+Show me the disk usage of tests broken down one level deep.,du -h --max-depth=1 tests 2>/dev/null | sort -rh,frost,du
+Show lines in worker.log that do NOT contain 'critical'.,grep -v 'critical' worker.log,frost,grep
+Remove the most recently created directory and all of its contents.,rm -r $(ls -td -- */ | head -n1),alfa,rm
+Remove testuser and clean up everything,userdel -r testuser,mecha,userdel
+Echo the HOSTNAME environment variable.,"echo ""$HOSTNAME""",frost,echo
+List the unique 'corrupt' messages in gateway.log.,grep 'corrupt' gateway.log | sort -u,frost,grep
+Create a resource using the resource definition file,kubectl create -f path/to/file.yml,alfa,kubectl
+Copy payload.html into modules only if it's newer than what's there.,cp -u payload.html modules/,frost,cp
+What are the 15 most common entries in column 2 of products.tsv?,"cut -d, -f2 products.tsv | sort | uniq -c | sort -nr | head -n 15",frost,cut
+Show the unique sorted lines of profile.md.,sort profile.md | uniq,frost,sort
+"Copies '[MacVim_source_folder]/src/MacVim/mvim' to the  '/usr/local/bin', printing info message on each operation.",cp -v [MacVim_source_folder]/src/MacVim/mvim /usr/local/bin,alfa,cp
+strip leading whitespace from every line of archive.ini and save to clean.txt,sed 's/^[[:space:]]*//' archive.ini > clean.txt,frost,sed
+Mount fuse-based filesystem,mount -t fuseblk /dev/sdw1 /mnt/fuse,mecha,mount
+Copy session.json to modules/ but keep the original timestamps and permissions.,cp -p session.json modules/,frost,cp
+Tag to apply to rebased image,crane rebase -t|--tag tag_name,alfa,crane
+Show API calls that would be made to create an nginx container,kubectl run nginx-dev --image=nginx --dry-run=none|server|client,alfa,kubectl
+Launch 'dd if=/dev/zero of=test.img bs=1M count=1024' at reduced priority (15).,nice -n 15 dd if=/dev/zero of=test.img bs=1M count=1024,frost,nice
+Copy test.gz to config/ but keep the original timestamps and permissions.,cp -p test.gz config/,frost,cp
+Make audit.js executable.,chmod +x audit.js,frost,chmod
+Tally column 9 of customers.tsv and print the 10 top values by count.,"cut -d, -f9 customers.tsv | sort | uniq -c | sort -nr | head -n 10",frost,cut
+Cut the fifth field (separated by a comma) and print the first word.,"cut -d "","" -f 5 | awk '{print $1}'",alfa,cut
+Give me a frequency tally of column 7 in data.tsv and show the 10 biggest.,"cut -d, -f7 data.tsv | sort | uniq -c | sort -nr | head -n 10",frost,cut
+move all .css files into the bin directory,mv *.css bin/,frost,mv
+Recursively set owner and group of logs to redis:mysql.,sudo chown -R redis:mysql logs,frost,chown
+Print only lines 10 through 20 of archive.ini.,"sed -n '10,20p' archive.ini",frost,sed
+Replace every occurrence of 'production' with 'user_id' in summary.yaml and print the result.,sed 's/production/user_id/g' summary.yaml,frost,sed
+Run 'make -j4' niced to 5 in the background.,nice -n 5 make -j4 &,frost,nice
+"For output.bak, determine what kind of file it is.",file output.bak,frost,file
+change just the group of product.json to sudo,sudo chgrp sudo product.json,frost,chgrp
+replace tabs with commas in audit.tsv and write to audit.tsv.csv,"sed 's/\t/,/g' audit.tsv > audit.tsv.csv",frost,sed
+Which files does user operator have open?,lsof -u operator,frost,lsof
+"For output.yaml, determine what kind of file it is.",file output.yaml,frost,file
+Run fdisk to inspect /dev/sdz,fdisk /dev/sdz,mecha,fdisk
+change just the group of debug.py to staff,sudo chgrp staff debug.py,frost,chgrp
+List just the filenames under vendor that contain 'corrupt'.,grep -rl 'corrupt' vendor,frost,grep
+Fetch https://auth.local/health and print only the HTTP status code.,curl -s -o /dev/null -w '%{http_code}' https://auth.local/health,frost,curl
+follow redirects when fetching https://mail.example.com,curl -L https://mail.example.com,frost,curl
+Show all processes and pipe to less with no line wrapping,ps aux | less -S,mecha,ps
+Install Python 3 pip,sudo apt install python3-pip,aelhalili,apt
+Partition disk /dev/sdr using fdisk,fdisk /dev/sdr,mecha,fdisk
+Show the top 25 most frequent values in field 4 of the whitespace-separated file gateway.log.,awk '{print $4}' gateway.log | sort | uniq -c | sort -nr | head -n 25,frost,awk
+Sort dump.md numerically in reverse order.,sort -nr dump.md,frost,sort
+Tally column 9 of cron.log and print the 15 top values by count.,awk '{print $9}' cron.log | sort | uniq -c | sort -nr | head -n 15,frost,awk
+Start 'make -j4' with nice value 5 so it doesn't hog the CPU.,nice -n 5 make -j4,frost,nice
+Show a hex dump of the first 64 bytes of server.png.,xxd -l 64 server.png,frost,xxd
+Follow `stderr` of a task,pueue follow --err task_id,alfa,pueue
+"Displays process tree of a process with id 'PID', showing parent process and processes id.",pstree -p -s PID,alfa,pstree
+List available profile symlink targets with their numbers,eselect profile list,alfa,eselect
+"From credentials.json, show the 20 longest lines.","awk '{ print length, $0 }' credentials.json | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+"Given account.conf, strip trailing whitespace.",sed 's/[[:space:]]*$//' account.conf,frost,sed
+recursively search assets for 'denied' and show line numbers,grep -rn 'denied' assets,frost,grep
+Please show the first 20 lines in metrics.xml.,head -n 20 metrics.xml,frost,head
+"Search recursively in all files in the current directory for the string ""__"" and print the first field of the output (separated by colon) of the first three lines.","grep -R ""__"" $(pwd)/* | cut -f1 -d: | head -3",alfa,grep
+"On the file audit.json, show just the first line.",head -n 1 audit.json,frost,head
+Print the current working directory without a trailing newline,echo -n $(pwd),alfa,echo
+move all .log files into the dist directory,mv *.log dist/,frost,mv
+Show also sources,go doc -all -src encoding/json,alfa,go
+"From worker.log, list the 5 most frequent field-5 entries with their counts.",awk '{print $5}' worker.log | sort | uniq -c | sort -nr | head -n 5,frost,awk
+Replace every occurrence of 'token' with 'session' in index.log and print the result.,sed 's/token/session/g' index.log,frost,sed
+Move changelog.bak into the downloads folder.,mv changelog.bak downloads/,frost,mv
+Show how much physical memory is available on this system,sudo dmesg | grep -i memory,alfa,dmesg
+replace tabs with commas in export.log and write to export.log.csv,"sed 's/\t/,/g' export.log > export.log.csv",frost,sed
+What are the 20 most common entries in column 3 of nginx-access.log?,"cut -d, -f3 nginx-access.log | sort | uniq -c | sort -nr | head -n 20",frost,cut
+modify the access time of my file data.dat to be 12:00 on 2022-12-31,touch -a -t 202212311200 data.dat,alfa,touch
+Tally column 2 of gc.log and print the 10 top values by count.,awk '{print $2}' gc.log | sort | uniq -c | sort -nr | head -n 10,frost,awk
+connect to cache.example.org on port 6379 as redis,ssh -p 6379 redis@cache.example.org,frost,ssh
+Please count the lines in product.txt.,wc -l product.txt,frost,wc
+Delete the first line of backup.conf in place.,sed -i '1d' backup.conf,frost,sed
+reload prometheus without a full restart,sudo systemctl reload prometheus,frost,systemctl
+Display the version,gnome-software --version,alfa,gnome-software
+Change hostname,sudo hostnamectl set-hostname newname,mecha,hostnamectl
+"Given event.conf, show the last 15 lines.",tail -n 15 event.conf,frost,tail
+Count how often each column-2 value appears in gc.log; show the 10 most common.,awk '{print $2}' gc.log | sort | uniq -c | sort -nr | head -n 10,frost,awk
+follow redirects when fetching https://monitor.local,curl -L https://monitor.local,frost,curl
+Remove julie including her home folder,userdel -r julie,mecha,userdel
+"For auth.sh, print it with line numbers.",nl auth.sh,frost,nl
+Show TCP connections to www.example.com.,ss -tn dst www.example.com,frost,ss
+list the distinct error messages in metrics.log,grep -i error metrics.log | sort -u,frost,grep
+Commit changes with a [f]orce [p]ush to remote,git magic -fp,alfa,git
+Connect to a remote server with a specific identity (private key),ssh -i path/to/key_file username@remote_host,alfa,ssh
+Make a backup copy of dump.old called dump.old.bak,cp dump.old dump.old.bak,frost,cp
+Find the biggest files under downloads.,du -ah downloads | sort -rh | head -n 20,frost,du
+get the number of items in the JSON array at https://db02.example.org/api/items,curl -s https://db02.example.org/api/items | jq 'length',frost,curl
+How many lines in ingest.log mention 'overflow'?,grep -c 'overflow' ingest.log | cat,frost,grep
+Follow file with retry on rename,tail -F file.log,mecha,tail
+strip leading whitespace from every line of debug.tsv and save to clean.txt,sed 's/^[[:space:]]*//' debug.tsv > clean.txt,frost,sed
+Check the Azure DevOps CLI current configuration,az devops configure --list,alfa,az
+"In gc.log, which 25 values of column 2 occur most often?",awk '{print $2}' gc.log | sort | uniq -c | sort -nr | head -n 25,frost,awk
+"Recursively copy all files and directories matching ""*ela*L1*TE*"" in localhost's directory /tdggendska10/vig-preview-dmz-prod/docs/sbo/pdf/ to /var/www/html/sbo/2010/teacher/ela/level1 on localhost connecting as ssh user ""dalvarado"", in batch mode (no prompt for passwords) preserving file permissions and timestamps, and without displaying progress information.",scp -Bpqr /tdggendska10/vig-preview-dmz-prod/docs/sbo/pdf/*ela*L1*TE* dalvarado@localhost:/var/www/html/sbo/2010/teacher/ela/level1,alfa,scp
+Show me how to show the last 50 lines containing 'WARNING' in build.log.,grep 'WARNING' build.log | tail -n 50,frost,grep
+"SSH into ""myhost.com"" as user ""myname"" with a check every 60 seconds that the server is still alive",ssh -o ServerAliveInterval=60 myname@myhost.com,alfa,ssh
+simulate a full login of user builder,su -l builder,alfa,su
+Install Java runtime,sudo apt install default-jre,mecha,apt
+Show current partition flags on /dev/sdn,parted /dev/sdn print,mecha,parted
+Find 'expired' in server.log plus 3 lines of context around each match.,grep -C 3 'expired' server.log,frost,grep
+Recursively set owner and group of static to erin:backup.,sudo chown -R erin:backup static,frost,chown
+Show the list of all files in the /home/user directory,ls /home/user,aelhalili,ls
+replace tabs with commas in server.log and write to server.log.csv,"sed 's/\t/,/g' server.log > server.log.csv",frost,sed
+"Check if summary.tar.gz exists and cat it, otherwise say it's missing.",[ -f summary.tar.gz ] && cat summary.tar.gz || echo 'not found',frost,[
+Recursively give [a]ll users [r]ead permissions to files and e[X]ecute permissions to sub-directories within a directory,chmod -R a+rX path/to/directory,alfa,chmod
+Print everything in nginx-error.log except the last 5 lines.,head -n -5 nginx-error.log,frost,head
+Resume a specific virtual machine ignoring locks (requires root),sudo qm resume vm_id --skiplock true,alfa,qm
+Delete changelog.tmp but ask for confirmation first.,rm -i changelog.tmp,frost,rm
+List all TCP sockets for port 80,ss -nt sport = :80,mecha,ss
+Run a Go file,go run path/to/file.go,alfa,go
+"Check if archive.xml exists and cat it, otherwise say it's missing.",[ -f archive.xml ] && cat archive.xml || echo 'not found',frost,[
+Which files does user deploy have open?,lsof -u deploy,frost,lsof
+Case-insensitively find 'OutOfMemory' in syslog.log.,grep -i 'OutOfMemory' syslog.log,frost,grep
+strip leading whitespace from every line of index.tsv and save to clean.txt,sed 's/^[[:space:]]*//' index.tsv > clean.txt,frost,sed
+List the currently active processes,ps aux,aelhalili,ps
+Reverse file line order,tac file.txt,mecha,tac
+Print filesystem's metadata information,sudo btrfs inspect-internal dump-tree path/to/partition,alfa,btrfs
+Create a directory called 'logs' in /var/tmp,mkdir /var/tmp/logs,mecha,mkdir
+extract all the 'name' fields from https://db02.internal/api/users,curl -s https://db02.internal/api/users | jq -r '.[].name',frost,curl
+Remove a target from a toolchain,rustup target remove --toolchain toolchain target,alfa,rustup
+"In report.tsv, which 25 values of column 2 occur most often?","cut -d, -f2 report.tsv | sort | uniq -c | sort -nr | head -n 25",frost,cut
+Delete the media_team group,groupdel media_team,mecha,groupdel
+Find all lines in file.txt that contain the letters 'hn' followed by any character and then 'Ty' and sort the results in a unique way.,grep -E 'hn[o].*Ty' file.txt | sort -u,alfa,grep
+Find 'segfault' in gc.log plus 3 lines of context around each match.,grep -C 3 'segfault' gc.log,frost,grep
+Show a recursive listing of /etc/apache2.,ls -R /etc/apache2,frost,ls
+Show me how to follow the chronyd journal but only show lines mentioning '500'.,journalctl -u chronyd -f | grep --line-buffered -i '500',frost,journalctl
+Create a directory called 'music' in your home,mkdir ~/music,mecha,mkdir
+Traceroute to example.com using ICMP echo requests and max TTL 25,traceroute -I -m 25 example.com,mecha,traceroute
+Install cron package,sudo apt install cron,mecha,apt
+Install an extension from a GitHub repository,gh extension install owner/repository,alfa,gh
+list only the .bak files in lib,ls lib/*.bak,frost,ls
+"Given error.ini, strip trailing whitespace.",sed 's/[[:space:]]*$//' error.ini,frost,sed
+Determine the user associated with stdin,who -m,alfa,who
+Replace any sequence of spaces in file 'text.txt' with single space and print 4th space separated field,cat text.txt | tr -s ' ' | cut -d ' ' -f 4,alfa,cat
+"From index.csv, sort it and drop duplicate lines.",sort -u index.csv,frost,sort
+List all running processes on the system,ps aux,aelhalili,ps
+"Recursively copies all files in the current directory but ones that names match pattern ""dirToExclude|targetDir"" to the 'targetDir' directory, printing info message on each operation.","cp -rv `ls -A | grep -vE ""dirToExclude|targetDir""` targetDir",alfa,cp
+Connect to a Bluetooth device by its MAC address,bluetoothctl connect XX:XX:XX:XX:XX:XX,aelhalili,bluetoothctl
+Update `rustup`,rustup self update,alfa,rustup
+Take order.conf and sort it and drop duplicate lines.,sort -u order.conf,frost,sort
+Print the mount point of the last mounted drive,"mount | tail -1 | sed -e ""s/^[^/]*\(.*\) type .*$/\1/g""",alfa,mount
+change just the group of response.json to operators,sudo chgrp operators response.json,frost,chgrp
+List just the filenames under artifacts that contain '502'.,grep -rl '502' artifacts,frost,grep
+Remove one or more images given their names,podman rmi image:tag image2:tag ...,alfa,podman
+Display a report with the specified Cargo-generated ID,cargo report future-incompatibilities|... --id id,alfa,cargo
+Recursively set owner and group of migrations to operator:deploy.,sudo chown -R operator:deploy migrations,frost,chown
+Run a python script with a nice value of 10.,nice -n 10 python main.py,frost,nice
+How big is modules overall?,du -sh modules,frost,du
+"From auth.ini, show the 20 longest lines.","awk '{ print length, $0 }' auth.ini | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+Run eslint --fix with niceness +3,"nice -n 3 eslint --fix . --ext .js,.jsx",mecha,nice
+"On the file migration.sh, show its size, owner and permissions.",stat migration.sh,frost,stat
+Ping 1.1.1.1 and stop after 10 seconds,ping -w 10 1.1.1.1,mecha,ping
+Fetch https://172.16.0.20/health and print only the HTTP status code.,curl -s -o /dev/null -w '%{http_code}' https://172.16.0.20/health,frost,curl
+Find the 10 most common 'ERROR'-related lines in dmesg.log.,grep 'ERROR' dmesg.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+Set export.conf to permissions 644.,chmod 644 export.conf,frost,chmod
+I need to count 'unauthorized' occurrences in the docker journal today.,journalctl -u docker --since today --no-pager | grep -c 'unauthorized',frost,journalctl
+Show me the 5 largest subdirectories of docs.,du -h docs/* 2>/dev/null | sort -rh | head -n 5,frost,du
+Stop the docker service,service docker stop,mecha,service
+What are the 5 largest subdirectories of docs?,du -h docs/* 2>/dev/null | sort -rh | head -n 5,frost,du
+connect to registry.example.org on port 9200 as bob,ssh -p 9200 bob@registry.example.org,frost,ssh
+Forcibly removes ${temp} file.,"rm --force ""${temp}""",alfa,rm
+Prints running process that has id 'pid' with command line arguments.,pstree -a pid,alfa,pstree
+Enable user login for vpn_client,passwd -u vpn_client,mecha,passwd
+Compile a query,"echo ""from employees | filter has_dog | select salary"" | prqlc compile",alfa,echo
+Find the 5 hottest values in column 1 of output.log (by frequency).,awk '{print $1}' output.log | sort | uniq -c | sort -nr | head -n 5,frost,awk
+Initialize a new Dolt data repository in the current directory,dolt init,alfa,dolt
+Make a backup copy of profile.bak called profile.bak.bak,cp profile.bak profile.bak.bak,frost,cp
+Redirect a file to `stdin` (achieves the same effect as `cat file.txt |`),command < path/to/file.txt,alfa,command
+Rename inventory.sh to inventory.sh.old,mv inventory.sh inventory.sh.old,frost,mv
+Start tail on log file in background,nohup tail -f /var/log/syslog &,mecha,nohup
+"List git's activity, headerless.",w -h git,frost,w
+Show the first 20 lines of summary.css.,head -n 20 summary.css,frost,head
+Print syslog.log starting from line 10 to the end.,tail -n +10 syslog.log,frost,tail
+Count the number of lines in data.tar.gz.,wc -l data.tar.gz,frost,wc
+List all running processes.,ps aux,frost,ps
+which directories under /var/lib/mysql are eating the most space?,du -h --max-depth=1 /var/lib/mysql | sort -rh,frost,du
+Decompress an archive from `stdin`,cat path/to/archive.gz | gunzip,alfa,cat
+Copy session.css to api.example.com's /tmp directory as bob.,scp session.css bob@api.example.com:/tmp/,frost,scp
+Take catalog.yaml and show the 20 longest lines.,"awk '{ print length, $0 }' catalog.yaml | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+Launch 'make -j4' at reduced priority (5).,nice -n 5 make -j4,frost,nice
+List all sockets with timer information,ss -o,mecha,ss
+"Download the contents of the website http://example.com, including all files and subdirectories, while ignoring any index.html files and saving the files with their original filenames.","`wget --content-disposition --mirror --no-parent --reject=""index.html*"" http://example.com`",alfa,wget
+Query the A record for example.com and display statistics,nslookup -stats example.com,mecha,nslookup
+Show what PID 4180 has open.,lsof -p 4180,frost,lsof
+"For order.sql, show the last 20 lines.",tail -n 20 order.sql,frost,tail
+Install vim with apt.,sudo apt install -y vim,frost,apt
+give the owner rwx and everyone else read on changelog.jpg,chmod 744 changelog.jpg,frost,chmod
+Kill a task and terminate all its child processes,pueue kill --children task_id,alfa,pueue
+replace tabs with commas in metrics.md and write to metrics.md.csv,"sed 's/\t/,/g' metrics.md > metrics.md.csv",frost,sed
+"Given access.json, show the 20 longest lines.","awk '{ print length, $0 }' access.json | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+count the bytes in audit.txt,wc -c audit.txt,frost,wc
+Make research group for findings.csv,chgrp research findings.csv,mecha,chgrp
+show cron logs from the last 5 days,journalctl -u cron --since '5 days ago',frost,journalctl
+Disable interface eth0,ifdown eth0,alfa,ifdown
+Find the most recently modified file in /etc/nginx.,ls -t /etc/nginx | head -n 1,frost,ls
+Traceroute to google.com with max TTL 30 and 10 probes per hop,traceroute -m 30 -q 10 google.com,mecha,traceroute
+"Take manifest.log and count each unique line, most common first.",sort manifest.log | uniq -c | sort -nr,frost,sort
+"Given server.log, show the last 15 lines.",tail -n 15 server.log,frost,tail
+"From data.tsv, list the 5 most frequent field-1 entries with their counts.","cut -d, -f1 data.tsv | sort | uniq -c | sort -nr | head -n 5",frost,cut
+Traceroute to 8.8.8.8 using a loose source route gateway,traceroute -g 192.168.1.1 8.8.8.8,mecha,traceroute
+How many lines in output.log mention '404'?,grep -c '404' output.log | cat,frost,grep
+I need to follow the chronyd journal but only show lines mentioning '500'.,journalctl -u chronyd -f | grep --line-buffered -i '500',frost,journalctl
+gracefully stop all processes owned by ec2-user,pkill -u ec2-user,frost,pkill
+Launch fdisk CLI for /dev/sdo,fdisk /dev/sdo,mecha,fdisk
+Show every open file under /var/log.,lsof +D /var/log,frost,lsof
+"Sort the second field of the file /etc/hosts, delimited by '-', in reverse order and pass the result to xargs.",cut -d'-' -f2 /etc/hosts | xargs -I {} sort -r {},alfa,cut
+Show the subtree of processes under PID 610.,pstree -p 610,frost,pstree
+Copy a note from one object to another,git notes copy source_object target_object,alfa,git
+Count 'refused' occurrences in the fail2ban journal today.,journalctl -u fail2ban --since today --no-pager | grep -c 'refused',frost,journalctl
+download https://proxy.example.org/list.txt and count the lines,curl -s https://proxy.example.org/list.txt | wc -l,frost,curl
+Copy all files in the /srv directory to /backup/srv,cp /srv/* /backup/srv/,mecha,cp
+Show the top 25 most frequent values in field 4 of the comma-separated file sales.csv.,"cut -d, -f4 sales.csv | sort | uniq -c | sort -nr | head -n 25",frost,cut
+Please show a hex dump of the first 64 bytes in account.old.,xxd -l 64 account.old,frost,xxd
+Show open files for the tmux process.,lsof -c tmux,frost,lsof
+Count how often each column-2 value appears in report.tsv; show the 25 most common.,"cut -d, -f2 report.tsv | sort | uniq -c | sort -nr | head -n 25",frost,cut
+"From output.log, list the 20 most frequent field-1 entries with their counts.","cut -d, -f1 output.log | sort | uniq -c | sort -nr | head -n 20",frost,cut
+how to remove a file named 'image.jpg',rm image.jpg,alfa,rm
+"Check if index.json exists and cat it, otherwise say it's missing.",[ -f index.json ] && cat index.json || echo 'not found',frost,[
+Move payload.tar.gz into the images folder.,mv payload.tar.gz images/,frost,mv
+"Read a line from standard input into variable ""message"" with escaped prompt ""Please Enter a Message: \n\b""","read -p ""$(echo -e 'Please Enter a Message: \n\b')"" message",alfa,read
+List the unique 'overflow' messages in ingest.log.,grep 'overflow' ingest.log | sort -u,frost,grep
+Take account.txt and show the 20 longest lines.,"awk '{ print length, $0 }' account.txt | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+Copy summary.pdf into bin only if it's newer than what's there.,cp -u summary.pdf bin/,frost,cp
+Report file systems disk usage in 1GB blocks.,df -BG,alfa,df
+"Read inventory.csv, then count the lines.",wc -l < inventory.csv,frost,wc
+Show me how to count 'unauthorized' occurrences in the docker journal today.,journalctl -u docker --since today --no-pager | grep -c 'unauthorized',frost,journalctl
+"Read event.ini, then show the last 15 lines.",tail -n 15 event.ini,frost,tail
+Create a gzip-compressed archive of the docs directory.,tar -czf docs.tar.gz docs,frost,tar
+Force delete an S3 bucket and its non-versioned objects (will crash if versioned objects are present),aws s3 rb s3://bucket_name --force,alfa,aws
+Run iostat every 5s for 10 reports.,iostat 5 10,frost,iostat
+create directory TestProject,mkdir TestProject,alfa,mkdir
+What are the 20 most common entries in column 1 of output.log?,"cut -d, -f1 output.log | sort | uniq -c | sort -nr | head -n 20",frost,cut
+Tally column 2 of customers.csv and print the 25 top values by count.,awk '{print $2}' customers.csv | sort | uniq -c | sort -nr | head -n 25,frost,awk
+Find the 20 hottest values in column 9 of report.tsv (by frequency).,awk '{print $9}' report.tsv | sort | uniq -c | sort -nr | head -n 20,frost,awk
+Print only lines 10 through 20 of test.json.,"sed -n '10,20p' test.json",frost,sed
+"Pull an image from Docker Hub (e.g., 'nginx' image)",sudo docker pull nginx,aelhalili,docker
+"Set permissions of command ""node"" to 755",sudo chmod 755 $(which node),alfa,chmod
+How many lines in error.log mention 'dropped'?,grep -c 'dropped' error.log | cat,frost,grep
+I need to show the last 10 lines containing 'FIXME' in syslog.log.,grep 'FIXME' syslog.log | tail -n 10,frost,grep
+Set run.sh to permissions 644.,chmod 644 run.sh,frost,chmod
+"Make the nested directory templates/2026/logs, creating parents as needed.",mkdir -p templates/2026/logs,frost,mkdir
+Print number of lines that equal in files '/home/xyz/a.csv1' and '/home/abc/tempfile',comm -12 <(sort -u /home/xyz/a.csv1) <(sort -u /home/abc/tempfile) | wc -l,alfa,comm
+Find the process listening on port 27017.,lsof -i :27017,frost,lsof
+Backup the 'work' folder to 'work_backup.tar.gz',tar -czvf work_backup.tar.gz ~/work,aelhalili,tar
+Show the top 10 most frequent values in field 2 of the whitespace-separated file gc.log.,awk '{print $2}' gc.log | sort | uniq -c | sort -nr | head -n 10,frost,awk
+Remove write permission for group and others on archive.sql.,chmod go-w archive.sql,frost,chmod
+Remove vm_user from the system,userdel vm_user,mecha,userdel
+Compress the export.csv file,gzip export.csv,mecha,gzip
+Print only lines 10 through 20 of archive.json.,"sed -n '10,20p' archive.json",frost,sed
+Show the last 20 lines containing 'null' in mail.log.,grep 'null' mail.log | tail -n 20,frost,grep
+"Search for the line containing the current date in the file ""file.txt"" and display the line number.","grep -n ""$( date +%F )"" file.txt",alfa,grep
+Find all open files in /opt,lsof +D /opt,mecha,lsof
+Move metrics.txt into the downloads folder.,mv metrics.txt downloads/,frost,mv
+Change the owner of metrics.csv to erin.,sudo chown erin metrics.csv,frost,chown
+Make metrics.jpg executable.,chmod +x metrics.jpg,frost,chmod
+Add/Delete an IP address to an interface,ip addr add/del ip/mask dev interface,alfa,ip
+Count 'unauthorized' occurrences in the docker journal today.,journalctl -u docker --since today --no-pager | grep -c 'unauthorized',frost,journalctl
+Copy settings.sh to project/ but keep the original timestamps and permissions.,cp -p settings.sh project/,frost,cp
+New tag reference to apply to mutated image,crane mutate -t|--tag tag_name,alfa,crane
+Ping github.com with 8 second timeout and 117 times,ping -W 8 -c 117 github.com,mecha,ping
+I want to list the top 5 remote IPs by number of connections.,ss -tn | awk 'NR>1 {print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -n 5,frost,ss
+remove tcpdump and unneeded dependencies,sudo pacman -Rs tcpdump,frost,pacman
+Change to the directory /usr/share/man,cd /usr/share/man,mecha,cd
+"List recursively and verbosely, then search for any words with at least 3 characters that do not start with a period followed by a slash.","ls -Rfv | grep -P '\b(?!(\.+\/))[A-Za-z\d]\w{3,}\b'",alfa,ls
+give the owner rwx and everyone else read on response.zip,chmod 744 response.zip,frost,chmod
+Show the first 20 lines of metrics.xml.,head -n 20 metrics.xml,frost,head
+download /var/log/scheduler.log from app01.example.com to the current dir,scp git@app01.example.com:/var/log/scheduler.log .,frost,scp
+Rename index.gz to index.gz.old,mv index.gz index.gz.old,frost,mv
+Find the 20 hottest values in column 5 of data.tsv (by frequency).,awk '{print $5}' data.tsv | sort | uniq -c | sort -nr | head -n 20,frost,awk
+download https://web01.example.org/list.txt and count the lines,curl -s https://web01.example.org/list.txt | wc -l,frost,curl
+Compress results.csv with bzip2,bzip2 results.csv,mecha,bzip2
+Count how often each column-4 value appears in inventory.csv; show the 15 most common.,awk '{print $4}' inventory.csv | sort | uniq -c | sort -nr | head -n 15,frost,awk
+"Run the backup script, sending stdout and stderr to messages.",./backup.sh > messages 2>&1,frost,./backup.sh
+Count 'exception' occurrences in the systemd-networkd journal today.,journalctl -u systemd-networkd --since today --no-pager | grep -c 'exception',frost,journalctl
+Only run tests containing a specific string in their names,cargo test testname,alfa,cargo
+"Set default deny rule for the firewall, blocking all incoming traffic",sudo ufw default deny incoming,aelhalili,ufw
+Extract just the email addresses from request.tsv.,grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+' request.tsv | sort -u,frost,grep
+Compress the file notes.txt,gzip notes.txt,mecha,gzip
+Send SIGUSR1 signal to processes which match.,"pkill -USR1 ""python3""",frost,pkill
+Create a new file named notes.txt in the Documents directory,touch ~/Documents/notes.txt,aelhalili,touch
+Zip test results and analysis,zip results.zip test_results.txt analysis.txt,mecha,zip
+Make inventory.old executable.,chmod +x inventory.old,frost,chmod
+list only the .js files in images,ls images/*.js,frost,ls
+give me a human-readable long listing of data,ls -lh data,frost,ls
+Kill group of processes by group name,killall -g mygroup,mecha,killall
+Find files only in the current directory.,"fd ""unreachable"" 20 1",frost,fd
+Roll back a resource to the previous revision,kubectl rollout undo resource_type/resource_name,alfa,kubectl
+Show the last 10 lines containing 'stale' in kern.log.,grep 'stale' kern.log | tail -n 10,frost,grep
+List all the processes that are currently running,ps aux,aelhalili,ps
+Count how often each column-9 value appears in output.log; show the 20 most common.,awk '{print $9}' output.log | sort | uniq -c | sort -nr | head -n 20,frost,awk
+"Edit order.log in place, replacing 'cron' with 'cookie'.",sed -i 's/cron/cookie/g' order.log,frost,sed
+Print only unique lines in files 'set1' and 'set2',cat set1 set2 | sort -u,alfa,cat
+Form a group called hr,groupadd hr,mecha,groupadd
+List only directories inside scripts.,ls -d scripts/*/,frost,ls
+I need to show the last 10 lines containing 'stale' in kern.log.,grep 'stale' kern.log | tail -n 10,frost,grep
+Traceroute to github.com with wait time 2 seconds and 6 probes per hop,traceroute -w 2 -q 6 github.com,mecha,traceroute
+replace tabs with commas in index.conf and write to index.conf.csv,"sed 's/\t/,/g' index.conf > index.conf.csv",frost,sed
+Count 'SIGTERM' occurrences in the nginx journal today.,journalctl -u nginx --since today --no-pager | grep -c 'SIGTERM',frost,journalctl
+Display the children of process 952.,pstree -p 952,frost,pstree
+Take response.md and sort it and drop duplicate lines.,sort -u response.md,frost,sort
+"Rank the values of column 1 in data.tsv by frequency, highest first, top 5 only.","cut -d, -f1 data.tsv | sort | uniq -c | sort -nr | head -n 5",frost,cut
+Show the last 20 lines of server.pdf.,tail -n 20 server.pdf,frost,tail
+"In output.log, which 5 values of column 1 occur most often?",awk '{print $1}' output.log | sort | uniq -c | sort -nr | head -n 5,frost,awk
+change just the group of output.yaml to sudo,sudo chgrp sudo output.yaml,frost,chgrp
+"Check if profile.py exists and cat it, otherwise say it's missing.",[ -f profile.py ] && cat profile.py || echo 'not found',frost,[
+Show the top 5 most frequent values in field 5 of the whitespace-separated file worker.log.,awk '{print $5}' worker.log | sort | uniq -c | sort -nr | head -n 5,frost,awk
+Total the resident memory of all celery processes in MB.,"ps -C celery -o rss= | awk '{s+=$1} END{print s/1024 "" MB""}'",frost,ps
+Recursively set owner and group of public to deploy:operators.,sudo chown -R deploy:operators public,frost,chown
+remove tree and unneeded dependencies,sudo pacman -Rs tree,frost,pacman
+Copy test.log into media only if it's newer than what's there.,cp -u test.log media/,frost,cp
+Use a specific tool (opendiff) to show changes since a given commit,git difftool --tool=opendiff commit,alfa,git
+Reattach to the most recent screen session,screen -r,mecha,screen
+List the disk usage of downloads broken down one level deep.,du -h --max-depth=1 downloads 2>/dev/null | sort -rh,frost,du
+Replace all ' ' with '-' from standard input,tr  ' ' '-',alfa,tr
+Add finance group,groupadd finance,mecha,groupadd
+Move invoice.pdf into the assets folder.,mv invoice.pdf assets/,frost,mv
+Print nothing because B.txt is compared with itself.,comm -2 -3 <(sort -n B.txt) <(sort -n B.txt),alfa,comm
+"Start imerge-based merge (checkout the branch to merge into, first)",git imerge merge branch_to_be_merged,alfa,git
+List all nfs mounts,mount -l -t nfs4,alfa,mount
+list only the .txt files in tmp,ls tmp/*.txt,frost,ls
+Move server.md into the templates folder.,mv server.md templates/,frost,mv
+Activate a space or comma separated list of features,cargo run --features feature1 feature2 ...,alfa,cargo
+Take server.yaml and show the 20 longest lines.,"awk '{ print length, $0 }' server.yaml | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+"Rank the values of column 9 in inventory.tsv by frequency, highest first, top 25 only.",awk '{print $9}' inventory.tsv | sort | uniq -c | sort -nr | head -n 25,frost,awk
+make a bzip2-compressed tarball of data,tar -cjf data.tar.bz2 data,frost,tar
+Run cargo build with niceness +3,nice -n 3 cargo build --release,mecha,nice
+POST a JSON body to https://mail.example.com/api/users,"curl -X POST -H 'Content-Type: application/json' -d '{""name"":""alice""}' https://mail.example.com/api/users",frost,curl
+Show the top 20 most frequent values in field 1 of the whitespace-separated file debug.log.,awk '{print $1}' debug.log | sort | uniq -c | sort -nr | head -n 20,frost,awk
+Uninstall a specific application,cs uninstall application_name,alfa,cs
+Show kernel messages in human-readable format,dmesg -H,mecha,dmesg
+Print only lines 10 through 20 of report.csv.,"sed -n '10,20p' report.csv",frost,sed
+Find the 10 most common 'unauthorized'-related lines in nginx-access.log.,grep 'unauthorized' nginx-access.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+Count how often each column-1 value appears in orders.tsv; show the 10 most common.,"cut -d, -f1 orders.tsv | sort | uniq -c | sort -nr | head -n 10",frost,cut
+Make support the group owner of logs folder,chgrp support logs,mecha,chgrp
+sort index.ini by the 2nd column numerically,sort -k2 -n index.ini,frost,sort
+download https://registry.example.com/list.txt and count the lines,curl -s https://registry.example.com/list.txt | wc -l,frost,curl
+Show me how to follow the postgresql journal but only show lines mentioning 'deprecated'.,journalctl -u postgresql -f | grep --line-buffered -i 'deprecated',frost,journalctl
+Tally column 3 of products.csv and print the 10 top values by count.,awk '{print $3}' products.csv | sort | uniq -c | sort -nr | head -n 10,frost,awk
+"Split ""bigfile"" into files of at most 1000 lines each with prefix ""/lots/of/little/files/here""",split bigfile /lots/of/little/files/here,alfa,split
+extract all the 'name' fields from https://cdn.example.com/api/users,curl -s https://cdn.example.com/api/users | jq -r '.[].name',frost,curl
+"Display memory usage in gigabytes, update every 8 seconds indefinitely",free -g -s 8,mecha,free
+How do I list files in data sorted by size?,ls -lS data,frost,ls
+Extract just the email addresses from access.ini.,grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+' access.ini | sort -u,frost,grep
+Copies defined file to the target folder without overwriting existing files.,cp -n,alfa,cp
+"Rank the values of column 2 in gc.log by frequency, highest first, top 10 only.",awk '{print $2}' gc.log | sort | uniq -c | sort -nr | head -n 10,frost,awk
+recursively search modules for 'null' and show line numbers,grep -rn 'null' modules,frost,grep
+Run 'make -j4' at a lower priority (nice 5).,nice -n 5 make -j4,frost,nice
+"Check if release.pdf exists and cat it, otherwise say it's missing.",[ -f release.pdf ] && cat release.pdf || echo 'not found',frost,[
+Find anything related to chrome,locate chrome,mecha,locate
+Show TCP connections involving mail.internal.,netstat -tn | grep mail.internal,frost,netstat
+"Translate all characters from A-Z and a-z to a space, then select all characters from V-Z and a-z, followed by any number of characters that are not V-Z or a new line, and finally search for any characters from A-Z.",tr -sc A-Za-z ' '[V-Za-z][^V-Z\n]* | grep -E '[A-Z]',alfa,tr
+Tally column 9 of gateway.log and print the 20 top values by count.,awk '{print $9}' gateway.log | sort | uniq -c | sort -nr | head -n 20,frost,awk
+Display erin's processes as a tree.,pstree erin,frost,pstree
+Rename 'data.csv' to 'backup.csv' in the same directory,mv data.csv backup.csv,mecha,mv
+"Read profile.yaml, then convert everything to uppercase.",tr 'a-z' 'A-Z' < profile.yaml,frost,tr
+Show the unique sorted lines of account.tsv.,sort account.tsv | uniq,frost,sort
+Resume the execution of a paused virtual machine,VBoxManage controlvm uuid|vm_name resume,alfa,VBoxManage
+List only directories inside public.,ls -d public/*/,frost,ls
+Compare directories recursively (shows names for differing files/directories as well as changes made to files),diff -r|--recursive old_directory new_directory,alfa,diff
+Show connections on port 9200.,netstat -anp | grep :9200,frost,netstat
+Rename an existing Git tag locally and remotely,git rename-tag old_tag_name new_tag_name,alfa,git
+Mirror modules to db01.corp.net:/backup deleting files that no longer exist locally.,rsync -avz --delete modules/ svc-app@db01.corp.net:/backup/,frost,rsync
+"Format an XML document, omitting the XML declaration",xml format --omit-decl path\to\input.xml|URI > path/to/output.xml,alfa,xml
+Squeeze repeated spaces into a single space in request.yaml.,tr -s ' ' < request.yaml,frost,tr
+Show just the first line of release.conf.,head -n 1 release.conf,frost,head
+replace tabs with commas in auth.yaml and write to auth.yaml.csv,"sed 's/\t/,/g' auth.yaml > auth.yaml.csv",frost,sed
+Delete the first line of dump.tsv in place.,sed -i '1d' dump.tsv,frost,sed
+"From settings.ini, sort it and drop duplicate lines.",sort -u settings.ini,frost,sort
+Pull latest code and restart the app service.,git pull && sudo systemctl restart myapp,frost,git
+Help me total the resident memory of all celery processes in MB.,"ps -C celery -o rss= | awk '{s+=$1} END{print s/1024 "" MB""}'",frost,ps
+change just the group of build.zip to staff,sudo chgrp staff build.zip,frost,chgrp
+Transfer an object to an address,"sui client ptb --transfer-objects ""[object_id]"" @address",alfa,sui
+"Edit changelog.conf in place, replacing 'debug' with 'success'.",sed -i 's/debug/success/g' changelog.conf,frost,sed
+list only the .sql files in releases,ls releases/*.sql,frost,ls
+"Display bash function definition of ""foobar""",set | grep -A999 '^foobar ()' | grep -m1 -B999 '^}',alfa,set
+Follow file in real time,tail -f file.log,mecha,tail
+Show a hex dump of the first 64 bytes of backup.html.,xxd -l 64 backup.html,frost,xxd
+Terminate an instance,VBoxManage cloud --provider=provider_name --profile=profile_name instance terminate --id=unique_id,alfa,VBoxManage
+Find the 5 hottest values in column 9 of export.tsv (by frequency).,"cut -d, -f9 export.tsv | sort | uniq -c | sort -nr | head -n 5",frost,cut
+"For catalog.gz, show just the first line.",head -n 1 catalog.gz,frost,head
+Rename a container,docker rename container new_name,alfa,docker
+Take server.log and show the last 15 lines.,tail -n 15 server.log,frost,tail
+"Check if test.png exists and cat it, otherwise say it's missing.",[ -f test.png ] && cat test.png || echo 'not found',frost,[
+strip leading whitespace from every line of credentials.tsv and save to clean.txt,sed 's/^[[:space:]]*//' credentials.tsv > clean.txt,frost,sed
+"Make directory ""/tmp/googleTestMock""",mkdir /tmp/googleTestMock,alfa,mkdir
+"Check if backup.csv exists and cat it, otherwise say it's missing.",[ -f backup.csv ] && cat backup.csv || echo 'not found',frost,[
+Remove emma from devtools group,gpasswd -d emma devtools,mecha,gpasswd
+Enable swap file,sudo swapon /swapfile,mecha,swapon
+Create a directory called 'test' in /var/spool,mkdir /var/spool/test,mecha,mkdir
+Show the unique sorted lines of release.md.,sort release.md | uniq,frost,sort
+Replace every occurrence of 'user_id' with 'POST' in index.conf and print the result.,sed 's/user_id/POST/g' index.conf,frost,sed
+"Get max, min, mean, and median of a single column of numbers.",seq 3 | datamash max 1 min 1 mean 1 median 1,frost,seq
+"Import new transactions from `bank.csv`, using `bank.csv.rules` to convert",hledger import path/to/bank.csv,alfa,hledger
+Show lines in access.log that do NOT contain 'unreachable'.,grep -v 'unreachable' access.log,frost,grep
+Copy notes.old into tmp only if it's newer than what's there.,cp -u notes.old tmp/,frost,cp
+Copy profile.conf into build only if it's newer than what's there.,cp -u profile.conf build/,frost,cp
+Disable ARP on enp0s3,sudo ifconfig enp0s3 -arp,mecha,ifconfig
+"Run a ""rm"" process to recursively remove ""cache"", making it immune to all SIGHUP signals sent to it.",nohup rm -rf cache &,alfa,nohup
+"Check if product.bak exists and cat it, otherwise say it's missing.",[ -f product.bak ] && cat product.bak || echo 'not found',frost,[
+Archive src and pipe it over ssh to back it up on a remote host.,tar -czf - src | ssh erin@www.internal 'cat > /backup/src.tar.gz',frost,tar
+"Display memory usage in bytes with total, update every 5 seconds, 3 times",free -b -t -s 5 -c 3,mecha,free
+Enables shell option 'cdable_vars'.,shopt -s cdable_vars,alfa,shopt
+Remove write permission for group and others on report.log.,chmod go-w report.log,frost,chmod
+Show all interfaces with their status (LOOPBACK),ifconfig -a | grep LOOPBACK,mecha,ifconfig
+Start bash shell with screen,screen -S shell bash,mecha,screen
+Take response.txt and sort it and drop duplicate lines.,sort -u response.txt,frost,sort
+I need to count 'unauthorized' occurrences in the grafana-server journal today.,journalctl -u grafana-server --since today --no-pager | grep -c 'unauthorized',frost,journalctl
+"Balance data block groups which are less than 15% utilized, running the operation in the background",sudo btrfs balance start --bg -dusage=15 path/to/btrfs_filesystem,alfa,btrfs
+I need to follow the prometheus journal but only show lines mentioning 'disk full'.,journalctl -u prometheus -f | grep --line-buffered -i 'disk full',frost,journalctl
+Find the 15 hottest values in column 2 of error.log (by frequency).,"cut -d, -f2 error.log | sort | uniq -c | sort -nr | head -n 15",frost,cut
+Remove write permission for group and others on data.tmp.,chmod go-w data.tmp,frost,chmod
+List only directories inside /var/lib/mysql.,ls -d /var/lib/mysql/*/,frost,ls
+"From report.md, strip trailing whitespace.",sed 's/[[:space:]]*$//' report.md,frost,sed
+Replace any string matching the pattern of a MAC address (([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}) in the file /etc/upt.conf with the string j3q45D5/g.,sed -r 's/(([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2})/j3q45D5\/g/' /etc/upt.conf,alfa,sed
+Display the current running processes,ps aux,aelhalili,ps
+Extract just the email addresses from audit.txt.,grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+' audit.txt | sort -u,frost,grep
+"List postgres's activity, headerless.",w -h postgres,frost,w
+"Check if schema.txt exists and cat it, otherwise say it's missing.",[ -f schema.txt ] && cat schema.txt || echo 'not found',frost,[
+"List all files in /srv/www, including hidden ones, in long format.",ls -la /srv/www,frost,ls
+"Replace all instances of ""STRING_TO_REPLACE"" with ""REPLACE_WITH"" in file ""index.html"" and make a backup with suffix ""bak""",sed -ibak -e s/STRING_TO_REPLACE/REPLACE_WITH/g index.html,alfa,sed
+Use noninteractive frontend,DEBIAN_FRONTEND=noninteractive sudo apt update,mecha,apt
+delete all blank lines from inventory.conf,sed '/^$/d' inventory.conf,frost,sed
+reload grafana-server without a full restart,sudo systemctl reload grafana-server,frost,systemctl
+"Check if server.txt exists and cat it, otherwise say it's missing.",[ -f server.txt ] && cat server.txt || echo 'not found',frost,[
+Tally column 3 of users.tsv and print the 20 top values by count.,"cut -d, -f3 users.tsv | sort | uniq -c | sort -nr | head -n 20",frost,cut
+Check the active processes on the system,ps aux,aelhalili,ps
+Display the ancestors of process 3567 as a tree.,pstree -s 3567,frost,pstree
+"Ping a host, specifying the interval in seconds between requests (default is 1 second).",ping6 -i 50 proxy.corp.net,frost,ping6
+"Print the first and fifth to seventh fields (separated by colons) of the file /etc/group, separated by spaces.","cut -d: -f1,5-7 /etc/group | xargs echo",alfa,cut
+show ssh logs from the last 3 days,journalctl -u ssh --since '3 days ago',frost,journalctl
+"From syslog, list the 25 most frequent field-7 entries with their counts.",awk '{print $7}' syslog | sort | uniq -c | sort -nr | head -n 25,frost,awk
+Remove write permission for group and others on customer.conf.,chmod go-w customer.conf,frost,chmod
+"echo 'echo '{}' | rev' | xargs -I {} echo ""echo $(echo '{}' | rev) | rev""","awk 'BEGIN{srand(); print int(rand()*1000000)}' | xargs -I {} echo ""echo '{}' | rev""",alfa,awk
+"In messages, which 10 values of column 2 occur most often?",awk '{print $2}' messages | sort | uniq -c | sort -nr | head -n 10,frost,awk
+Create documentation_review group,groupadd documentation_review,mecha,groupadd
+List the 20 largest subdirectories of src.,du -h src/* 2>/dev/null | sort -rh | head -n 20,frost,du
+List the 5 largest subdirectories of docs.,du -h docs/* 2>/dev/null | sort -rh | head -n 5,frost,du
+Which files does user dave have open?,lsof -u dave,frost,lsof
+Get fs type and label from /dev/sdc4,blkid /dev/sdc4,mecha,blkid
+Copy session.pdf into the modules directory.,cp session.pdf modules/,frost,cp
+Copy all files in /var/log/installer to /backup/installer,cp /var/log/installer/* /backup/installer/,mecha,cp
+"Count how many times each line appears in profile.yaml, most frequent first.",sort profile.yaml | uniq -c | sort -nr,frost,sort
+"Restore any files changed since the last commit, ignoring any files that were deleted",git checkout-index --all --force --no-create,alfa,git
+Run ping on multiple hosts and wait,ping -c 1 google.com & ping -c 1 bing.com & wait,mecha,ping
+Removes everything from current folder but '*ddl*' and '*docs*' files.,ls -1|grep -v -e ddl -e docs| xargs rm -rf,alfa,ls
+Follow the memcached journal but only show lines mentioning 'traceback'.,journalctl -u memcached -f | grep --line-buffered -i 'traceback',frost,journalctl
+Copy error.yaml to media/ but keep the original timestamps and permissions.,cp -p error.yaml media/,frost,cp
+"For account.tar.gz, show a hex dump of the first 64 bytes.",xxd -l 64 account.tar.gz,frost,xxd
+"Show only commits with messages that include a specific string, ignoring case",git log -i|--regexp-ignore-case --grep search_string,alfa,git
+Start interactive bash in screen,screen -S shell bash,mecha,screen
+list only the .md files in /var/lib/mysql,ls /var/lib/mysql/*.md,frost,ls
+get the 5 most common words in server.md,tr ' ' '\n' < server.md | sort | uniq -c | sort -nr | head -n 5,frost,tr
+Delete alpha_project group,groupdel alpha_project,mecha,groupdel
+Counts all non-blank lines in the $i file.,sed '/^\s*$/d' $i | wc -l ## skip blank lines,alfa,sed
+Show the processes running on the system,ps aux,aelhalili,ps
+"On the file debug.log, show just the first line.",head -n 1 debug.log,frost,head
+"Print absolute path of ""YOUR_PATH""",readlink -f YOUR_PATH,alfa,readlink
+reload redis without a full restart,sudo systemctl reload redis,frost,systemctl
+count the bytes in report.txt,wc -c report.txt,frost,wc
+Find the 15 hottest values in column 5 of products.csv (by frequency).,"cut -d, -f5 products.csv | sort | uniq -c | sort -nr | head -n 15",frost,cut
+Shutdown at 1:00 pm (Uses 24[h] clock),shutdown -h 13:00,alfa,shutdown
+Give me a frequency tally of column 1 in export.tsv and show the 5 biggest.,awk '{print $1}' export.tsv | sort | uniq -c | sort -nr | head -n 5,frost,awk
+move all .log files into the bin directory,mv *.log bin/,frost,mv
+Count how often each column-2 value appears in error.log; show the 15 most common.,"cut -d, -f2 error.log | sort | uniq -c | sort -nr | head -n 15",frost,cut
+"On the file users.js, show the last 20 lines.",tail -n 20 users.js,frost,tail
+List all files opened by tmux.,lsof -c tmux,frost,lsof
+list only the .zip files in /opt/app,ls /opt/app/*.zip,frost,ls
+Grant all permissions to user and none to others on data.bin,chmod 700 data.bin,mecha,chmod
+Give me a frequency tally of column 7 in nginx-access.log and show the 25 biggest.,"cut -d, -f7 nginx-access.log | sort | uniq -c | sort -nr | head -n 25",frost,cut
+"On the file dump.pdf, show a hex dump of the first 64 bytes.",xxd -l 64 dump.pdf,frost,xxd
+"Given metrics.txt, strip trailing whitespace.",sed 's/[[:space:]]*$//' metrics.txt,frost,sed
+Count how often each column-3 value appears in inventory.csv; show the 25 most common.,"cut -d, -f3 inventory.csv | sort | uniq -c | sort -nr | head -n 25",frost,cut
+Append manifest to a remote index,crane index append,alfa,crane
+Register `gcloud` as a Docker credential helper,gcloud auth configure-docker,alfa,gcloud
+Traceroute to example.com with wait time 2 seconds,traceroute -w 2 example.com,mecha,traceroute
+Show the top 5 most frequent values in field 4 of the comma-separated file output.log.,"cut -d, -f4 output.log | sort | uniq -c | sort -nr | head -n 5",frost,cut
+"Read dump.log, then keep only non-empty lines.",grep -v '^$' dump.log,frost,grep
+Find the 10 hottest values in column 2 of app.log (by frequency).,"cut -d, -f2 app.log | sort | uniq -c | sort -nr | head -n 10",frost,cut
+Add interns_2024 group,groupadd interns_2024,mecha,groupadd
+Install python3-pip with pacman.,sudo pacman -S python3-pip,frost,pacman
+Rename backup.old to backup.old.old,mv backup.old backup.old.old,frost,mv
+Find the 10 most common 'dropped'-related lines in audit.log.,grep 'dropped' audit.log | sort | uniq -c | sort -nr | head -n 10,frost,grep
+Remove write permission for group and others on response.xml.,chmod go-w response.xml,frost,chmod
+show only the lines in build.tsv that appear more than once,uniq -d build.tsv,frost,uniq
+Build the Rust project in the current directory using the nightly compiler (requires `rustup`),cargo +nightly build,alfa,cargo
+Run Go app with ENV vars,env DB_USER=root DB_PASS=secret go run main.go,mecha,env
+"On the file credentials.conf, show a hex dump of the first 64 bytes.",xxd -l 64 credentials.conf,frost,xxd
+Terminate child processes of PID 1213,pkill -P 1213,mecha,pkill
+Print metrics.log starting from line 100 to the end.,tail -n +100 metrics.log,frost,tail
+How many lines in nginx-error.log mention 'traceback'?,grep -c 'traceback' nginx-error.log | cat,frost,grep
+Save the UTC date represented by time string $sting2 as the seconds since epoch to variable 'FinalDate',"FinalDate=$(date -u -d ""$string2"" +""%s"")",alfa,-u
+List logs sorted by multiple fields,"gcloud logging logs list --sort-by=""field1,~field2""",alfa,gcloud
+"Given changelog.json, show the 20 longest lines.","awk '{ print length, $0 }' changelog.json | sort -rn | head -20 | cut -d' ' -f2-",frost,awk
+"Format the contents of ""[file]"" in a neat table",cat file | column -t,alfa,cat
+Split a file every 5 lines (this will fail if the total number of lines is not divisible by 5),csplit path/to/file 5 {*},alfa,csplit
+change just the group of notes.gz to wheel,sudo chgrp wheel notes.gz,frost,chgrp

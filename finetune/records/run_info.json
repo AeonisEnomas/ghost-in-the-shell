@@ -1,0 +1,24 @@
+{
+  "model": "qwen2.5-coder-1.5b",
+  "base_model": "unsloth/Qwen2.5-Coder-1.5B-Instruct",
+  "train_examples": 49489,
+  "val_examples": 1137,
+  "epochs_planned": 2,
+  "steps_run": 6188,
+  "best_checkpoint": "/content/drive/MyDrive/ghost-in-the-shell/round4/qwen2.5-coder-1.5b/checkpoints/checkpoint-6188",
+  "best_eval_loss": 0.2755,
+  "train_loss": 0.2827,
+  "train_minutes_this_session": 139.1,
+  "resumed": false,
+  "trainable_params": 18464768,
+  "gpu": "Tesla T4",
+  "precision": "fp16",
+  "lora": {
+    "r": 16,
+    "lora_alpha": 16,
+    "lora_dropout": 0.0
+  },
+  "learning_rate": 0.0002,
+  "gguf": "/content/drive/MyDrive/ghost-in-the-shell/round4/qwen2.5-coder-1.5b-ft-r4.Q4_K_M.gguf",
+  "base_gguf": "/content/drive/MyDrive/ghost-in-the-shell/round4/qwen2.5-coder-1.5b-base-r4.Q4_K_M.gguf"
+}

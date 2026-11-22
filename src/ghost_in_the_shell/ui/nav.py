@@ -1,4 +1,4 @@
-"""The app's pages, registered once per run so pages can link to each other."""
+# The app's pages, registered once per run so pages can link to each other.
 
 import streamlit as st
 

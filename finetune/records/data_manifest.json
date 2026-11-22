@@ -1,0 +1,82 @@
+{
+  "sources": {
+    "frost": {
+      "dataset": "Frost2o24/bash-instruct-III-55k",
+      "revision": "2a9ec4c4ab57a03857078e20df843b558b090d32"
+    },
+    "mecha": {
+      "dataset": "mecha-org/linux-command-dataset",
+      "revision": "d3883ec38c0458a73a0b8aef19103cb2d006c87c"
+    },
+    "aelhalili": {
+      "dataset": "aelhalili/bash-commands-dataset",
+      "revision": "67a539a9c6358574fe4f22e126cba3421fff4645"
+    },
+    "alfa": {
+      "dataset": "westenfelder/NL2SH-ALFA",
+      "revision": "a99cb5784cf5c2a42b1cc26c1903d9c3b35206ba"
+    },
+    "dale": {
+      "dataset": "manuelgscom/dale-bash-test-v2",
+      "revision": "7edf49aab21a0b605892f21bed25b0ae17a23126"
+    }
+  },
+  "filters": [
+    {
+      "filter": "format",
+      "removed": 904,
+      "left": 80659
+    },
+    {
+      "filter": "random tasks",
+      "removed": 4447,
+      "left": 76212
+    },
+    {
+      "filter": "wrong scope",
+      "removed": 751,
+      "left": 75461
+    },
+    {
+      "filter": "catastrophic",
+      "removed": 374,
+      "left": 75087
+    },
+    {
+      "filter": "test leakage",
+      "removed": 536,
+      "left": 74551
+    },
+    {
+      "filter": "duplicates",
+      "removed": 4654,
+      "left": 69897
+    },
+    {
+      "filter": "invalid syntax",
+      "removed": 37,
+      "left": 69860
+    },
+    {
+      "filter": "rare tools",
+      "removed": 13439,
+      "left": 56421
+    },
+    {
+      "filter": "tool cap",
+      "removed": 5795,
+      "left": 50626
+    }
+  ],
+  "train_rows": 49489,
+  "val_rows": 1137,
+  "train_rows_by_source": {
+    "frost": 28180,
+    "alfa": 13608,
+    "mecha": 7188,
+    "aelhalili": 513
+  },
+  "train_sha256": "3b1c531c69d7f15f3521dd992264c1ab58396c91d2325b02f47b84a740a52f98",
+  "bash": "GNU bash, version 5.2.21(1)-release (x86_64-pc-linux-gnu)",
+  "seed": 42
+}

@@ -1,8 +1,4 @@
-"""Local history of requests, commands, runs and feedback.
-
-Stored in SQLite under the user's state folder; nothing leaves the machine.
-All queries use parameters, so request and command text is never part of SQL.
-"""
+# Local history of requests, commands, runs and feedback.
 
 import sqlite3
 from dataclasses import dataclass
@@ -61,7 +57,7 @@ class History:
             return int(cursor.lastrowid)
 
     def record_run(self, entry_id: int, command: str, level: str, exit_code: int | None) -> None:
-        """Store the command as it was run (the user may have edited it)."""
+        # Store the command as it was run (the user may have edited it).
         with self._connect() as db:
             db.execute("UPDATE entries SET ran = 1, command = ?, level = ?, exit_code = ? WHERE id = ?",
                        (command, level, exit_code, entry_id))
@@ -76,7 +72,6 @@ class History:
         query = "SELECT * FROM entries"
         params: list = []
         if search:
-            # Escape LIKE wildcards so that "%" or "_" in the search are literal.
             pattern = "%" + search.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
             query += " WHERE request LIKE ? ESCAPE '\\' OR command LIKE ? ESCAPE '\\'"
             params += [pattern, pattern]

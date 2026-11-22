@@ -1,17 +1,4 @@
-"""Local language models served by llama.cpp.
-
-Two models run side by side, each in its own llama-server process:
-
-- the fine-tuned Qwen2.5-Coder-1.5B turns a request into a command;
-- the base Qwen2.5-Coder-1.5B explains a command in plain English.
-
-Each server listens on 127.0.0.1 only, on a free port, and requires a key
-generated for this run, so other programs on the machine cannot use it.
-
-The models are not trusted. Whatever they return is checked here for format
-and later for safety, and nothing they produce is ever run without the user's
-confirmation.
-"""
+# Local language models served by llama.cpp.
 
 import atexit
 import json
@@ -30,22 +17,17 @@ import requests
 from .config import Settings
 from .sanitize import InputRejected, check_command, clean_model_text, clean_request
 
-# The prompt the generator was fine-tuned with. Changing it moves the model
-# away from its training conditions.
 GENERATE_SYSTEM = (
     "You translate natural-language requests into a single Linux bash command. "
     "Reply with only the command on one line: no explanation, no markdown, no code fences."
 )
 
-# The explain prompt evaluated in round 2.
 EXPLAIN_SYSTEM = (
     "You explain Linux bash commands to a beginner. Describe in one or two plain-English "
     "sentences exactly what the command does, including what each flag and file path "
     "affects. Do not include the command itself or any code."
 )
 
-# llama.cpp grammar: one non-empty line. The generator cannot be talked into
-# writing a script, an explanation or several commands on separate lines.
 ONE_LINE = r"root ::= [^\r\n]+"
 
 STARTUP_TIMEOUT_S = 120
@@ -53,7 +35,8 @@ REQUEST_TIMEOUT_S = 60
 
 
 class ModelError(RuntimeError):
-    """A model could not be started or did not give a usable answer."""
+    # A model could not be started or did not give a usable answer.
+    pass
 
 
 @dataclass(frozen=True)
@@ -77,8 +60,8 @@ def _free_port() -> int:
 
 
 class LlamaServer:
-    """One llama-server process serving one GGUF model."""
 
+    # One llama-server process serving one GGUF model.
     def __init__(self, model_path: Path, name: str, settings: Settings):
         self.model_path = model_path
         self.name = name
@@ -123,8 +106,6 @@ class LlamaServer:
 
     def chat(self, system: str, user: str, max_tokens: int, grammar: str | None = None,
              temperature: float = 0.0, seed: int = 0) -> str:
-        # Temperature 0 is greedy decoding, as in the evaluation. With a fixed
-        # seed, sampling is reproducible too: the same request gives the same answer.
         body = {
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
             "max_tokens": max_tokens,
@@ -143,7 +124,7 @@ class LlamaServer:
             raise ModelError(f"The {self.name} model did not answer: {error}") from error
 
     def stream_chat(self, system: str, user: str, max_tokens: int) -> Iterator[str]:
-        """Like chat, but yields the reply in pieces as the model writes it."""
+        # Like chat, but yields the reply in pieces as the model writes it.
         body = {
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
             "max_tokens": max_tokens, "temperature": 0, "seed": 0, "stream": True,
@@ -176,7 +157,7 @@ class LlamaServer:
 
 
 def _first_command_line(reply: str) -> str:
-    """Take the command out of a reply, in case the model adds a fence or a prompt sign."""
+    # Take the command out of a reply, in case the model adds a fence or a prompt sign.
     text = re.sub(r"^```(?:(?:bash|sh|shell)(?=\s))?|```$", "", reply.strip()).strip()
     line = next((ln.strip() for ln in text.splitlines() if ln.strip()), "")
     if line.startswith("$ "):
@@ -187,8 +168,8 @@ def _first_command_line(reply: str) -> str:
 
 
 class Models:
-    """The generator and explainer, started together and stopped together."""
 
+    # The generator and explainer, started together and stopped together.
     def __init__(self, settings: Settings | None = None):
         self.settings = settings or Settings()
         self.generator = LlamaServer(self.settings.generator_path, "generator", self.settings)
@@ -217,7 +198,7 @@ class Models:
         self.stop()
 
     def suggest(self, request: str, temperature: float = 0.0, seed: int = 0) -> Suggestion:
-        """Turn a request into one command. Raises InputRejected or ModelError."""
+        # Turn a request into one command. Raises InputRejected or ModelError.
         request = clean_request(request)
         start = time.perf_counter()
         reply = self.generator.chat(GENERATE_SYSTEM, request, max_tokens=128, grammar=ONE_LINE,
@@ -229,7 +210,7 @@ class Models:
         return Suggestion(request, command, time.perf_counter() - start)
 
     def explain(self, command: str) -> Explanation:
-        """Explain a command in plain English. Raises InputRejected or ModelError."""
+        # Explain a command in plain English. Raises InputRejected or ModelError.
         command = check_command(command)
         start = time.perf_counter()
         reply = self.explainer.chat(EXPLAIN_SYSTEM, command, max_tokens=160)
@@ -239,10 +220,6 @@ class Models:
         return Explanation(command, text, time.perf_counter() - start)
 
     def explain_stream(self, command: str) -> Iterator[str]:
-        """Explain a command, yielding text as it is written. Raises InputRejected or ModelError.
-
-        The pieces are raw model text; callers must display them as plain text
-        and replace them with clean_model_text(full reply) at the end.
-        """
+        # Explain a command, yielding text as it is written. Raises InputRejected or ModelError.
         command = check_command(command)
         yield from self.explainer.stream_chat(EXPLAIN_SYSTEM, command, max_tokens=160)

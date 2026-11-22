@@ -1,8 +1,4 @@
-"""Ghost in the Shell: the Streamlit interface.
-
-Start it with the `ghost-in-the-shell` command (see ghost_in_the_shell/__init__.py),
-which runs Streamlit from this folder so that the theme and fonts load.
-"""
+# Ghost in the Shell: the Streamlit interface.
 
 from pathlib import Path
 

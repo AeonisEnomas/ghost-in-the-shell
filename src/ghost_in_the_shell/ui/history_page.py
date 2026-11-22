@@ -1,4 +1,4 @@
-"""The history page: everything asked and checked on this computer."""
+# The history page: everything asked and checked on this computer.
 
 import streamlit as st
 
